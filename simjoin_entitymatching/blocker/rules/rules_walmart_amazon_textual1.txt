@@ -1,0 +1,9 @@
+8
+proddescrlong_proddescrlong_jac_dlm_dc0_dlm_dc0 + 0.1207
+proddescrlong_proddescrlong_overlap_dlm_dc0_dlm_dc0 + 0.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.1404
+proddescrlong_proddescrlong_cos_dlm_dc0_dlm_dc0 + 0.2853
+title_title_cos_dlm_dc0_dlm_dc0 + 0.4465
+proddescrlong_proddescrlong_dice_dlm_dc0_dlm_dc0 + 0.2180
+title_title_dice_dlm_dc0_dlm_dc0 + 0.2474
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000

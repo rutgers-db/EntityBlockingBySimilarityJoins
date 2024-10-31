@@ -1,0 +1,1837 @@
+price_price_lev_dist - 5.5000
+
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_lev_dist - 19.0000
+
+manufacturer_manufacturer_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_exm + 0.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+manufacturer_manufacturer_exm + 0.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_lev_dist - 19.0000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_anm + 0.0348
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_lev_dist - 19.0000
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_exm + 0.5000
+
+price_price_lev_dist - 5.5000
+price_price_exm + 0.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_exm + 0.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+price_price_exm + 0.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_lev_dist - 19.0000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+price_price_lev_dist - 5.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+manufacturer_manufacturer_exm + 0.5000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_exm + 0.5000
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+price_price_lev_dist - 5.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_exm + 0.5000
+price_price_exm + 0.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_lev_dist - 19.0000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_exm + 0.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+price_price_exm + 0.5000
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+price_price_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_lev_dist - 5.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_anm + 0.0348
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_lev_dist - 19.0000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0830
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_exm + 0.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+manufacturer_manufacturer_lev_dist - 19.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_lev_dist - 19.0000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_exm + 0.5000
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+price_price_lev_dist - 5.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_exm + 0.5000
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0312
+
+price_price_lev_dist - 5.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+price_price_lev_dist - 5.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_anm + 0.0348
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+
+price_price_exm + 0.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+price_price_anm + 0.0348
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+price_price_lev_dist - 5.5000
+
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+price_price_lev_dist - 5.5000
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.0000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.7500
+
+price_price_lev_dist - 5.5000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000
+
+title_title_jac_dlm_dc0_dlm_dc0 + 0.2010
+title_title_dice_dlm_dc0_dlm_dc0 + 0.3443
+
+manufacturer_manufacturer_exm + 0.5000
+price_price_anm + 0.0348
+title_title_cos_dlm_dc0_dlm_dc0 + 0.5624
+

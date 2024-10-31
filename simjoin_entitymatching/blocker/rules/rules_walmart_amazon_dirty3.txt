@@ -1,0 +1,26 @@
+25
+category_category_jac_qgm_3_qgm_3 + 0.0192 
+modelno_modelno_lev_dist - 16.5000 
+title_title_cos_dlm_dc0_dlm_dc0 + 0.2302 
+title_title_overlap_dlm_dc0_dlm_dc0 + 4.5000 
+brand_brand_dice_qgm_3_qgm_3 + 0.2727 
+brand_brand_lev_dist - 13.5000 
+title_title_dice_dlm_dc0_dlm_dc0 + 0.2254 
+brand_brand_jac_qgm_3_qgm_3 + 0.1000 
+brand_brand_cos_qgm_3_qgm_3 + 0.1508 
+title_title_jac_dlm_dc0_dlm_dc0 + 0.1251 
+price_price_anm + 0.0476 
+price_price_lev_dist - 5.5000 
+modelno_modelno_jac_qgm_3_qgm_3 + 0.1000 
+brand_brand_exm + 0.5000 
+brand_brand_overlap_qgm_3_qgm_3 + 0.5000 
+modelno_modelno_dice_qgm_3_qgm_3 + 0.1667 
+modelno_modelno_cos_qgm_3_qgm_3 + 0.0714 
+category_category_overlap_qgm_3_qgm_3 + 0.5000 
+category_category_cos_qgm_3_qgm_3 + 0.0357 
+category_category_dice_dlm_dc0_dlm_dc0 + 0.2500 
+category_category_dice_qgm_3_qgm_3 + 0.0357 
+modelno_modelno_overlap_qgm_3_qgm_3 + 0.5000 
+category_category_jac_dlm_dc0_dlm_dc0 + 0.1667 
+category_category_overlap_dlm_dc0_dlm_dc0 + 0.5000 
+category_category_cos_dlm_dc0_dlm_dc0 + 0.4082 

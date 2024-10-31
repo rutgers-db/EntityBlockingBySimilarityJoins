@@ -1,0 +1,16 @@
+15
+authors_authors_dice_dlm_dc0_dlm_dc0 + 0.3939
+title_title_dice_dlm_dc0_dlm_dc0 + 0.1890
+title_title_overlap_dlm_dc0_dlm_dc0 + 1.5000
+title_title_cos_dlm_dc0_dlm_dc0 + 0.3645
+authors_authors_jac_qgm_3_qgm_3 + 0.0720
+title_title_jac_dlm_dc0_dlm_dc0 + 0.1062
+year_year_exm + 0.5000
+authors_authors_overlap_dlm_dc0_dlm_dc0 + 1.5000
+authors_authors_jac_dlm_dc0_dlm_dc0 + 0.0625
+year_year_anm + 0.9962
+authors_authors_cos_dlm_dc0_dlm_dc0 + 0.0722
+year_year_lev_dist - 2.5000
+authors_authors_dice_qgm_3_qgm_3 + 0.1340
+authors_authors_cos_qgm_3_qgm_3 + 0.1319
+authors_authors_overlap_qgm_3_qgm_3 + 0.5000
