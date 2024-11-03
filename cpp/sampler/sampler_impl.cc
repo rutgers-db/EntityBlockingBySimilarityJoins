@@ -49,7 +49,7 @@ void Sampler::prepareRecords(ui columnA, ui columnB, TokenizerType tt, ui q)
 
 void DownSampler::sample(const std::string &pathTableA, const std::string &pathTableB) 
 {
-   readTable(pathTableA, pathTableB);
+    readTable(pathTableA, pathTableB);
 
     auto iter = tableA.inverted_schema.find(blkAttr);
     if(iter == tableA.inverted_schema.end()) {

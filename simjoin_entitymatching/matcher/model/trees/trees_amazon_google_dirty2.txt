@@ -1,0 +1,1060 @@
+|--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 3.50
+|   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.30
+|   |   |   |--- class: 0.0
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.30
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.39
+|   |   |   |   |   |--- class: 0.0
+|   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.40
+|   |   |--- class: 1.0
+|--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  3.50
+|   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.79
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.34
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.13
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.13
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.24
+|   |   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.24
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.34
+|   |   |   |   |--- class: 1.0
+|   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.79
+|   |   |   |--- class: 1.0
+|   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 10.00
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.24
+|   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.37
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.37
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.24
+|   |   |   |   |--- price_price_anm <= 0.40
+|   |   |   |   |   |--- price_price_anm <= 0.36
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.00
+|   |   |   |   |   |   |   |--- price_price_lev_dist <= 3.00
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_lev_dist >  3.00
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.00
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_anm >  0.36
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_anm >  0.40
+|   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 <= 0.71
+|   |   |   |   |   |   |--- manufacturer_manufacturer_lev_dist <= inf
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- manufacturer_manufacturer_lev_dist >  inf
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.68
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.28
+|   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.59
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.59
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.28
+|   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.65
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.68
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 >  0.71
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 15.50
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.74
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.74
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.66
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.66
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  15.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  10.00
+|   |   |   |--- class: 0.0
+
+|--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |--- price_price_anm <= 0.90
+|   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= inf
+|   |   |   |--- class: 0.0
+|   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  inf
+|   |   |   |--- price_price_anm <= 0.74
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.74
+|   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.14
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.14
+|   |   |   |   |   |   |--- price_price_anm <= 0.78
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_anm >  0.78
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |--- class: 0.0
+|   |--- price_price_anm >  0.90
+|   |   |--- class: 1.0
+|--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 5.50
+|   |   |   |--- price_price_anm <= 0.56
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.56
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.26
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.26
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.31
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.31
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |   |   |   |   |--- class: 1.0
+|   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  5.50
+|   |   |   |--- class: 1.0
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 10.00
+|   |   |   |--- price_price_anm <= 0.42
+|   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 14.00
+|   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 <= 0.67
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 >  0.67
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  14.00
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.42
+|   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 10.00
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.41
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.57
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.50
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.50
+|   |   |   |   |   |   |   |   |--- price_price_exm <= inf
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- price_price_exm >  inf
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.31
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.31
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.57
+|   |   |   |   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |   |   |   |--- price_price_exm <= 0.50
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_exm >  0.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.41
+|   |   |   |   |   |   |--- price_price_anm <= 0.90
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_anm >  0.90
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.90
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.90
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.53
+|   |   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.67
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.67
+|   |   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.53
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  10.00
+|   |   |   |   |   |--- class: 1.0
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  10.00
+|   |   |   |--- class: 0.0
+
+|--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |   |--- price_price_anm <= 0.89
+|   |   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.79
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.79
+|   |   |   |   |--- class: 1.0
+|   |   |--- price_price_anm >  0.89
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 0.50
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  0.50
+|   |   |   |   |--- class: 1.0
+|   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.75
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.28
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.27
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.27
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.28
+|   |   |   |   |   |--- price_price_anm <= 0.81
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_anm >  0.81
+|   |   |   |   |   |   |--- price_price_lev_dist <= 0.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  0.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |   |   |   |--- price_price_anm <= 0.34
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_anm >  0.34
+|   |   |   |   |   |--- class: 1.0
+|   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.75
+|   |   |   |--- class: 1.0
+|--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.45
+|   |   |--- price_price_anm <= 0.56
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.00
+|   |   |   |   |   |--- price_price_anm <= 0.40
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_anm >  0.40
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.00
+|   |   |   |   |   |--- class: 0.0
+|   |   |--- price_price_anm >  0.56
+|   |   |   |--- class: 1.0
+|   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.45
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.52
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.65
+|   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.65
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |--- price_price_anm <= 0.42
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_anm >  0.42
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.52
+|   |   |   |--- class: 1.0
+
+|--- price_price_lev_dist <= 3.50
+|   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.37
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.17
+|   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= inf
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  inf
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.13
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.13
+|   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.16
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.16
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.35
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.17
+|   |   |   |--- price_price_anm <= 0.78
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.78
+|   |   |   |   |--- class: 1.0
+|   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.37
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |--- price_price_exm <= 0.50
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.42
+|   |   |   |   |   |   |--- price_price_anm <= 0.54
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_anm >  0.54
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.42
+|   |   |   |   |   |   |--- price_price_anm <= 0.71
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_anm >  0.71
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.56
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.56
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- price_price_exm >  0.50
+|   |   |   |   |--- class: 1.0
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |--- price_price_anm <= 0.51
+|   |   |   |   |--- price_price_anm <= 0.45
+|   |   |   |   |   |--- price_price_anm <= 0.40
+|   |   |   |   |   |   |--- price_price_anm <= 0.32
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_anm >  0.32
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.74
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.74
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_anm >  0.40
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- price_price_anm >  0.45
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.51
+|   |   |   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 <= 0.81
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.45
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.44
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.44
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.45
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 >  0.81
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.90
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.90
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|--- price_price_lev_dist >  3.50
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.27
+|   |   |--- class: 0.0
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.27
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.60
+|   |   |   |--- price_price_anm <= 0.53
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.39
+|   |   |   |   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.46
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.46
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_lev_dist >  4.50
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.53
+|   |   |   |   |--- class: 1.0
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.60
+|   |   |   |--- class: 1.0
+
+|--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.23
+|   |   |--- class: 0.0
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.23
+|   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |--- class: 1.0
+|   |   |--- price_price_lev_dist >  1.50
+|   |   |   |--- price_price_anm <= 0.60
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.60
+|   |   |   |   |--- price_price_anm <= 0.78
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- price_price_anm >  0.78
+|   |   |   |   |   |--- class: 0.0
+|--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |--- price_price_anm <= 0.50
+|   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.75
+|   |   |   |--- price_price_anm <= 0.17
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.27
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.27
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.46
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.46
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.17
+|   |   |   |   |--- class: 0.0
+|   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.75
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.40
+|   |   |   |   |--- class: 1.0
+|   |--- price_price_anm >  0.50
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.31
+|   |   |   |--- price_price_anm <= 0.94
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_anm >  0.94
+|   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |--- class: 0.0
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.31
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.38
+|   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= inf
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  inf
+|   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.81
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.65
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.65
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.81
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.38
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 <= 0.79
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.29
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.27
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.27
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.00
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.00
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.29
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.69
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |   |   |--- price_price_anm <= 0.96
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- price_price_anm >  0.96
+|   |   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.64
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.64
+|   |   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.98
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.98
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.69
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 >  0.79
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.50
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.75
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.75
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.50
+|   |   |   |   |   |   |--- class: 0.0
+
+|--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |--- manufacturer_manufacturer_exm <= 0.50
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.23
+|   |   |   |--- class: 0.0
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.23
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.27
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.27
+|   |   |   |   |--- price_price_anm <= 0.56
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_anm >  0.56
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.16
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.16
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |   |   |   |--- price_price_exm <= 0.50
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.18
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.18
+|   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.77
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.77
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_exm >  0.50
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |--- manufacturer_manufacturer_exm >  0.50
+|   |   |--- class: 1.0
+|--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |--- manufacturer_manufacturer_lev_dist <= 8.50
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.39
+|   |   |   |   |--- class: 0.0
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.67
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.65
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.50
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.42
+|   |   |   |   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 <= inf
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 >  inf
+|   |   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.41
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.41
+|   |   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.00
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.00
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.42
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.50
+|   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.32
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.32
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.39
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.58
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.00
+|   |   |   |   |   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.00
+|   |   |   |   |   |   |   |   |--- price_price_anm <= 0.63
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_anm >  0.63
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.58
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.65
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.67
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.73
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.73
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.78
+|   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 4.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  4.50
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.78
+|   |   |   |   |   |   |--- class: 1.0
+|   |--- manufacturer_manufacturer_lev_dist >  8.50
+|   |   |--- price_price_anm <= 0.49
+|   |   |   |--- class: 0.0
+|   |   |--- price_price_anm >  0.49
+|   |   |   |--- class: 1.0
+
+|--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 <= 0.28
+|   |   |--- manufacturer_manufacturer_lev_dist <= inf
+|   |   |   |--- class: 0.0
+|   |   |--- manufacturer_manufacturer_lev_dist >  inf
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.19
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.16
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.16
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.29
+|   |   |   |   |   |   |--- price_price_anm <= 0.60
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_anm >  0.60
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.78
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.78
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.29
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.19
+|   |   |   |   |--- price_price_exm <= inf
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.38
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |   |   |   |   |   |--- price_price_exm <= 0.50
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |--- price_price_lev_dist >  4.50
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_exm >  0.50
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.37
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.37
+|   |   |   |   |   |   |   |   |--- price_price_anm <= 0.56
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_anm >  0.56
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.38
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_exm >  inf
+|   |   |   |   |   |--- class: 1.0
+|   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 >  0.28
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.22
+|   |   |   |--- class: 1.0
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.22
+|   |   |   |--- class: 0.0
+|--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |--- price_price_lev_dist <= 0.50
+|   |   |--- class: 1.0
+|   |--- price_price_lev_dist >  0.50
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.43
+|   |   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 <= 0.35
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 >  0.35
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.70
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.48
+|   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.59
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.59
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.48
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.70
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.39
+|   |   |   |   |   |--- price_price_anm <= 0.58
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_anm >  0.58
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.00
+|   |   |   |   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.00
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- price_price_lev_dist >  4.50
+|   |   |   |   |--- class: 0.0
+|   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.43
+|   |   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.75
+|   |   |   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- price_price_lev_dist >  4.50
+|   |   |   |   |   |--- price_price_anm <= 0.96
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_anm >  0.96
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.54
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.54
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.75
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.72
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.72
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.59
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 12.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  12.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.59
+|   |   |   |   |   |   |--- class: 1.0
+
+|--- price_price_anm <= 0.51
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 <= 0.79
+|   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 <= 0.70
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- manufacturer_manufacturer_jac_qgm_3_qgm_3 >  0.70
+|   |   |   |   |--- class: 1.0
+|   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 >  0.79
+|   |   |   |--- class: 0.0
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 <= 0.79
+|   |   |   |--- class: 0.0
+|   |   |--- manufacturer_manufacturer_cos_qgm_3_qgm_3 >  0.79
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.65
+|   |   |   |   |--- price_price_lev_dist <= inf
+|   |   |   |   |   |--- price_price_anm <= 0.27
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_anm >  0.27
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_lev_dist >  inf
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.65
+|   |   |   |   |--- class: 1.0
+|--- price_price_anm >  0.51
+|   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.25
+|   |   |--- class: 0.0
+|   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.25
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.23
+|   |   |   |--- class: 0.0
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.23
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.24
+|   |   |   |   |--- price_price_anm <= 0.79
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- price_price_anm >  0.79
+|   |   |   |   |   |--- price_price_lev_dist <= 0.50
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_lev_dist >  0.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.24
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= inf
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  inf
+|   |   |   |   |   |   |--- price_price_exm <= 0.50
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.47
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.43
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.43
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.47
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_exm >  0.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.50
+|   |   |   |   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.93
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.93
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |   |   |   |--- class: 1.0
+
+|--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.79
+|   |--- price_price_lev_dist <= 1.50
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.47
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.29
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.29
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |   |   |   |--- price_price_anm <= 0.95
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_anm >  0.95
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.39
+|   |   |   |   |   |--- class: 0.0
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.47
+|   |   |   |--- class: 1.0
+|   |--- price_price_lev_dist >  1.50
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.16
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.16
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.16
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.16
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.37
+|   |   |   |   |   |   |--- price_price_anm <= 0.53
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_anm >  0.53
+|   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.32
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.30
+|   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.78
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.78
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.30
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.32
+|   |   |   |   |   |   |   |   |--- price_price_anm <= 0.67
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.21
+|   |   |   |   |   |   |   |   |   |   |--- price_price_anm <= 0.57
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- price_price_anm >  0.57
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.21
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- price_price_anm >  0.67
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.21
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.21
+|   |   |   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.37
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |   |   |--- manufacturer_manufacturer_lev_dist <= 8.50
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.68
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.45
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.51
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.51
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.45
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 4.50
+|   |   |   |   |   |   |   |--- price_price_lev_dist <= 4.00
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.55
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.55
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.45
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.45
+|   |   |   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_lev_dist >  4.00
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  4.50
+|   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.29
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.42
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.42
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.29
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.68
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |--- manufacturer_manufacturer_lev_dist >  8.50
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |--- class: 0.0
+|--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.79
+|   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.68
+|   |   |--- class: 1.0
+|   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.68
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.00
+|   |   |   |--- class: 1.0
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.00
+|   |   |   |--- class: 0.0
+
+|--- price_price_lev_dist <= 3.50
+|   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.44
+|   |   |--- class: 0.0
+|   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.44
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.23
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.23
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.31
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |   |   |   |   |   |--- price_price_anm <= 0.78
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_anm >  0.78
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.31
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.24
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 12.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  12.50
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.83
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.83
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 0.50
+|   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist >  0.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.24
+|   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |   |   |--- price_price_anm <= 0.40
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.00
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.00
+|   |   |   |   |   |--- price_price_anm <= 0.32
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_anm >  0.32
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.74
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.74
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- price_price_anm >  0.40
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.37
+|   |   |   |   |   |   |--- price_price_anm <= 0.68
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_anm >  0.68
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.37
+|   |   |   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |   |   |--- manufacturer_manufacturer_exm <= 0.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- manufacturer_manufacturer_exm >  0.50
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.54
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.54
+|   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.74
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 1.00
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- price_price_lev_dist >  1.00
+|   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.74
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|--- price_price_lev_dist >  3.50
+|   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 1.50
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.37
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.37
+|   |   |   |   |--- class: 1.0
+|   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.19
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.19
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.47
+|   |   |   |   |   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- price_price_lev_dist >  4.50
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.47
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.70
+|   |   |   |   |   |--- price_price_anm <= 0.96
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.27
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.27
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- price_price_anm >  0.96
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.70
+|   |   |   |   |   |--- class: 1.0
+|   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  1.50
+|   |   |--- class: 1.0
+
+|--- title_title_overlap_dlm_dc0_dlm_dc0 <= 2.50
+|   |--- manufacturer_manufacturer_exm <= 0.50
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.40
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.23
+|   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.23
+|   |   |   |   |--- price_price_anm <= 0.73
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_anm >  0.73
+|   |   |   |   |   |--- price_price_exm <= 0.50
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.31
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.31
+|   |   |   |   |   |   |   |--- price_price_anm <= 0.87
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |--- price_price_anm >  0.87
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- price_price_exm >  0.50
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.40
+|   |   |   |--- price_price_lev_dist <= 1.50
+|   |   |   |   |--- price_price_lev_dist <= 0.50
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- price_price_lev_dist >  0.50
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 1.50
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  1.50
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.54
+|   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.54
+|   |   |   |   |   |   |   |--- price_price_anm <= 1.00
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- price_price_anm >  1.00
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |--- price_price_lev_dist >  1.50
+|   |   |   |   |--- class: 1.0
+|   |--- manufacturer_manufacturer_exm >  0.50
+|   |   |--- class: 1.0
+|--- title_title_overlap_dlm_dc0_dlm_dc0 >  2.50
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.39
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.35
+|   |   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |   |--- price_price_anm <= 0.53
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- price_price_anm >  0.53
+|   |   |   |   |   |--- class: 1.0
+|   |   |   |--- price_price_lev_dist >  4.50
+|   |   |   |   |--- class: 1.0
+|   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.35
+|   |   |   |--- class: 0.0
+|   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.39
+|   |   |--- price_price_lev_dist <= 4.50
+|   |   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 <= 0.52
+|   |   |   |   |--- class: 1.0
+|   |   |   |--- manufacturer_manufacturer_dice_qgm_3_qgm_3 >  0.52
+|   |   |   |   |--- manufacturer_manufacturer_lev_dist <= 8.50
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 <= 0.45
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 5.00
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist <= 2.50
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.26
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.26
+|   |   |   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |--- price_price_lev_dist >  2.50
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  5.00
+|   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |--- title_title_dice_dlm_dc0_dlm_dc0 >  0.45
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 <= 16.50
+|   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.65
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.65
+|   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |--- manufacturer_manufacturer_overlap_qgm_3_qgm_3 >  16.50
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 4.50
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.67
+|   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 <= 3.50
+|   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  3.50
+|   |   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.47
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.47
+|   |   |   |   |   |   |   |   |   |   |   |--- class: 0.0
+|   |   |   |   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.67
+|   |   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |   |   |--- title_title_overlap_dlm_dc0_dlm_dc0 >  4.50
+|   |   |   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |--- manufacturer_manufacturer_lev_dist >  8.50
+|   |   |   |   |   |--- class: 0.0
+|   |   |--- price_price_lev_dist >  4.50
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 <= 0.54
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.65
+|   |   |   |   |   |--- class: 0.0
+|   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.65
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 <= 0.67
+|   |   |   |   |   |   |--- class: 1.0
+|   |   |   |   |   |--- title_title_cos_dlm_dc0_dlm_dc0 >  0.67
+|   |   |   |   |   |   |--- class: 0.0
+|   |   |   |--- title_title_jac_dlm_dc0_dlm_dc0 >  0.54
+|   |   |   |   |--- class: 1.0
+

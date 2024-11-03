@@ -1,14 +1,14 @@
 13
-manufacturer_manufacturer_lev_dist - 25.5000
-title_title_cos_dlm_dc0_dlm_dc0 + 0.3645
-title_title_jac_dlm_dc0_dlm_dc0 + 0.0955
-title_title_overlap_dlm_dc0_dlm_dc0 + 0.5000
-price_price_anm + 0.8597
-title_title_dice_dlm_dc0_dlm_dc0 + 0.1742
-manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 1.5000
-price_price_lev_dist - 6.5000
+manufacturer_manufacturer_lev_dist - 22.0000
+title_title_jac_dlm_dc0_dlm_dc0 + 0.0250
+title_title_cos_dlm_dc0_dlm_dc0 + 0.0527
+title_title_dice_dlm_dc0_dlm_dc0 + 0.0476
+price_price_anm + 0.0034
+price_price_lev_dist - 7.5000
 price_price_exm + 0.5000
-manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.0496
-manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.0465
-manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0244
+title_title_overlap_dlm_dc0_dlm_dc0 + 0.5000
+manufacturer_manufacturer_dice_qgm_3_qgm_3 + 0.2609
+manufacturer_manufacturer_overlap_qgm_3_qgm_3 + 3.0000
 manufacturer_manufacturer_exm + 0.5000
+manufacturer_manufacturer_jac_qgm_3_qgm_3 + 0.0526
+manufacturer_manufacturer_cos_qgm_3_qgm_3 + 0.2673

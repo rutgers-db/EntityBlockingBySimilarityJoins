@@ -22,7 +22,7 @@ class DSU:
         
         
 def run_cosine_exe(vec_path, vec_label_path, tau):
-    cur_parent_dir = pathlib.Path(__file__).parent.resolve()
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     cosine_exe_path = '/'.join([cur_parent_dir, "cosine", "cosine"])
     cmd_args = [cosine_exe_path, vec_path, vec_label_path, str(tau)]
     try:

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 script="test/exp/${1}.py"
-output="output/block_${1}_${2}.txt"
+output="output/match_${1}_${2}.txt"
 
 if [[ "$1" == "secret" ]]
 then

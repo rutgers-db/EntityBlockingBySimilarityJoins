@@ -327,7 +327,21 @@ class RandomForest:
 		if len(self.cand) < sample_size and sample_size != -1:
 			raise ValueError(f"too small cand: {len(self.cand)}, {sample_size}")
 		
-		sample_cand = em.sample_table(self.cand, sample_size=sample_size) if sample_size != -1 else self.cand
+		# sample_cand = em.sample_table(self.cand, sample_size=sample_size) if sample_size != -1 else self.cand
+		if sample_size == -1:
+			sample_cand = self.cand 
+		else:
+			pos_cand = self.cand.loc[self.cand['label'] == 1].copy()
+			neg_cand = self.cand.loc[self.cand['label'] == 0].copy()
+			half_size = int(sample_size / 2.0)
+			posI = pos_cand.sample(half_size)
+			negI = neg_cand.sample(half_size)
+			sample_cand = pd.concat([posI, negI], ignore_index=True)
+			self.cand.drop(sample_cand.index.values, inplace=True)
+			self.cand.reset_index(drop=True, inplace=True)
+			self._set_metadata(sample_cand, key='id', 
+                     	   	   fk_ltable='ltable_id', fk_rtable='rtable_id',
+                           	   ltable=tableA, rtable=tableB)
 
 		# train : validation : test as 3 : 1 : 1
 		tmp = em.split_train_test(sample_cand, train_proportion=0.8, random_state=0)
@@ -675,6 +689,10 @@ class RandomForest:
 			pdf = pd.read_csv(path)
 			# pdf.drop_duplicates(inplace=True)
 			res_df = pd.concat([res_df, pdf], ignore_index=True)
+   
+		stat_file_path = "/".join([match_res_dir, "stat.txt"])
+		with open(stat_file_path, "w") as stat_file:
+			print(tottable, len(res_df), file=stat_file)
    
 		# flush
 		# res_df.drop_duplicates(inplace=True)

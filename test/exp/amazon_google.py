@@ -10,6 +10,7 @@ from simjoin_entitymatching.utils.utils import read_csv_table, read_csv_golds, d
 from simjoin_entitymatching.sampler.sample import run_sample_lib
 from simjoin_entitymatching.blocker.block import run_simjoin_block_lib, extract_block_rules
 from simjoin_entitymatching.matcher.match import train_model
+from simjoin_entitymatching.matcher.match import match_via_cpp_features
 import networkx as nx
 import pandas as pd
 import py_entitymatching.feature.attributeutils as au
@@ -74,6 +75,9 @@ def main(turn, dtype):
                           path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
                           table_size=100000, is_join_topk=0, is_idf_weighted=1, 
                           num_data=2)
+    
+    match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
+                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
     '''
     when doing experiments on matcher, change the output log in bash scripts.
