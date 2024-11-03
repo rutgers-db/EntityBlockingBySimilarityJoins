@@ -177,7 +177,7 @@ class TripartiteGraph:
 				self.trigraph.add_edge(rule_node_id, feature_node_id)
 
 		# Update list & Report
-		self.feature_list.sort()
+		# self.feature_list.sort()
 		for idx, fea in enumerate(self.feature_list):
 			self.feature_list[idx] = feature_names.feature_name.loc[fea]
 

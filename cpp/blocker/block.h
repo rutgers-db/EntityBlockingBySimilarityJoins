@@ -31,6 +31,9 @@ public:
 	Block(Block &&other) = delete;
 
 public:
+	static void clearBuffers();
+
+public:
 	static void prepareRecordsRS(ui columnA, ui columnB, TokenizerType tt, ui q);
 	static void prepareRecordsSelf(ui columnA, TokenizerType tt, ui q);
 	static void sortColumns();

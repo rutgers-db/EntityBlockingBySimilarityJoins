@@ -938,6 +938,7 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 	std::vector<std::vector<double>> allValues2(attrAverageVec.size(), std::vector<double>(numRow, 0.0));
 
 	for(ui i = 0; i < numRule; i++) {
+		std::cout << i << std::endl << std::flush;
 		const std::string mapKey = rules[i].tok + "_" + rules[i].tok_settings + "_" + rules[i].attr;
 		ui recPos = 0;
 		if(datasets_map.find(mapKey) != datasets_map.end())
@@ -966,6 +967,7 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 			curReverseIdMapBString[id_mapBString[rstrPos][j]] = j;
 
 		ui attrPos = attrRank[rules[i].attr];
+		// std::cout << "here: " << numRow << std::endl << std::flush;
 
 		if(rules[i].sim == "lev") {
 		#pragma omp parallel for
@@ -973,9 +975,11 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 				const auto &p = allPairs[idx];
 				int lid = curReverseIdMapAString[p.first];
 				int rid = curReverseIdMapBString[p.second];
-				double val = SimFuncs::levSim(curColumnA[lid], curColumnB[rid]);
+				double val = 0.0;
 				if(curColumnA[lid].empty() || curColumnB[rid].empty())
 					val = 0.0;
+				else
+					val = SimFuncs::levSim(curColumnA[lid], curColumnB[rid]);
 				allValues[idx] += (val * newWeights[i]);
 				allValues2[attrPos][idx] += (val * newWeights[i]);
 			}
@@ -999,9 +1003,11 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 				const auto &p = allPairs[idx];
 				int lid = curReverseIdMapAString[p.first];
 				int rid = curReverseIdMapBString[p.second];
-				double val = SimFuncs::absoluteNorm(curColumnA[lid], curColumnB[rid]);
+				double val = 0.0;
 				if(curColumnA[lid].empty() || curColumnB[rid].empty())
 					val = 0.0;
+				else
+					val = SimFuncs::absoluteNorm(curColumnA[lid], curColumnB[rid]);
 				allValues[idx] += (val * newWeights[i]);
 				allValues2[attrPos][idx] += (val * newWeights[i]);
 			}
@@ -1019,9 +1025,11 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 					const auto &p = allPairs[idx];
 					int lid = curReverseIdMapA[p.first];
 					int rid = curReverseIdMapB[p.second];
-					double val = weightedSimJoin(curRecordsA[lid], curRecordsB[rid], curWordwt, curWeightsA[lid], curWeightsB[rid]);
+					double val = 0.0;
 					if(curRecordsA[lid].empty() || curRecordsB[rid].empty())
 						val = 0.0;
+					else
+						val = weightedSimJoin(curRecordsA[lid], curRecordsB[rid], curWordwt, curWeightsA[lid], curWeightsB[rid]);
 					allValues[idx] += (val * newWeights[i]);
 					allValues2[attrPos][idx] += (val * newWeights[i]);
 				}
@@ -1038,9 +1046,11 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 					const auto &p = allPairs[idx];
 					int lid = curReverseIdMapA[p.first];
 					int rid = curReverseIdMapB[p.second];
-					double val = simJoin(curRecordsA[lid], curRecordsB[rid]);
+					double val = 0.0;
 					if(curRecordsA[lid].empty() || curRecordsB[rid].empty())
 						val = 0.0;
+					else
+						val = simJoin(curRecordsA[lid], curRecordsB[rid]);
 					allValues[idx] += (val * newWeights[i]);
 					allValues2[attrPos][idx] += (val * newWeights[i]);
 				}
@@ -1051,6 +1061,7 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 			exit(1);
 		}
 	}
+	// std::cout << "done adding" << std::endl << std::flush;
 
 	std::vector<ui> sortedIdMap(allPairs.size());
 	std::vector<ui> sortedIdMap2(allPairs.size());
@@ -1077,6 +1088,7 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 		return lhs < rhs;
 	});
 
+	std::cout << "start report now" << std::endl << std::flush;
 	if(mode == "replace") {
 		updateFinalPairs(sortedIdMap, allPairs, final_pairs, K);
 		return;
@@ -1191,9 +1203,11 @@ void TopK::topKviaAllSimilarityScoreSelf(const Table &table_A, const Rule *rules
 				const auto &p = allPairs[idx];
 				int lid = curReverseIdMapString[p.first];
 				int rid = curReverseIdMapString[p.second];
-				double val = SimFuncs::levSim(curColumn[lid], curColumn[rid]);
+				double val = 0.0;
 				if(curColumn[lid].empty() || curColumn[rid].empty())
 					val = 0.0;
+				else
+					val = SimFuncs::levSim(curColumn[lid], curColumn[rid]);
 				allValues[idx] += (val * newWeights[i]);
 				allValues2[attrPos][idx] += (val * newWeights[i]);
 			}
@@ -1217,9 +1231,11 @@ void TopK::topKviaAllSimilarityScoreSelf(const Table &table_A, const Rule *rules
 				const auto &p = allPairs[idx];
 				int lid = curReverseIdMapString[p.first];
 				int rid = curReverseIdMapString[p.second];
-				double val = SimFuncs::absoluteNorm(curColumn[lid], curColumn[rid]);
+				double val = 0.0;
 				if(curColumn[lid].empty() || curColumn[rid].empty())
 					val = 0.0;
+				else
+					val = SimFuncs::absoluteNorm(curColumn[lid], curColumn[rid]);
 				allValues[idx] += (val * newWeights[i]);
 				allValues2[attrPos][idx] += (val * newWeights[i]);
 			}
@@ -1237,9 +1253,11 @@ void TopK::topKviaAllSimilarityScoreSelf(const Table &table_A, const Rule *rules
 					const auto &p = allPairs[idx];
 					int lid = curReverseIdMap[p.first];
 					int rid = curReverseIdMap[p.second];
-					double val = weightedSimJoin(curRecords[lid], curRecords[rid], curWordwt, curWeights[lid], curWeights[rid]);
+					double val = 0.0;
 					if(curRecords[lid].empty() || curRecords[rid].empty())
 						val = 0.0;
+					else
+						val = weightedSimJoin(curRecords[lid], curRecords[rid], curWordwt, curWeights[lid], curWeights[rid]);
 					allValues[idx] += (val * newWeights[i]);
 					allValues2[attrPos][idx] += (val * newWeights[i]);
 				}
@@ -1256,9 +1274,11 @@ void TopK::topKviaAllSimilarityScoreSelf(const Table &table_A, const Rule *rules
 					const auto &p = allPairs[idx];
 					int lid = curReverseIdMap[p.first];
 					int rid = curReverseIdMap[p.second];
-					double val = simJoin(curRecords[lid], curRecords[rid]);
+					double val = 0.0;
 					if(curRecords[lid].empty() || curRecords[rid].empty())
 						val = 0.0;
+					else
+						val = simJoin(curRecords[lid], curRecords[rid]);
 					allValues[idx] += (val * newWeights[i]);
 					allValues2[attrPos][idx] += (val * newWeights[i]);
 				}

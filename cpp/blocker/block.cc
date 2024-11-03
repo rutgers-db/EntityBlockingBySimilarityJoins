@@ -9,6 +9,34 @@ std::vector<TokenizerType> tok_type;
 std::vector<ui> q; 
 
 
+void Block::clearBuffers()
+{
+	num_tables = 0;
+	num_rules = 0;
+	table_A = Table();
+	table_B = Table();
+	gold = Table();
+	// cleared at the end
+	rules = nullptr;
+	id_mapA.clear();
+	id_mapB.clear();
+	idStringMapA.clear();
+	idStringMapB.clear();
+	recordsA.clear();
+	recordsB.clear();
+	weightsA.clear();
+	weightsB.clear();
+	wordwt.clear();
+	datasets_map.clear();
+	final_pairs.clear();
+	passedRules.clear();
+
+	num_word = 0;
+	tok_type.clear();
+	q.clear();
+}
+
+
 void Block::prepareRecordsRS(ui columnA, ui columnB, TokenizerType tt, ui q)
 {
 	recordsA.emplace_back();
@@ -498,6 +526,8 @@ extern "C"
 			allTime += topKTime;
 		}
 		printf("###         All Time: %.4lf\n", allTime);
+
+		Block::clearBuffers();
 	}
 
 	void knn_block() {
