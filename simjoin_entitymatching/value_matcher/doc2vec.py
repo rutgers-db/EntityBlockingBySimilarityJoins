@@ -514,8 +514,8 @@ class Doc2Vec:
             # first add key
             ori_set = ori_doc2pre_doc[k]
             for ori_kid, ori_kdoc in ori_set:
-                if ori_kid in print_cluster:
-                    raise ValueError(f"{ori_kid} has been updated")
+                # if ori_kid in print_cluster:
+                #     raise ValueError(f"{ori_kid} has been updated")
                 print_cluster[ori_kid] = ori_key
                 ori_cluster[ori_kdoc] = ori_key
                 ori_kdoc = re.sub(r'[\n\r]', ' ', ori_kdoc)
@@ -525,8 +525,8 @@ class Doc2Vec:
             ori_vsets = [ori_doc2pre_doc[vdoc] for vdoc in v]
             for ori_vs in ori_vsets:
                 for ori_vid, ori_vdoc in ori_vs:
-                    if ori_vid in print_cluster and print_cluster[ori_vid] != ori_key:
-                        raise ValueError(f"{ori_vid} has been updated")
+                    # if ori_vid in print_cluster and print_cluster[ori_vid] != ori_key:
+                    #     raise ValueError(f"{ori_vid} has been updated")
                     print_cluster[ori_vid] = ori_key
                     ori_cluster[ori_vdoc] = ori_key
                     ori_vdoc = re.sub(r'[\n\r]', ' ', ori_vdoc)

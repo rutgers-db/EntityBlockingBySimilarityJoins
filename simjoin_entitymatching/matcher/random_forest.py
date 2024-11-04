@@ -13,6 +13,7 @@ import copy
 import pathlib
 import subprocess
 import cloudpickle
+import py_entitymatching.utils.generic_helper as gh
 # debug
 from py_entitymatching.catalog.catalog import Catalog
 import py_entitymatching.catalog.catalog_manager as cm
@@ -59,7 +60,8 @@ class RandomForest:
 
 
 	# TODO: Check the difference without 'A' & 'B' in id1 & id2
-	def get_recall(self, candidates, num_golds):
+	def get_recall(self, candidates, num_golds, external_report=False, 
+                   default_res_dir=""):
 		cur_golds = 0
 		row_index = list(candidates.index)
 
@@ -72,10 +74,25 @@ class RandomForest:
 		recall = cur_golds / num_golds * 1.0
 		density = cur_golds / len(candidates) * 1.0
 		f1 = 2 * ((recall * density) / (recall + density))
-		print("recall     : %.4f" % recall)
-		print("precision  : %.4f" % density)
-		print("F1 Score   : %.4f" % f1)
-		print(cur_golds, num_golds, len(candidates))
+  
+		if external_report == True:
+			if default_res_dir == "":
+				cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+				output_path = '/'.join([cur_parent_dir, "..", "..", "output", "match_stat", "intermedia.txt"])
+			else:
+				default_res_dir = default_res_dir[ : -1] if default_res_dir[-1] == '/' \
+														 else default_res_dir
+				output_path = '/'.join([default_res_dir, "intermedia.txt"])
+			with open(output_path, "w") as stat_file:
+				print("recall     : %.4f" % recall, file=stat_file)
+				print("precision  : %.4f" % density, file=stat_file)
+				print("F1 Score   : %.4f" % f1, file=stat_file)
+				print(cur_golds, num_golds, len(candidates), file=stat_file)
+		else:
+			print("recall     : %.4f" % recall)
+			print("precision  : %.4f" % density)
+			print("F1 Score   : %.4f" % f1)
+			print(cur_golds, num_golds, len(candidates))
 
 		return recall, density
  
@@ -383,21 +400,27 @@ class RandomForest:
 			self.rf = em.RFMatcher(name='RF', random_state=0, n_estimators=num_tree)
 
 		# corss validation to avoid overfitting
-		# param_grid = {
-		# 	"max_depth": [None, 10, 20, 30],  # Maximum depth of the tree
-		# 	"min_samples_split": [2, 5, 10],  # Minimum number of samples required to split an internal node
-		# 	"min_samples_leaf": [1, 2, 4]  # Minimum number of samples required to be at a leaf node
-		# }
+		param_grid = {
+			"max_depth": [None, 10, 20, 30],  # Maximum depth of the tree
+			"min_samples_split": [2, 5, 10],  # Minimum number of samples required to split an internal node
+			"min_samples_leaf": [1, 2, 4]  # Minimum number of samples required to be at a leaf node
+		}
   
-		# grid_search = GridSearchCV(estimator=self.rf.clf, param_grid=param_grid,
-		# 						   cv=5, n_jobs=1, verbose=2)
+		grid_search = GridSearchCV(estimator=self.rf.clf, param_grid=param_grid,
+								   cv=5, n_jobs=1, verbose=2)
 		
-		# X_train = train_H.iloc[:, :-1]
-		# y_train = train_H.iloc[:, -1]
-		# X_train, y_train = self.rf._get_data_for_sklearn(X_train, y_train, check_rem=True)
+		# process the feature tables to numpy ndarray
+		exclude_attrs = ["id", "ltable_id", "rtable_id", "label"]
+		target_attr = "label"
+		attributes_to_project = gh.list_diff(list(train_H.columns), exclude_attrs)
+  
+		X_train = train_H[attributes_to_project]
+		y_train = train_H[target_attr]
+		X_train, y_train = self.rf._get_data_for_sklearn(X_train, y_train)
+
 		# grid_search.fit(X_train, y_train)
    
-		# # train
+		# train
 		# self.rf.clf = grid_search.best_estimator_
   
 		self.rf.fit(table=train_H, 

@@ -43,9 +43,9 @@ public:
     std::vector<int> attrCahceLength;
 
     // min length of the group to be cached
-    const int MIN_CACHED_LENGTH = 2;
+    const int MIN_CACHED_LENGTH = 10000;
     // det used for length filter
-    const double LENGTH_FILTER_DET = 0.8;
+    const double LENGTH_FILTER_DET = 0.1;
     // length filter
     const double universalDet = LENGTH_FILTER_DET;
     const double cosLengthFilter = universalDet * universalDet;

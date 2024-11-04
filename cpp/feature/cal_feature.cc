@@ -15,9 +15,9 @@ void CalculateFeature::calOriginalFeatures(std::vector<std::vector<double>> &fea
 {
     if(func == "jac" || func == "cos" || func == "dice") {
         CalculateFeature::SetJoinFunc setJoinP = nullptr;
-        if(func == "jac") setJoinP = (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::jaccard;
-        else if(func == "cos") setJoinP = (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::cosine;
-        else if(func == "dice") setJoinP = (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::dice;
+        if(func == "jac") setJoinP = &FeatureUtils::jaccard;
+        else if(func == "cos") setJoinP = &FeatureUtils::cosine;
+        else if(func == "dice") setJoinP = &FeatureUtils::dice;
         featureValues.back().emplace_back(setJoinP(ltokens, rtokens));
     }
     else if(func == "overlap") {
@@ -26,9 +26,9 @@ void CalculateFeature::calOriginalFeatures(std::vector<std::vector<double>> &fea
     }
     else {
         CalculateFeature::StringJoinFunc stringJoinP = nullptr;
-        if(func == "lev") stringJoinP = (double (*)(const std::string &, const std::string &))FeatureUtils::levDist;
-        else if(func == "anm") stringJoinP = (double (*)(const std::string &, const std::string &))FeatureUtils::absoluteNorm;
-        else if(func == "exm") stringJoinP = (double (*)(const std::string &, const std::string &))FeatureUtils::exactMatch;
+        if(func == "lev") stringJoinP = &FeatureUtils::levDist;
+        else if(func == "anm") stringJoinP = &FeatureUtils::absoluteNorm;
+        else if(func == "exm") stringJoinP = &FeatureUtils::exactMatch;
         featureValues.back().emplace_back(stringJoinP(lstr, rstr));
     }
 }
@@ -83,7 +83,7 @@ void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &f
             int ldidx = curDCIdx[lcltid];
             int rdidx = curDCIdx[rcltid];
             int colid = index.calCahceIndex(func, tok, featureLength[attrpos]);
-            maxVal = curCache[ldidx][rdidx][colid];
+            maxVal = std::max(curCache[ldidx][rdidx][colid], maxVal);
         }
         else {
             for(const auto &ldoc : ldocs) {
@@ -118,7 +118,10 @@ void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &f
             int ldidx = curDCIdx[lcltid];
             int rdidx = curDCIdx[rcltid];
             int colid = index.calCahceIndex(func, tok, featureLength[attrpos]);
-            maxVal = curCache[ldidx][rdidx][colid];
+            if(func == "lev")
+                maxVal = std::min(std::abs(curCache[ldidx][rdidx][colid]), std::abs(maxVal));
+            else
+                maxVal = std::max(curCache[ldidx][rdidx][colid], maxVal);
         }
         else {
             for(const auto &ldoc : ldocs) {
@@ -154,7 +157,7 @@ void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::ve
             std::string func = featureNames[j].sim;
             std::string tok = featureNames[j].tok;
             TokenizerType tokType = tok == "dlm" ? TokenizerType::Dlm 
-                                                    : TokenizerType::QGram;
+                                                 : TokenizerType::QGram;
 
             std::string lsch = "ltable_" + attr;
             std::string rsch = "rtable_" + attr;
@@ -207,15 +210,16 @@ void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::ve
             if(func == "jac" || func == "cos" || func == "dice" || func == "overlap") {
                 CalculateFeature::SetJoinFunc setJoinP = nullptr;
                 if(func == "jac") 
-                    setJoinP = (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::jaccard;
+                    setJoinP = &FeatureUtils::jaccard;
                 else if(func == "cos") 
-                    setJoinP = (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::cosine;
+                    setJoinP = &FeatureUtils::cosine;
                 else if(func == "dice") 
-                    setJoinP = (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::dice;
-                else if(func == "overlap") 
-                    setJoinP = isTopK ? (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::overlapCoeff 
-                                      : (double (*)(const std::vector<std::string> &, const std::vector<std::string> &))FeatureUtils::overlapD;
-
+                    setJoinP = &FeatureUtils::dice;
+                else if(func == "overlap") {
+                    if(isTopK) setJoinP = &FeatureUtils::overlapCoeff;
+                    else setJoinP = &FeatureUtils::overlapD;
+                }
+                
                 if(!lhaskey && !rhaskey)
                     CalculateFeature::calOriginalFeatures(featureValues, func, lstr, rstr, ltokens, rtokens, isTopK);
                 else if(lhaskey && !rhaskey)
@@ -224,7 +228,7 @@ void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::ve
                 else if(!lhaskey && rhaskey) 
                     CalculateFeature::calOneSideFeatures(featureValues, setJoinP, tok, ltokens, rtokens, 
                                                           curGrpDlm, curGrpQgm, lcltid, rcltid);
-                else if(lhaskey && rhaskey) 
+                else
                     CalculateFeature::calDoubleSideFeatures(featureValues, setJoinP, tok, ltokens, rtokens, 
                                                              curGrpDlm, curGrpQgm, lcltid, rcltid, curDCIdx, 
                                                              curCache, featureLength, func, attrpos);
@@ -233,11 +237,11 @@ void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::ve
             else {
                 CalculateFeature::StringJoinFunc stringJoinP = nullptr;
                 if(func == "lev") 
-                    stringJoinP = (double (*)(const std::string &, const std::string &))FeatureUtils::levDist;
+                    stringJoinP = &FeatureUtils::levDist;
                 else if(func == "anm") 
-                    stringJoinP = (double (*)(const std::string &, const std::string &))FeatureUtils::absoluteNorm;
+                    stringJoinP = &FeatureUtils::absoluteNorm;
                 else if(func == "exm") 
-                    stringJoinP = (double (*)(const std::string &, const std::string &))FeatureUtils::exactMatch;
+                    stringJoinP = &FeatureUtils::exactMatch;
 
                 if(!lhaskey && !rhaskey)
                     CalculateFeature::calOriginalFeatures(featureValues, func, lstr, rstr, ltokens, rtokens, isTopK);

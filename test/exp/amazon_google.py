@@ -11,6 +11,7 @@ from simjoin_entitymatching.sampler.sample import run_sample_lib
 from simjoin_entitymatching.blocker.block import run_simjoin_block_lib, extract_block_rules
 from simjoin_entitymatching.matcher.match import train_model
 from simjoin_entitymatching.matcher.match import match_via_cpp_features
+from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
 import networkx as nx
 import pandas as pd
 import py_entitymatching.feature.attributeutils as au
@@ -32,8 +33,6 @@ def main(turn, dtype):
     path_gold = "/".join([dir_path, "gold.csv"])
 
     path_rule = "simjoin_entitymatching/blocker/rules/rules_amazon_google_" + dtype + str(turn) + ".txt"
-    path_additional_rule = "simjoin_entitymatching/blocker/rules/additional_rules_amazon_google_" + dtype + str(turn) + ".txt"
-    path_optimal_rule = "blocker/rules/optimal_rules_amazon_google_" + dtype + str(turn) + ".txt"
     path_range = "simjoin_entitymatching/matcher/model/ranges/ranges_amazon_google_" + dtype + str(turn) + ".txt"
     path_tree = "simjoin_entitymatching/matcher/model/trees/trees_amazon_google_" + dtype + str(turn) + ".txt"
     path_rf = "simjoin_entitymatching/matcher/model/rf_amazon_google_" + dtype + str(turn) + ".joblib"
@@ -77,13 +76,8 @@ def main(turn, dtype):
                           num_data=2)
     
     match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
-                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+                           at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
-    '''
-    when doing experiments on matcher, change the output log in bash scripts.
-    '''
-
-    # cat output
     topk_intermedia = "output/topk_stat/intermedia.txt"
     topk_exp_log = "output/topk_stat/amazon_google_" + dtype + ".txt"
     print(f"--- report top k blocking result on turn {turn} ---", flush=True)
@@ -91,9 +85,70 @@ def main(turn, dtype):
     system(echo_command)
     cat_command = "cat " + topk_intermedia + " >> " + topk_exp_log
     system(cat_command)
+    
+    match_intermedia = "output/match_stat/intermedia.txt"
+    match_exp_log = "output/match_stat/amazon_google_" + dtype + ".txt"
+    print(f"--- report matching result on turn {turn} ---", flush=True)
+    echo_command = "echo -e \"\n this is an experiment\" >> " + match_exp_log
+    system(echo_command)
+    cat_command = "cat " + match_intermedia + " >> " + match_exp_log
+    system(cat_command)
+    
+    # group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
+    
+    # match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+    #                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+    
+    # path_normalized_A = "output/buffer/normalized_A.csv"
+    # path_normalized_B = "output/buffer/normalized_B.csv"
+    # normalized_A = read_csv_table(path_normalized_A)
+    # normalized_B = read_csv_table(path_normalized_B)
+    
+    # attr_types_ltable_2 = au.get_attr_types(normalized_A)
+    # attr_types_rtable_2 = au.get_attr_types(normalized_B)
+    # attr_types_ltable_2['manufacturer'] = "str_eq_1w"
+    # attr_types_rtable_2['manufacturer'] = "str_eq_1w"
+    
+    # dump_table(normalized_A, "output/buffer/clean_A.csv")
+    # dump_table(normalized_B, "output/buffer/clean_B.csv")
+    
+    # # sample a subset
+    # run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
+    #                step2_tau=0.18, num_data=2)
+
+    # # train the model and build the graph
+    # _, trigraph = train_model(normalized_A, normalized_B, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
+    #                           num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
+    #                           inmemory=1, num_data=2, at_ltable=attr_types_ltable_2, at_rtable=attr_types_rtable_2)
+
+    # # extract the rule-based blocker
+    # extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
+    #                     additional_rule_path=None, optimal_rule_path=None)
+
+    # # block
+    # run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
+    #                       path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
+    #                       table_size=100000, is_join_topk=0, is_idf_weighted=1, 
+    #                       num_data=2)
+    
+    # match_via_cpp_features(normalized_A, normalized_B, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
+    #                        at_ltable=attr_types_ltable_2, at_rtable=attr_types_rtable_2, numeric_attr=["price", "year"])
+    
+    # '''
+    # when doing experiments on matcher, change the output log in bash scripts.
+    # '''
+
+    # # cat output
+    cat_command = "cat " + topk_intermedia + " >> " + topk_exp_log
+    system(cat_command)
     echo_command = "echo -" + str(turn) + " \"\n\" >> " + topk_exp_log
     system(echo_command)
     echo_command = "echo " + representativeA + " >> " + topk_exp_log
+    system(echo_command)
+    
+    cat_command = "cat " + match_intermedia + " >> " + match_exp_log
+    system(cat_command)
+    echo_command = "echo -" + str(turn) + " \"\n\" >> " + match_exp_log
     system(echo_command)
     
     
