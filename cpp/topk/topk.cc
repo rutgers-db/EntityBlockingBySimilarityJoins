@@ -781,7 +781,7 @@ void TopK::topKviaTASelfOpt(const Table &table_A, const std::string &topKattr, c
 void TopK::updateFinalPairs(const std::vector<ui> &sortedIdMap, const std::vector<std::pair<int, int>> &allPairs,
 							std::vector<std::vector<int>> &final_pairs, uint64_t K)
 {
-	uint64_t sizeK = K >= (uint64_t)sortedIdMap.size() ? K : (uint64_t)sortedIdMap.size();
+	uint64_t sizeK = K <= (uint64_t)sortedIdMap.size() ? K : (uint64_t)sortedIdMap.size();
 	
 	for(auto &fv : final_pairs)
 		fv.clear();

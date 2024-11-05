@@ -70,7 +70,7 @@ def train_model(tableA, tableB, gold_graph, blocking_attr,
     return rf, trigraph
 
 
-def match_via_megallen_feature(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
+def match_via_megallen_features(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
                                at_ltable=None, at_rtable=None, group=None, cluster=None, default_blk_res_dir="", 
                                default_match_res_dir="", default_fea_names_dir=""):
     cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())

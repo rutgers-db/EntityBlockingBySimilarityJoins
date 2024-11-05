@@ -135,3 +135,18 @@ void Table::findPerfectEntity()
 
 	printf("Total perfect entities: %u\n", count);
 }
+
+
+void Table::insertOneRow(const std::vector<std::string> &tmpRow) 
+{
+	size_t size = tmpRow.size();
+	if(size != schema.size()) {
+		std::cerr << "can not insert row with different schemas" << std::endl;
+		exit(1);
+	}
+
+	rows.emplace_back(tmpRow);
+
+	for(auto i = 0; i < size; i++)
+		cols[i].emplace_back(tmpRow[i]);
+}

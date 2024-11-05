@@ -690,6 +690,36 @@ void MultiWriter::escapeOneRow(std::string &str)
 }
 
 
+void MultiWriter::writeOneTable(const Table &table, const std::string &outputFilePath)
+{
+	FILE *fp = fopen(outputFilePath.c_str(), "w");
+	if(fp == nullptr) {
+		std::cerr << "Cannot open" << std::endl;
+		exit(1);
+	}
+
+	size_t schemaSize = table.schema.size();
+	fprintf(fp, "%s", table.schema[0].c_str());
+	for(auto i = 1; i < schemaSize; i++)
+		fprintf(fp, ",%s", table.schema[i].c_str());
+	fprintf(fp, "\n");
+
+	for(int i = 0; i < table.row_no; i++) {
+		std::string oriVal = table.rows[i][0];
+		escapeOneRow(oriVal);
+		fprintf(fp, "%s",oriVal.c_str());
+		for(size_t j = 1; j < schemaSize; j++) {
+			oriVal = table.rows[i][j];
+			escapeOneRow(oriVal);
+			fprintf(fp, ",%s", oriVal.c_str());
+		}
+		fprintf(fp, "\n");
+	}
+
+	fclose(fp);
+}
+
+
 void MultiWriter::writeSampleResSnowmanCSV(const std::vector<std::pair<int, int>> &pairs, const std::vector<ui> &idMapA, 
 									  	   const std::vector<ui> &idMapB, const std::string &defaultOutputDir)
 {

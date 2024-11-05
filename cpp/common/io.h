@@ -152,6 +152,8 @@ public:
 	static void escapeOneRow(std::string &str);
 
 public:
+	static void writeOneTable(const Table &table, const std::string &outputFilePath);
+
 	// sample csv
 	static void writeSampleResSnowmanCSV(const std::vector<std::pair<int, int>> &pairs, const std::vector<ui> &idMapA, 
 									  	 const std::vector<ui> &idMapB, const std::string &defaultOutputDir = "");

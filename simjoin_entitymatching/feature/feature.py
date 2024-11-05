@@ -135,13 +135,15 @@ def run_feature_megallen(tableA, tableB, feature_tab, total_table, is_interchang
                                             ltable=tableA, rtable=tableB, 
                                             fk_ltable="ltable_id", 
                                             fk_rtable="rtable_id")
+        print(i)
         
         if is_interchangeable == 0:
             H = em.extract_feature_vecs(blk_res_cand, 
                                         feature_table=feature_tab, 
                                         attrs_after=attrs_after,
                                         show_progress=False, 
-                                        n_jobs=n_jobs)
+                                        n_jobs=n_jobs, 
+                                        verbose=True)
             fea_vec_path = "/".join([blk_res_dir, "feature_vec" + str(i) + "_py.csv"])
         else:
             H = NewFeatureExtractor.extract_feature_vecs(blk_res_cand, feature_table=feature_tab, 

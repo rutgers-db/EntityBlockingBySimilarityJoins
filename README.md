@@ -69,3 +69,6 @@ Author: [Yunqi Li](https://ericlyunqi.github.io/), email: ylilo@connect.ust.hk, 
 
 ## TODO
 Refer to ```docs/TODO.md```.
+
+## BUGS:
+* Sometimes the "extract_feature_vec" of "match_via_megallen_features" will report left table's foreign key error.

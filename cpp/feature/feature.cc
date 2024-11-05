@@ -198,6 +198,7 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
             fprintf(fvfile, "\n");
         }
 
+        fflush(fvfile);
         fclose(fvfile);
     }
 

@@ -488,8 +488,8 @@ extern "C"
 				TopK::topKviaAllSimilarityScoresRS(table_A, table_B, rules, simWeights, attrAverage,
 												   recordsA, recordsB, weightsA, weightsB, 
 												   wordwt, datasets_map, id_mapA, id_mapB, 
-												   idStringMapA, idStringMapB, tempFinalPairs, 
-												   gold, top_k, num_rules, topKStream, is_idf_weighted, "exp");
+												   idStringMapA, idStringMapB, final_pairs, 
+												   gold, top_k, num_rules, topKStream, is_idf_weighted, "replace");
 			}
 
 			gettimeofday(&topKEnd, NULL);
