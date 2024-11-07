@@ -55,6 +55,7 @@ Refer to the ```light-weight``` branch for more information. Coming soon...
 3. The illustrations of similarity join algorithms in ```docs/simjoin.md```
 4. The experiments are in ```docs/exp.md```
 5. Please ignore the ```docs/developer_notes.md```
+6. A draft detailed documents: [Similarity Join EM](https://ericlyunqi.github.io/em-release/index.html)
 
 ## Acknowledgement
 1. The python part of our EM system is built on the package [py_entitymatching](https://github.com/anhaidgroup/py_entitymatching).
