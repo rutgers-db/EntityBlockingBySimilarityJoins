@@ -91,7 +91,8 @@ void FeatureEngineering::readFeatures(ui &numFeatures, Rule *&featureNames, std:
 
 void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool flagConsistent, int totalTable,
                                                   const FeatureArguments *attrs, const std::string &defaultFeatureVecDir, 
-                                                  const std::string &defaultICVDir, const std::string &defaultFeatureNamesDir)
+                                                  const std::string &defaultResTableName, const std::string &defaultICVDir, 
+                                                  const std::string &defaultFeatureNamesDir)
 {
     int totalAttr = attrs->totalAttr;
     std::vector<std::string> attrVec;
@@ -128,8 +129,10 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
     directory = defaultFeatureVecDir == "" ? directory + "../../output/blk_res/" 
 										   : (defaultFeatureVecDir.back() == '/' ? defaultFeatureVecDir 
 																				 : defaultFeatureVecDir + "/");
+
+    std::string resTableName = defaultResTableName == "" ? "blk_res" : defaultResTableName;
     for(int i = 0; i < totalTable; i ++) {
-        std::string blkResPath = directory + "blk_res" + std::to_string(i) + ".csv";
+        std::string blkResPath = directory + resTableName + std::to_string(i) + ".csv";
         bool success = reader.reading_one_table(blkResPath, false);
     }
 
@@ -343,9 +346,11 @@ extern "C"
 {
     void extract_features_4_matching(int is_interchangeable, bool flag_consistent, int total_table, 
                                      const FeatureArguments *attrs, const char *default_fea_vec_dir, 
-                                     const char *default_icv_dir, const char *default_fea_names_dir) {
+                                     const char *default_res_tab_name, const char *default_icv_dir, 
+                                     const char *default_fea_names_dir) {
         FeatureEngineering::extractFeatures4Matching(is_interchangeable, flag_consistent, total_table, attrs, 
-                                                     default_fea_vec_dir, default_icv_dir, default_fea_names_dir);
+                                                     default_fea_vec_dir, default_res_tab_name, default_icv_dir, 
+                                                     default_fea_names_dir);
     }
 
     void extract_features_4_topk(int is_interchangeable, bool flag_consistent, int total_table, 

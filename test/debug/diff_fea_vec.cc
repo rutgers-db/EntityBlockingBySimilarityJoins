@@ -47,6 +47,7 @@ int main()
                    oriFeaVec.rows[row][col] != proFeaVec.rows[row][col]) {
                     diffOriFeaVec.insertOneRow(oriFeaVec.rows[row]);
                     diffProFeaVec.insertOneRow(proFeaVec.rows[row]);
+                    break;
                 }
             }
         }

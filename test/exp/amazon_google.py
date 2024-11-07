@@ -10,7 +10,7 @@ from simjoin_entitymatching.utils.utils import read_csv_table, read_csv_golds, d
 from simjoin_entitymatching.sampler.sample import run_sample_lib
 from simjoin_entitymatching.blocker.block import run_simjoin_block_lib, extract_block_rules
 from simjoin_entitymatching.matcher.match import train_model
-from simjoin_entitymatching.matcher.match import match_via_cpp_features, match_via_megallen_features
+from simjoin_entitymatching.matcher.match import match_via_cpp_features, match_via_megallen_features, match_on_neg_pres
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
 import networkx as nx
 import pandas as pd
@@ -56,27 +56,30 @@ def main(turn, dtype):
     if representativeA != representativeB:
         raise ValueError(f"different representative attrs: {representativeA}, {representativeB}")
 
-    # sample a subset
-    run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
-                   step2_tau=0.18, num_data=2)
+    # # sample a subset
+    # run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
+    #                step2_tau=0.18, num_data=2)
 
-    # train the model and build the graph
-    _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
-                              num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
-                              inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    # # train the model and build the graph
+    # _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
+    #                           num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
+    #                           inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
 
-    # extract the rule-based blocker
-    extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
-                        additional_rule_path=None, optimal_rule_path=None)
+    # # extract the rule-based blocker
+    # extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
+    #                     additional_rule_path=None, optimal_rule_path=None)
 
-    # block
-    run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
-                          path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
-                          table_size=100000, is_join_topk=0, is_idf_weighted=1, 
-                          num_data=2)
+    # # block
+    # run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
+    #                       path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
+    #                       table_size=100000, is_join_topk=0, is_idf_weighted=1, 
+    #                       num_data=2)
     
-    match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
-                                at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    # match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
+    #                             at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    
+    match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+                      at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
     topk_intermedia = "output/topk_stat/intermedia.txt"
     topk_exp_log = "output/topk_stat/amazon_google_" + dtype + ".txt"
@@ -94,10 +97,10 @@ def main(turn, dtype):
     cat_command = "cat " + match_intermedia + " >> " + match_exp_log
     system(cat_command)
     
-    group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
+    # group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
     
-    match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-                           at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+    # match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+    #                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
     # path_normalized_A = "output/buffer/normalized_A.csv"
     # path_normalized_B = "output/buffer/normalized_B.csv"
@@ -139,15 +142,15 @@ def main(turn, dtype):
     # '''
 
     # # cat output
-    cat_command = "cat " + topk_intermedia + " >> " + topk_exp_log
-    system(cat_command)
+    # cat_command = "cat " + topk_intermedia + " >> " + topk_exp_log
+    # system(cat_command)
     echo_command = "echo -" + str(turn) + " \"\n\" >> " + topk_exp_log
     system(echo_command)
     echo_command = "echo " + representativeA + " >> " + topk_exp_log
     system(echo_command)
     
-    cat_command = "cat " + match_intermedia + " >> " + match_exp_log
-    system(cat_command)
+    # cat_command = "cat " + match_intermedia + " >> " + match_exp_log
+    # system(cat_command)
     echo_command = "echo -" + str(turn) + " \"\n\" >> " + match_exp_log
     system(echo_command)
     

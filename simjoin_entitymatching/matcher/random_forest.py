@@ -72,8 +72,8 @@ class RandomForest:
 				cur_golds += 1
 
 		recall = cur_golds / num_golds * 1.0
-		density = cur_golds / len(candidates) * 1.0
-		f1 = 2 * ((recall * density) / (recall + density))
+		density = cur_golds / len(candidates) * 1.0 if len(candidates) > 0 else 0.0
+		f1 = 2 * ((recall * density) / (recall + density)) if recall + density > 0.0 else 0.0
   
 		if external_report == True:
 			if default_res_dir == "":
@@ -115,8 +115,8 @@ class RandomForest:
 				print(pair[0], pair[1], file=checkfile)
 
 		recall = cur_golds / num_golds * 1.0
-		density = cur_golds / len(candidates) * 1.0
-		f1 = 2 * ((recall * density) / (recall + density))	
+		density = cur_golds / len(candidates) * 1.0 if len(candidates) > 0 else 0.0
+		f1 = 2 * ((recall * density) / (recall + density)) if recall + density > 0.0 else 0.0
 		print("recall     : %.4f" % recall)
 		print("density    : %.4f" % density)
 		print("F1 Score   : %.4f" % f1)
@@ -594,10 +594,12 @@ class RandomForest:
 
 		if default_match_res_dir == "":
 			match_res_path = '/'.join([cur_parent_dir, "..", "..", "output", "match_res", "match_res" + str(tableid) + ".csv"])
+			neg_match_res_path = '/'.join([cur_parent_dir, "..", "..", "output", "match_res", "neg_match_res" + str(tableid) + ".csv"])
 		else:
 			default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
 																 else default_match_res_dir 
 			match_res_path = '/'.join([default_match_res_dir, "match_res" + str(tableid) + ".csv"])
+			neg_match_res_path = '/'.join([default_match_res_dir, "neg_match_res" + str(tableid) + ".csv"])
 		
 		# Convert I into feature vectors using updated F
 		if external_fea_extract == True:
@@ -635,30 +637,32 @@ class RandomForest:
 		mapB = {tableB.loc[rowidx, 'id'] : rowidx for rowidx in rowsB}
 		
 		pres_df = pd.DataFrame(columns=columns_)
+		neg_pres_df = pd.DataFrame(columns=columns_)
+  
 		for row in predictions.itertuples():
 			pres = getattr(row, 'predicted')
+			rowidx = getattr(row, 'id')
+			lid, rid = getattr(row, 'ltable_id'), getattr(row, 'rtable_id')
+			lidx, ridx = mapA[lid], mapB[rid]
+			new_line = [rowidx, lid, rid]
+			lval = [tableA.loc[lidx, sch] for sch in schemas]
+			rval = [tableB.loc[ridx, sch] for sch in schemas]
+			new_line.extend(lval)
+			new_line.extend(rval)
 			if int(pres) == 1:
-				rowidx = getattr(row, 'id')
-				lid, rid = getattr(row, 'ltable_id'), getattr(row, 'rtable_id')
-				lidx, ridx = mapA[lid], mapB[rid]
-				new_line = [rowidx, lid, rid]
-				lval = [tableA.loc[lidx, sch] for sch in schemas]
-				rval = [tableB.loc[ridx, sch] for sch in schemas]
-				new_line.extend(lval)
-				new_line.extend(rval)
 				pres_df.loc[len(pres_df)] = new_line
+			else:
+				neg_pres_df.loc[len(neg_pres_df)] = new_line
+				
 
 		if if_report_pre == True:
 			pres_res = H[H['predicted'] == 1]
 			pres_res.to_csv('check_prediction.csv', index=False)
-
-		# Evaluate the predictions
-		eval_result = em.eval_matches(predictions, 'label', 'predicted')
-		em.print_eval_summary(eval_result)
 		
 		# save
 		pres_df.to_csv(match_res_path, index=False)
-	
+		neg_pres_df.to_csv(neg_match_res_path, index=False)
+
 
 	def apply_model(self, tottable, tableA, tableB, external_fea_extract=False, 
                     default_blk_res_dir="", default_match_res_dir=""):
@@ -668,7 +672,7 @@ class RandomForest:
 		each piece of the table has a new process
 		'''
 
-		args_ = [(i, tableA, tableB, external_fea_extract, default_blk_res_dir,
+		args_ = [(i, tableA, tableB, external_fea_extract, False, default_blk_res_dir,
             	  default_match_res_dir) for i in range(tottable)]
 		processes = []
   
@@ -721,6 +725,38 @@ class RandomForest:
 		# res_df.drop_duplicates(inplace=True)
 		res_df.to_csv(match_res_path, index=False)
 		return res_df
+
+
+	def apply_model_debug(self, tableA, tableB):
+		# Evaluate the predictions
+		H1 = em.read_csv_metadata("test/debug/ori_fea_vec.csv", 
+								  key="_id", 
+								  ltable=tableA, rtable=tableB,
+								  fk_ltable="ltable_id", fk_rtable="rtable_id")
+		H2 = em.read_csv_metadata("test/debug/pro_fea_vec.csv", 
+								  key="id", 
+								  ltable=tableA, rtable=tableB,
+								  fk_ltable="ltable_id", fk_rtable="rtable_id")
+		
+		self.label_cand(H1)
+		self.label_cand(H2)
+  
+		predictions1 = self.rf.predict(table=H1, exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'], 
+								 	  append=True, target_attr='predicted', inplace=True, 
+								 	  return_probs=True, probs_attr='proba')
+		predictions2 = self.rf.predict(table=H2, exclude_attrs=['id', 'ltable_id', 'rtable_id', 'label'], 
+								 	  append=True, target_attr='predicted', inplace=True, 
+								 	  return_probs=True, probs_attr='proba')
+  
+		# eval_result = em.eval_matches(predictions, 'label', 'predicted')
+		# em.print_eval_summary(eval_result)
+
+		print("report the diff results .....")
+		eval_result = em.eval_matches(predictions1, 'label', 'predicted')
+		em.print_eval_summary(eval_result)
+		eval_result = em.eval_matches(predictions2, 'label', 'predicted')
+		em.print_eval_summary(eval_result)
+		print("diff results done .....")
 
 
 	# utils

@@ -73,7 +73,7 @@ def compile_feature(mode):
     
 @feature_library_decorator
 def run_feature_lib(is_interchangeable, flag_consistent, total_table, total_attr, attrs, usage=Literal["match", "topk"], 
-                    default_fea_vec_dir="", default_icv_dir="", default_fea_names_dir=""):
+                    default_fea_vec_dir="", default_res_tab_name="", default_icv_dir="", default_fea_names_dir=""):
     # load
     cur_file_dir = str(pathlib.Path(__file__).parent.resolve())
     feature_lib_path = "/".join([cur_file_dir, "..", "..", "shared_lib", "libfeature.so"])
@@ -91,6 +91,7 @@ def run_feature_lib(is_interchangeable, flag_consistent, total_table, total_attr
         cur_attr = attrs[i]
         fa.attributes[i] = cur_attr.encode('utf-8')
     default_fea_vec_dir = default_fea_vec_dir.encode('utf-8')
+    default_res_tab_name = default_res_tab_name.encode('utf-8')
     default_icv_dir = default_icv_dir.encode('utf-8')
     default_fea_names_dir = default_fea_names_dir.encode('utf-8')
     
@@ -103,10 +104,10 @@ def run_feature_lib(is_interchangeable, flag_consistent, total_table, total_attr
     '''
     
     if usage == "match":
-        feature_lib.extract_features_4_matching.argtypes = [c_int, c_bool, c_int, POINTER(FeatureArguments), c_char_p, c_char_p, c_char_p]
+        feature_lib.extract_features_4_matching.argtypes = [c_int, c_bool, c_int, POINTER(FeatureArguments), c_char_p, c_char_p, c_char_p, c_char_p]
         feature_lib.extract_features_4_matching.restype = None
         
-        feature_lib.extract_features_4_matching(is_interchangeable, flag_consistent, total_table, byref(fa), default_fea_vec_dir, 
+        feature_lib.extract_features_4_matching(is_interchangeable, flag_consistent, total_table, byref(fa), default_fea_vec_dir, default_res_tab_name,
                                                 default_icv_dir, default_fea_names_dir)
     elif usage == "topk":
         feature_lib.extract_features_4_topk.argtypes = [c_int, c_bool, c_int, POINTER(FeatureArguments), c_char_p, c_char_p, c_char_p]

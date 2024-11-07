@@ -49,7 +49,8 @@ public:
      */
     static void extractFeatures4Matching(int isInterchangeable, bool flagConsistent, int totalTable,
                                          const FeatureArguments *attrs, const std::string &defaultFeatureVecDir = "", 
-                                         const std::string &defaultICVDir = "", const std::string &defeaultFeatureNamesDir = "");
+                                         const std::string &defaultResTableName = "", const std::string &defaultICVDir = "", 
+                                         const std::string &defeaultFeatureNamesDir = "");
     /*
      * extract features for top k
      * will use interchangeable values depending on input
