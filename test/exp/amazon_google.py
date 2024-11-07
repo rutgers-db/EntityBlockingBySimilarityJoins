@@ -75,11 +75,11 @@ def main(turn, dtype):
     #                       table_size=100000, is_join_topk=0, is_idf_weighted=1, 
     #                       num_data=2)
     
-    # match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
-    #                             at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
+                                at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
     
-    match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-                      at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+    # match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+    #                   at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
     topk_intermedia = "output/topk_stat/intermedia.txt"
     topk_exp_log = "output/topk_stat/amazon_google_" + dtype + ".txt"

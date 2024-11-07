@@ -181,3 +181,43 @@ def match_on_neg_pres(tableA, tableB, gold_graph, gold_len, model_path, is_inter
                             default_blk_res_dir=default_fea_vec_dir, 
                             default_match_res_dir=default_match_res_dir)
     rf.get_recall(rfpres, gold_len)
+    
+    
+def debug_rf_matcher(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
+                     numeric_attr, at_ltable=None, at_rtable=None, default_match_res_dir="",
+                     default_fea_names_dir="", default_icv_dir=""):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_match_res_dir == "":
+        path_match_stat = "/".join([cur_parent_dir, "..", "..", "output", "match_res", "stat.txt"])
+    else:
+        default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
+                                                             else default_match_res_dir
+        path_match_stat = "/".join([default_match_res_dir, "stat.txt"])
+    
+    with open(path_match_stat, "r") as stat_file:
+        stat_line = stat_file.readlines()
+        total_table, _ = (int(val) for val in stat_line[0].split())
+
+    rf = randf.RandomForest()
+    rf.graph = gold_graph
+    rf.load_model(model_path)
+
+    # Features selection
+    rf.generate_features(tableA, tableB, at_ltable=at_ltable, at_rtable=at_rtable, default_output_dir=default_fea_names_dir, 
+                         wrtie_fea_names=True)
+
+    print("~~~Start matching~~~", flush=True)
+    
+    schemas = list(tableA)[1:]
+    schemas = [attr for attr in schemas if attr not in numeric_attr]
+	
+    default_fea_vec_dir = path_match_stat.rsplit('/', 1)[0]
+    print(f"neg fea vec writing to ... {default_fea_vec_dir}")
+    run_feature_lib(is_interchangeable=is_interchangeable, flag_consistent=flag_consistent, total_table=total_table, total_attr=len(schemas), 
+                    attrs=schemas, usage="match", default_fea_vec_dir=default_fea_vec_dir, default_res_tab_name="neg_match_res", 
+                    default_icv_dir=default_icv_dir, default_fea_names_dir=default_fea_names_dir)
+
+    rfpres = rf.apply_model(total_table, tableA, tableB, external_fea_extract=True, 
+                            default_blk_res_dir=default_fea_vec_dir, 
+                            default_match_res_dir=default_match_res_dir)
+    rf.get_recall(rfpres, gold_len)
