@@ -6,9 +6,9 @@
 #ifndef _TOKENIZER_H_
 #define _TOKENIZER_H_
 
-#include "config.h"
-#include "type.h"
-#include "dataframe.h"
+#include "common/config.h"
+#include "common/type.h"
+#include "common/dataframe.h"
 #include <regex>
 #include <cmath>
 #include <string>
@@ -93,6 +93,18 @@ public:
 									   std::vector<double> &weightsB, std::vector<double> &wordwt, 
 									   ui columnA, ui columnB, TokenizerType tok_type, 
 									   ui &num_word, ui q);
+};
+
+
+class BPETokenizer
+{
+public:
+	BPETokenizer() = default;
+	~BPETokenizer() = default;
+	BPETokenizer(const BPETokenizer &other) = delete;
+	BPETokenizer(BPETokenizer &&other) = delete;
+
+
 };
 
 

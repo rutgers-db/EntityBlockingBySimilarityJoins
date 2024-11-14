@@ -150,3 +150,94 @@ void Table::insertOneRow(const std::vector<std::string> &tmpRow)
 	for(auto i = 0; i < size; i++)
 		cols[i].emplace_back(tmpRow[i]);
 }
+
+
+std::string ChineseTable::convertWide2Normal(const std::wstring &wstr) const 
+{
+	//setup converter
+	using convert_type = std::codecvt_utf8<wchar_t>;
+	std::wstring_convert<convert_type, wchar_t> converter;
+
+	//use converter (.to_bytes: wstr->str, .from_bytes: str->wstr)
+	std::string convertedStr = converter.to_bytes(wstr);
+	return convertedStr;
+}
+
+
+void ChineseTable::setLocale4Wcout(const std::string &mode) const 
+{
+	if(mode == "chinese") {
+		std::locale loc("zh_CN.UTF-8");
+    	std::wcout.imbue(loc); 
+	}
+	else if(mode == "english") {
+		std::locale loc("en_US.UTF-8");
+    	std::wcout.imbue(loc); 
+	}
+	else {
+		std::cerr << "no such language" << std::endl;
+		exit(1);
+	}
+}
+
+
+void ChineseTable::Profile() 
+{
+	row_no = rows.size();
+	col_no = cols.size();
+
+	for(ui i = 0; i < schema.size(); i++)
+		inverted_schema.insert({schema[i], i});
+}
+
+
+void ChineseTable::PrintInfo() 
+{
+	setLocale4Wcout("chinese");
+	std::cout << " number of rows: " << row_no << std::endl;
+	std::cout << " number of columns: " << col_no << std::endl;
+	std::cout << " the schema: ";
+	for(auto &attr : schema) std::wcout << attr << "; ";
+	std::cout << std::endl;
+}
+
+
+void ChineseTable::printData() const
+{
+	setLocale4Wcout("chinese");
+
+	for(const auto &attr : schema)
+		std::wcout << attr << L"\t";
+	std::wcout << std::endl;
+
+	for(ui i = 0; i < 5; i++) {
+		for(ui j = 0; j < schema.size(); j++)
+			std::wcout << cols[j][i] << L"\t";
+		std::wcout << std::endl;
+	}
+
+	for(ui i = 0; i < 5; i++)
+		std::wcout << L"...\t";
+	std::wcout << std::endl;
+
+	for(ui i = rows.size() - 5; i < rows.size(); i++) {
+		for(ui j = 0; j < schema.size(); j++)
+			std::wcout << cols[j][i] << L"\t";
+		std::wcout << std::endl;
+	}
+}
+
+
+void ChineseTable::insertOneRow(const std::vector<std::wstring> &tmpRow) 
+{
+	size_t size = tmpRow.size();
+	if(size != schema.size()) {
+		std::cerr << "can not insert row with different schemas" << std::endl;
+		exit(1);
+	}
+
+	rows.emplace_back(tmpRow);
+
+	for(auto i = 0; i < size; i++)
+		cols[i].emplace_back(tmpRow[i]);
+}

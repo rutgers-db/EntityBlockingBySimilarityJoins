@@ -31,6 +31,28 @@ void CSVReader::strNormalize(std::string &s)
 }
 
 
+void CSVReader::strNormalize(std::wstring &ws)
+{
+	std::wstring wstr = L"";
+	wstr.reserve(ws.size());
+	wchar_t prev_char = L' ';
+
+	for (ui i = 0; i < ws.size(); i++) {
+		if (prev_char == L' ' && ws[i] == L' ')
+			continue;
+		prev_char = ws[i];
+		wstr.push_back(tolower(ws[i]));
+		// if (isalnum(ws[i]) || ws[i] == L'_')  str.push_back(tolower(ws[i]));
+		// else if (!wstr.empty() && wstr.back() != L' ') wstr.push_back(L' ');
+    }
+
+    if (!wstr.empty() && wstr.back() == L' ') 
+		wstr.pop_back();
+
+    ws = wstr;
+}
+
+
 bool CSVReader::reading_one_table(const std::string &datafilepath, bool normalize) 
 {
 	int id = 0;
@@ -51,6 +73,34 @@ bool CSVReader::reading_one_table(const std::string &datafilepath, bool normaliz
 	} 
 	else {
 		tables.pop_back();
+		perror ("could not open file!!");
+		return false;
+	}
+
+	return true;
+}
+
+
+bool CSVReader::reading_one_chinese_table(const std::string &datafilepath, bool normalize)
+{
+	int id = 0;
+	max_val_len = 0;
+
+	// check file
+	if (!ends_with(datafilepath, ".csv")) {
+		std::cerr << "WARNING: Skipped non-csv file " << datafilepath << std::endl;
+		return false;
+	}
+
+	chineseTables.emplace_back(id, datafilepath);
+	if (get_chinese_table(datafilepath, chineseTables.back().schema, chineseTables.back().cols, chineseTables.back().rows, normalize)) {
+		// successfully added, profile and increase the id
+		id = id + 1;
+		chineseTables.back().Profile();
+		// cout << " Added. " << tables.back().schema.size() << " columns and " << tables.back().rows.size() << " rows " << endl;
+	} 
+	else {
+		chineseTables.pop_back();
 		perror ("could not open file!!");
 		return false;
 	}
@@ -160,6 +210,51 @@ bool CSVReader::get_table(const std::string &filepath, std::vector<std::string> 
 	return true;
 }
 
+
+bool CSVReader::get_chinese_table(const std::string &filepath, std::vector<std::wstring> &headers, 
+								  std::vector<std::vector<std::wstring>> &columns, 
+								  std::vector<std::vector<std::wstring>> &rows, 
+								  bool normalize)
+{
+	std::wifstream in(filepath, std::ios::in);
+	if (in.fail()) 
+		return (std::cout << "File not found: " + filepath << std::endl) && false;
+
+	in.imbue(std::locale("zh_CN.UTF-8"));
+
+	csv_read_chinese_row(in, headers, normalize);
+	columns.resize(headers.size());
+
+	while(in.good()) {
+		std::vector<std::wstring> tuple;
+		tuple.reserve(headers.size());
+		csv_read_chinese_row(in, tuple, normalize);
+
+		if (tuple.size() != headers.size()) {
+			std::cout << "Skipped a row" << std::endl;
+			continue; // return (cout << "Skipped Broken csv file: " +  filepath << endl) && false;
+		}
+
+		// int row_id = rows.size();
+		for (ui col = 0; col < tuple.size(); col++) {
+			if (tuple[col].empty()) 
+				continue;
+			if ((int)tuple[col].length() > max_val_len)  
+				max_val_len = tuple[col].length();
+			// if (columns[col].find(tuple[col]) == columns[col].end())
+			// 	columns[col][tuple[col]] = row_id;
+		}
+		rows.push_back(tuple);
+
+		for(ui i = 0; i < headers.size(); i++)
+			columns[i].emplace_back(tuple[i]);
+	}
+
+	in.close();
+	return true;
+}
+
+
 // **************************************************
 // YOU DO NOT HAVE TO CHANGE ANY OF THE FOLLOWING CODE
 // **************************************************
@@ -201,6 +296,51 @@ void CSVReader::csv_read_row(std::istream &in, std::vector<std::string> &row, bo
 			ss << c;
 		}
 	}
+}
+
+
+void CSVReader::csv_read_chinese_row(std::wistream &in, std::vector<std::wstring> &row, bool isNorm)
+{
+	/****************
+	 * should use wstring here!!!
+	 ****************/
+
+    std::wstringstream ss;
+	ss.imbue(std::locale("zh_CN.UTF-8"));
+    bool inquotes = false;
+
+    while (in.good()) {
+        wchar_t c = in.get(); // Read wide character
+        if (!inquotes && c == L'"') // beginquotechar
+            inquotes = true;
+        // quotechar
+        else if (inquotes && c == L'"') {
+            if (in.peek() == L'"') // 2 consecutive quotes resolve to 1
+                ss << (wchar_t)in.get();
+            else // endquotechar
+                inquotes = false;
+        }
+        // end of field
+        else if (!inquotes && c == field_delimiter) {
+            std::wstring temp_str = ss.str();
+            if (isNorm) 
+                strNormalize(temp_str);
+            row.push_back(temp_str);
+            ss.str(L""); // Clear the stringstream
+        }
+        else if (!inquotes && (c == L'\r' || c == L'\n')) {
+            if (in.peek() == L'\n')  
+                in.get();
+            std::wstring temp_str = ss.str();
+            if (isNorm) 
+                strNormalize(temp_str);
+            row.push_back(temp_str);
+            return;
+        }
+        else {
+            ss << c; // Append character to stringstream
+        }
+    }
 }
 
 

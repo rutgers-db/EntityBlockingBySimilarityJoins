@@ -18,6 +18,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <vector>
+#include <codecvt>
 #ifdef ARROW_INSTALLED
 #include <arrow/compute/api.h>
 #include "arrow/pretty_print.h"
@@ -48,21 +49,34 @@ private:
 
     int filesize(const char* filename);
     bool ends_with(std::string const & value, std::string const & ending);
+
     void csv_read_row(std::istream &in, std::vector<std::string> &row, bool isNorm = true);
+	void csv_read_chinese_row(std::wistream &in, std::vector<std::wstring> &row, bool isNorm = true);
+
     bool get_table(const std::string &filepath, std::vector<std::string> &headers, 
                    std::vector<std::vector<std::string>> &columns, 
                    std::vector<std::vector<std::string>> &rows, 
                    bool normalize);
+	bool get_chinese_table(const std::string &filepath, std::vector<std::wstring> &headers, 
+						   std::vector<std::vector<std::wstring>> &columns, 
+						   std::vector<std::vector<std::wstring>> &rows, 
+						   bool normalize);
 
 public:
     CSVReader() = default;
     ~CSVReader() = default;
     std::vector<Table> tables;
+	std::vector<ChineseTable> chineseTables;
 
     void strNormalize(std::string &s); // also for the use of query normalization
+	void strNormalize(std::wstring &ws);
+
     bool reading(const std::string &datafilespath, bool normalize);
     void write_one_table(const Table &table, const std::string &outfilename);
+
     bool reading_one_table(const std::string &datafilepath, bool normalize);
+	bool reading_one_chinese_table(const std::string &datafilepath, bool normalize);
+
     int get_max_val_len() { return max_val_len; };
 };
 
@@ -84,6 +98,7 @@ public:
 	static void extractRules(char* str, const char* pattern, std::vector<std::string>& res);
 	static void readRules(const std::string& dirname, ui& num_rules, Rule*& rules);
 };
+
 
 void readFile(const char* filename, std::vector<std::vector<int>>& records);
 
