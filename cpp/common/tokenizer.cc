@@ -652,3 +652,22 @@ void Tokenizer::resTableAttr2IntVector(const Table &resTable, std::vector<std::v
 	// fclose(fpCheck);
 #endif 
 }
+
+
+std::vector<wchar_t> BPETokenizer::puncsChinese = {L'。', L'，', L'？', L'！', L'；', L'：', L'、', L'（', L'）', L'「',
+                    							   L'」', L'“', L'”', L'‘', L'’', L'《', L'》', L'【', L'】', L'—', L'～', 
+												   L'　'};
+
+
+std::wstring BPETokenizer::replacePuncs(const std::wstring &ws)
+{
+	std::wstring pattern = L"[";
+    for (const auto& punct : puncsChinese) {
+        pattern += punct;
+    }
+    pattern += L"]";
+
+	std::wregex regexPattern(pattern);
+
+	return std::regex_replace(ws, regexPattern, L"#");
+}

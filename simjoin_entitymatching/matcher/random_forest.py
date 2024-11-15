@@ -704,19 +704,26 @@ class RandomForest:
 		if default_match_res_dir == "":
 			match_res_dir = '/'.join([cur_parent_dir, "..", "..", "output", "match_res"])
 			match_res_path = '/'.join([cur_parent_dir, "..", "..", "output", "match_res", "match_res.csv"])
+			neg_match_res_path = '/'.join([cur_parent_dir, "..", "..", "output", "match_res", "neg_match_res.csv"])
 		else:
 			default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
 																 else default_match_res_dir 
 			match_res_dir = default_match_res_dir
 			match_res_path = '/'.join([default_match_res_dir, "match_res.csv"])
+			neg_match_res_path = '/'.join([default_match_res_dir, "neg_match_res.csv"])
   
 		res_df = pd.DataFrame(columns=columns_)
+		neg_res_df = pd.DataFrame(columns=columns_)
 		for tableid in range(tottable):
 			path = '/'.join([match_res_dir, "match_res" + str(tableid) + ".csv"])
+			neg_path = '/'.join([match_res_dir, "neg_match_res" + str(tableid) + ".csv"])
 			pdf = pd.read_csv(path)
+			neg_pdf = pd.read_csv(neg_path)
 			# pdf.drop_duplicates(inplace=True)
+			# neg_pdf.drop_duplicates(inplace=True)
 			res_df = pd.concat([res_df, pdf], ignore_index=True)
-   
+			neg_res_df = pd.concat([neg_res_df, neg_pdf], ignore_index=True)
+
 		stat_file_path = "/".join([match_res_dir, "stat.txt"])
 		with open(stat_file_path, "w") as stat_file:
 			print(tottable, len(res_df), file=stat_file)
@@ -724,6 +731,7 @@ class RandomForest:
 		# flush
 		# res_df.drop_duplicates(inplace=True)
 		res_df.to_csv(match_res_path, index=False)
+		neg_res_df.to_csv(neg_match_res_path, index=False)
 		return res_df
 
 

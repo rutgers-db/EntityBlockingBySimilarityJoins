@@ -11,7 +11,8 @@ from simjoin_entitymatching.sampler.sample import run_sample_lib
 from simjoin_entitymatching.blocker.block import run_simjoin_block_lib, extract_block_rules
 from simjoin_entitymatching.matcher.match import train_model
 from simjoin_entitymatching.matcher.match import match_via_cpp_features, match_via_megallen_features, match_on_neg_pres
-from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
+from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable, cluster_pairs
+import utils
 import networkx as nx
 import pandas as pd
 import py_entitymatching.feature.attributeutils as au
@@ -81,23 +82,12 @@ def main(turn, dtype):
     # match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
     #                   at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
-    topk_intermedia = "output/topk_stat/intermedia.txt"
-    topk_exp_log = "output/topk_stat/amazon_google_" + dtype + ".txt"
-    print(f"--- report top k blocking result on turn {turn} ---", flush=True)
-    echo_command = "echo -e \"\n this is an experiment\" >> " + topk_exp_log
-    system(echo_command)
-    cat_command = "cat " + topk_intermedia + " >> " + topk_exp_log
-    system(cat_command)
+    # utils.cat_blocking_topk_output_first("amazon_google", "structured", turn)
+    # utils.cat_match_res_output_first("amazon_google", "structured", turn)
     
-    match_intermedia = "output/match_stat/intermedia.txt"
-    match_exp_log = "output/match_stat/amazon_google_" + dtype + ".txt"
-    print(f"--- report matching result on turn {turn} ---", flush=True)
-    echo_command = "echo -e \"\n this is an experiment\" >> " + match_exp_log
-    system(echo_command)
-    cat_command = "cat " + match_intermedia + " >> " + match_exp_log
-    system(cat_command)
-    
-    # group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
+
+    cluster_pairs(cluster, "title", gold_graph)
     
     # match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
     #                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
@@ -141,18 +131,9 @@ def main(turn, dtype):
     # when doing experiments on matcher, change the output log in bash scripts.
     # '''
 
-    # # cat output
-    # cat_command = "cat " + topk_intermedia + " >> " + topk_exp_log
-    # system(cat_command)
-    echo_command = "echo -" + str(turn) + " \"\n\" >> " + topk_exp_log
-    system(echo_command)
-    echo_command = "echo " + representativeA + " >> " + topk_exp_log
-    system(echo_command)
-    
-    # cat_command = "cat " + match_intermedia + " >> " + match_exp_log
-    # system(cat_command)
-    echo_command = "echo -" + str(turn) + " \"\n\" >> " + match_exp_log
-    system(echo_command)
+    # cat output
+    # utils.cat_blocking_topk_output_second("amazon_google", "structured", representativeA, turn)
+    # utils.cat_match_res_output_second("amazon_google", "structured", turn)
     
     
 if __name__ == '__main__':
