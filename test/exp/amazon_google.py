@@ -57,14 +57,14 @@ def main(turn, dtype):
     if representativeA != representativeB:
         raise ValueError(f"different representative attrs: {representativeA}, {representativeB}")
 
-    # # sample a subset
-    # run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
-    #                step2_tau=0.18, num_data=2)
+    # sample a subset
+    run_sample_lib(sample_strategy="cluster", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
+                   step2_tau=0.18, num_data=2)
 
-    # # train the model and build the graph
-    # _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
-    #                           num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
-    #                           inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    # train the model and build the graph
+    _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
+                              num_tree=11, sample_size=450, ground_truth_label=True, training_strategy="tuning", 
+                              inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
 
     # # extract the rule-based blocker
     # extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
@@ -87,10 +87,10 @@ def main(turn, dtype):
     
     group, cluster = group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
 
-    cluster_pairs(cluster, "title", gold_graph)
+    # cluster_pairs(cluster, "title", gold_graph)
     
-    # match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-    #                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+    match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+                           at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
     # path_normalized_A = "output/buffer/normalized_A.csv"
     # path_normalized_B = "output/buffer/normalized_B.csv"

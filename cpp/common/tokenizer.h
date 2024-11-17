@@ -119,6 +119,8 @@ public:
 
 };
 
+
+/*
 #include <algorithm>
 #include <assert.h>
 #include <errno.h>
@@ -809,6 +811,6 @@ void applybpe_stream(const char *codesPath, const char *vocabPath) {
 }
 
 };
-
+*/
 
 #endif // _TOKENIZER_H_

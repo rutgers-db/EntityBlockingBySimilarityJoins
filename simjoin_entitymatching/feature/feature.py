@@ -136,7 +136,7 @@ def run_feature_megallen(tableA, tableB, feature_tab, total_table, is_interchang
                                             ltable=tableA, rtable=tableB, 
                                             fk_ltable="ltable_id", 
                                             fk_rtable="rtable_id")
-        print(i)
+        # print(i)
         
         if is_interchangeable == 0:
             H = em.extract_feature_vecs(blk_res_cand, 

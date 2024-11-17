@@ -55,9 +55,11 @@ rf.label_cand(H)
 false_neg = pd.read_csv("test/debug/false_neg.csv")
 
 for idx, row in false_neg.iterrows():
-    if idx == 0:
-        continue
     lid = int(row["ltable_id"])
     rid = int(row["rtable_id"])
+    
+    print(f"left tuple: {tableA.loc[map_A[lid]]}")
+    print(f"right tuple: {tableB.loc[map_B[rid]]}")
+    
     em.debug_randomforest_matcher(rf.rf, tableA.loc[map_A[lid]], tableB.loc[map_B[rid]], rf.features, H.columns, 
                                   exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'])
