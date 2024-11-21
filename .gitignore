@@ -1,3 +1,5 @@
 .DS_Store
-.csv
-.txt
+*.csv
+*.txt
+*.so 
+/bin
