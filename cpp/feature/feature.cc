@@ -193,7 +193,7 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
             int rid = std::stoi(curRow[2]);
             fprintf(fvfile, "%d,%d,%d", _id, lid, rid);
             for(const auto &val : featureValues[ridx]) {
-                if(std::abs(val - FeatureUtils::NaN) < 1e-5)
+                if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)
                     fprintf(fvfile, ",");
                 else
                     fprintf(fvfile, ",%.10lf", val);
@@ -306,7 +306,7 @@ void FeatureEngineering::extractFeatures4TopK(int isInterchangeable, bool flagCo
         int rsize = (int)curRow.size();
         for(int j = 0; j < rsize; j++) {
             double val = curRow[j];
-            if(std::abs(val - FeatureUtils::NaN) < 1e-5)   
+            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)   
                 continue;
             ++ length[j];
             means[j] += val;
@@ -324,7 +324,7 @@ void FeatureEngineering::extractFeatures4TopK(int isInterchangeable, bool flagCo
         fprintf(fvfile, "%d,%d,%d", _id, lid, rid);
         for(int j = 0; j < numFeatures; j++) {
             double val = featureValues[ridx][j];
-            if(std::abs(val - FeatureUtils::NaN))
+            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)
                 fprintf(fvfile, ",%.10lf", means[j]);
             else
                 fprintf(fvfile, ",%.10lf", val);

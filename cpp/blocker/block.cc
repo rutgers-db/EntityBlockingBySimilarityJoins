@@ -489,7 +489,7 @@ extern "C"
 												   recordsA, recordsB, weightsA, weightsB, 
 												   wordwt, datasets_map, id_mapA, id_mapB, 
 												   idStringMapA, idStringMapB, final_pairs, 
-												   gold, top_k, num_rules, topKStream, is_idf_weighted, "replace");
+												   gold, top_k, num_rules, topKStream, is_idf_weighted, "exp");
 			}
 
 			gettimeofday(&topKEnd, NULL);

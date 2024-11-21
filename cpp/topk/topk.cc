@@ -938,7 +938,7 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 	std::vector<std::vector<double>> allValues2(attrAverageVec.size(), std::vector<double>(numRow, 0.0));
 
 	for(ui i = 0; i < numRule; i++) {
-		std::cout << i << std::endl << std::flush;
+		// std::cout << i << std::endl << std::flush;
 		const std::string mapKey = rules[i].tok + "_" + rules[i].tok_settings + "_" + rules[i].attr;
 		ui recPos = 0;
 		if(datasets_map.find(mapKey) != datasets_map.end())
@@ -1117,6 +1117,7 @@ void TopK::topKviaAllSimilarityScoresRS(const Table &table_A, const Table &table
 			uint64_t cartesian = (uint64_t)table_A.row_no * (uint64_t)table_B.row_no;
 			getCurrentRecallExp(sortedIdMap, allPairs, golds, K, cartesian, statStream);
 			getCurrentRecallExp(sortedIdMap2, allPairs, golds, K, cartesian, statStream);
+			updateFinalPairs(sortedIdMap2, allPairs, final_pairs, K);
 			return;
 		}
 		else {
@@ -1343,6 +1344,7 @@ void TopK::topKviaAllSimilarityScoreSelf(const Table &table_A, const Rule *rules
 			uint64_t cartesian = (uint64_t)table_A.row_no * (uint64_t)(table_A.row_no - 1) / 2;
 			getCurrentRecallExp(sortedIdMap, allPairs, golds, K, cartesian, statStream);
 			getCurrentRecallExp(sortedIdMap2, allPairs, golds, K, cartesian, statStream);
+			updateFinalPairs(sortedIdMap2, allPairs, final_pairs, K);
 			return;
 		}
 		else {

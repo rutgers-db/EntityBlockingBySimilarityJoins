@@ -1,5 +1,11 @@
 .DS_Store
 *.csv
 *.txt
+*.joblib
+<<<<<<< Updated upstream
 *.so 
+=======
+*.joblib
+*.so
+>>>>>>> Stashed changes
 /bin

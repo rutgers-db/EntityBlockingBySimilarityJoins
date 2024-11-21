@@ -1,9 +1,0 @@
-8
-title_title_overlap_dlm_dc0_dlm_dc0 + 0.5000
-description_description_jac_dlm_dc0_dlm_dc0 + 0.1024
-title_title_jac_dlm_dc0_dlm_dc0 + 0.0833
-title_title_dice_dlm_dc0_dlm_dc0 + 0.1603
-description_description_dice_dlm_dc0_dlm_dc0 + 0.1988
-title_title_cos_dlm_dc0_dlm_dc0 + 0.3826
-description_description_cos_dlm_dc0_dlm_dc0 + 0.2404
-description_description_overlap_dlm_dc0_dlm_dc0 + 0.5000

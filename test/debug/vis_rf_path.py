@@ -9,6 +9,7 @@ sys.path.append(str(root))
 from simjoin_entitymatching.utils.utils import read_csv_table, read_csv_golds
 import simjoin_entitymatching.matcher.random_forest as randf
 import networkx as nx
+import debug_utils
 
 
 dir_path = "../datasets/tables/megallen/amazon-google-structured"
@@ -46,9 +47,15 @@ blk_res_cand = em.read_csv_metadata("test/debug/false_neg.csv", key="_id",
                                     fk_ltable="ltable_id", 
                                     fk_rtable="rtable_id")
 
-H = em.extract_feature_vecs(blk_res_cand, 
-                            feature_table=rf.features, 
-                            show_progress=False)
+# H = em.extract_feature_vecs(blk_res_cand, 
+#                             feature_table=rf.features, 
+#                             show_progress=False)
+
+H = em.read_csv_metadata("test/debug/match_diff_01.csv", key="_id", 
+                         ltable=tableA, rtable=tableB, 
+                         fk_ltable="ltable_id", 
+                         fk_rtable="rtable_id")
+H = H.drop(["combine_id", "_id"], axis=1)
 
 rf.label_cand(H)
 
@@ -58,8 +65,20 @@ for idx, row in false_neg.iterrows():
     lid = int(row["ltable_id"])
     rid = int(row["rtable_id"])
     
+<<<<<<< Updated upstream
     print(f"left tuple: {tableA.loc[map_A[lid]]}")
     print(f"right tuple: {tableB.loc[map_B[rid]]}")
     
     em.debug_randomforest_matcher(rf.rf, tableA.loc[map_A[lid]], tableB.loc[map_B[rid]], rf.features, H.columns, 
                                   exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'])
+=======
+    lid, rid = 0, 1878
+    
+    print(f"left tuple: {tableA.loc[map_A[lid]]}")
+    print(f"right tuple: {tableB.loc[map_B[rid]]}")
+    
+    pro_fea_vec = H.loc[idx]
+    
+    debug_utils.debug_randomforest_matcher_inter(rf.rf, tableA.loc[map_A[lid]], tableB.loc[map_B[rid]], rf.features, H.columns, 
+                                                 pro_fea_vec, exclude_attrs=['ltable_id', 'rtable_id', 'label'])
+>>>>>>> Stashed changes

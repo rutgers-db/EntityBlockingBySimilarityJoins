@@ -5,6 +5,7 @@ import networkx as nx
 import pandas as pd
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
 import multiprocessing
 from sklearn.tree import export_text
 from sklearn.model_selection import GridSearchCV
@@ -152,6 +153,20 @@ class RandomForest:
 			Y[yindex] = (int(label) == 1)
 
 		ros = RandomOverSampler(random_state=0)
+		nC, Y = ros.fit_resample(C, Y)
+
+		return nC
+
+
+	def under_sample(self, C):
+		Y = np.zeros((len(C),), dtype=int)
+		row_index = list(C.index)
+
+		for yindex, index in enumerate(row_index):
+			label = C.loc[index, 'label']
+			Y[yindex] = (int(label) == 1)
+
+		ros = RandomUnderSampler(random_state=0)
 		nC, Y = ros.fit_resample(C, Y)
 
 		return nC
@@ -366,6 +381,7 @@ class RandomForest:
 		test = tmp['test']
   
 		train = self.over_sample(train)
+		# train = self.under_sample(train)
 		train.reset_index(drop=True, inplace=True)
 		train['id'] = range(len(train))
 		em.set_key(train, 'id')
@@ -391,6 +407,9 @@ class RandomForest:
 							  			 feature_table=self.features,
                             			 attrs_after='label', 
 										 show_progress=False)
+
+		train_H = em.impute_table(train_H, exclude_attrs=["id", "ltable_id", "rtable_id", "label"], strategy="mean")
+  
 		print(train_H.head())
   
 		# init random forest
@@ -418,14 +437,14 @@ class RandomForest:
 		y_train = train_H[target_attr]
 		X_train, y_train = self.rf._get_data_for_sklearn(X_train, y_train)
 
-		# grid_search.fit(X_train, y_train)
+		grid_search.fit(X_train, y_train)
    
 		# train
-		# self.rf.clf = grid_search.best_estimator_
+		self.rf.clf = grid_search.best_estimator_
   
-		self.rf.fit(table=train_H, 
-			   		exclude_attrs=['id', 'ltable_id', 'rtable_id', 'label'], 
-			   		target_attr='label')
+		# self.rf.fit(table=train_H, 
+		# 	   		exclude_attrs=['id', 'ltable_id', 'rtable_id', 'label'], 
+		# 	   		target_attr='label')
 		
 		# Predict on L 
 		predictions = self.rf.predict(table=test_H, exclude_attrs=['id', 'ltable_id', 'rtable_id', 'label'], 
@@ -609,6 +628,7 @@ class RandomForest:
 									 ltable=tableA, rtable=tableB,
 									 fk_ltable="ltable_id", fk_rtable="rtable_id")
 			H.rename(columns={"id": "_id"}, inplace=True)
+			em.set_key(H, "_id")
 		else:
 			fea_vec_path = fea_vec_path[ : -4] + "_py.csv"
 			H = em.read_csv_metadata(fea_vec_path, 
@@ -616,6 +636,7 @@ class RandomForest:
 									 ltable=tableA, rtable=tableB,
 									 fk_ltable="ltable_id", fk_rtable="rtable_id")
 		self.label_cand(H)
+		H = em.impute_table(H, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
 
 		predictions = self.rf.predict(table=H, exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'], 
 								 	  append=True, target_attr='predicted', inplace=True, 
@@ -665,7 +686,7 @@ class RandomForest:
 
 
 	def apply_model(self, tottable, tableA, tableB, external_fea_extract=False, 
-                    default_blk_res_dir="", default_match_res_dir=""):
+                    is_match_on_neg=False, default_blk_res_dir="", default_match_res_dir=""):
 		'''
 		Chunk the blocking result into pieces with size 1M
 		then apply random forests concurrently
@@ -730,6 +751,9 @@ class RandomForest:
    
 		# flush
 		# res_df.drop_duplicates(inplace=True)
+		if is_match_on_neg == True:
+			pre_res_df = pd.read_csv(match_res_path)
+			res_df = pd.concat([pre_res_df, res_df], ignore_index=True)
 		res_df.to_csv(match_res_path, index=False)
 		neg_res_df.to_csv(neg_match_res_path, index=False)
 		return res_df

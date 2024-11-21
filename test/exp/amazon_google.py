@@ -1,23 +1,21 @@
-# unit test
-# blocking all
+"""
+experiment script on amazon_google
+"""
+
 import sys
-from os import system
-from pathlib import Path
-file = Path(__file__).resolve()
-parent, root = file.parent, file.parents[2]
-sys.path.append(str(root))
-from simjoin_entitymatching.utils.utils import read_csv_table, read_csv_golds, dump_table, select_representative_attr
-from simjoin_entitymatching.sampler.sample import run_sample_lib
-from simjoin_entitymatching.blocker.block import run_simjoin_block_lib, extract_block_rules
-from simjoin_entitymatching.matcher.match import train_model
-from simjoin_entitymatching.matcher.match import match_via_cpp_features, match_via_megallen_features, match_on_neg_pres
-from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable, cluster_pairs
-import utils
-import networkx as nx
+sys.path.append(".")
 import pandas as pd
 import py_entitymatching.feature.attributeutils as au
 from argparse import ArgumentParser
 import time
+
+from simjoin_entitymatching.sampler.sample import run_sample_lib
+from simjoin_entitymatching.blocker.block import run_simjoin_block_lib, extract_block_rules
+from simjoin_entitymatching.matcher.match import train_model
+from simjoin_entitymatching.matcher.match import match_via_cpp_features, match_via_megallen_features, match_on_neg_pres
+from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
+
+import exp_utils
 
 argp = ArgumentParser()
 
@@ -25,63 +23,76 @@ argp.add_argument("--turn", type=int, required=True, help="the exp turn for each
 argp.add_argument("--dtype", type=str, required=True, help="the data type, structured, dirty or textual")
 
 args = argp.parse_args()
+data_name = "amazon_google"
 
 
 def main(turn, dtype):
-    dir_path = "../datasets/tables/megallen/amazon-google-structured"
-    path_tableA = "/".join([dir_path, "table_a.csv"])
-    path_tableB = "/".join([dir_path, "table_b.csv"])
-    path_gold = "/".join([dir_path, "gold.csv"])
+    # get all paths
+    path_tableA, path_tableB, path_gold, \
+    path_rule, path_range, path_tree, path_rf = exp_utils.get_paths(data_name=data_name, data_type=dtype, exp_turn=turn)
+    
+    # read tables from disk
+    tableA, tableB, gold, gold_graph = exp_utils.read_tables(path_tableA, path_tableB, path_gold)
 
-    path_rule = "simjoin_entitymatching/blocker/rules/rules_amazon_google_" + dtype + str(turn) + ".txt"
-    path_range = "simjoin_entitymatching/matcher/model/ranges/ranges_amazon_google_" + dtype + str(turn) + ".txt"
-    path_tree = "simjoin_entitymatching/matcher/model/trees/trees_amazon_google_" + dtype + str(turn) + ".txt"
-    path_rf = "simjoin_entitymatching/matcher/model/rf_amazon_google_" + dtype + str(turn) + ".joblib"
+    # dump tables to specific paths
+    exp_utils.dump_tables(tableA, tableB, gold)
 
-    gold_graph = nx.Graph()
-    tableA = read_csv_table(path_tableA)
-    tableB = read_csv_table(path_tableB)
-    gold = read_csv_golds(path_gold, gold_graph)
-
-    dump_table(tableA, "output/buffer/clean_A.csv")
-    dump_table(tableB, "output/buffer/clean_B.csv")
-    dump_table(gold, "output/buffer/gold.csv")
-
+    # fix attributes' type for tables
     attr_types_ltable = au.get_attr_types(tableA)
     attr_types_rtable = au.get_attr_types(tableB)
     attr_types_ltable['manufacturer'] = "str_eq_1w"
     attr_types_rtable['manufacturer'] = "str_eq_1w"
     
-    representativeA = select_representative_attr(tableA)
-    representativeB = select_representative_attr(tableB)
-    if representativeA != representativeB:
-        raise ValueError(f"different representative attrs: {representativeA}, {representativeB}")
+    # select representative / most informative attribute
+    representativeA = exp_utils.get_representative_attr(tableA, tableB)
 
+<<<<<<< Updated upstream
     # sample a subset
     run_sample_lib(sample_strategy="cluster", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
+=======
+    # sample a subset for training
+    run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
+>>>>>>> Stashed changes
                    step2_tau=0.18, num_data=2)
 
     # train the model and build the graph
     _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
+<<<<<<< Updated upstream
                               num_tree=11, sample_size=450, ground_truth_label=True, training_strategy="tuning", 
+=======
+                              num_tree=10, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
+>>>>>>> Stashed changes
                               inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
 
-    # # extract the rule-based blocker
-    # extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
-    #                     additional_rule_path=None, optimal_rule_path=None)
+    # extract the rule-based blocker
+    extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
+                        additional_rule_path=None, optimal_rule_path=None)
 
-    # # block
-    # run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
-    #                       path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
-    #                       table_size=100000, is_join_topk=0, is_idf_weighted=1, 
-    #                       num_data=2)
+    # block
+    run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
+                          path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
+                          table_size=100000, is_join_topk=0, is_idf_weighted=1, 
+                          num_data=2)
     
-    match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
-                                at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    # # first-round match
+    # match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
+    #                             at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
     
+    # match_res_0 = pd.read_csv("output/match_res/match_res.csv")
+    # match_res_0.to_csv("output/match_res/match_res_py.csv", index=False)
+    
+    # # cat the output to stat directory
+    # exp_utils.cat_blocking_topk_output(data_name, dtype, representativeA, turn)
+    # exp_utils.cat_match_res_output_first(data_name, dtype, turn)
+    
+    # # indentify interchangeable values in first-round matching results
+    # group, cluster = group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
+    
+    # # second-round match: only on negative results of the first-round    
     # match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
     #                   at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
+<<<<<<< Updated upstream
     # utils.cat_blocking_topk_output_first("amazon_google", "structured", turn)
     # utils.cat_match_res_output_first("amazon_google", "structured", turn)
     
@@ -91,49 +102,19 @@ def main(turn, dtype):
     
     match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
                            at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+=======
+    # exp_utils.cat_match_res_output_mid(data_name, dtype, turn)
     
-    # path_normalized_A = "output/buffer/normalized_A.csv"
-    # path_normalized_B = "output/buffer/normalized_B.csv"
-    # normalized_A = read_csv_table(path_normalized_A)
-    # normalized_B = read_csv_table(path_normalized_B)
+    # # second-round match: on the entire blocking results
+    # match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+    #                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+>>>>>>> Stashed changes
     
-    # attr_types_ltable_2 = au.get_attr_types(normalized_A)
-    # attr_types_rtable_2 = au.get_attr_types(normalized_B)
-    # attr_types_ltable_2['manufacturer'] = "str_eq_1w"
-    # attr_types_rtable_2['manufacturer'] = "str_eq_1w"
+    # exp_utils.cat_match_res_output_second(data_name, dtype, turn)
     
-    # dump_table(normalized_A, "output/buffer/clean_A.csv")
-    # dump_table(normalized_B, "output/buffer/clean_B.csv")
-    
-    # # sample a subset
-    # run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
-    #                step2_tau=0.18, num_data=2)
-
-    # # train the model and build the graph
-    # _, trigraph = train_model(normalized_A, normalized_B, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
-    #                           num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
-    #                           inmemory=1, num_data=2, at_ltable=attr_types_ltable_2, at_rtable=attr_types_rtable_2)
-
-    # # extract the rule-based blocker
-    # extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
-    #                     additional_rule_path=None, optimal_rule_path=None)
-
-    # # block
-    # run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
-    #                       path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
-    #                       table_size=100000, is_join_topk=0, is_idf_weighted=1, 
-    #                       num_data=2)
-    
-    # match_via_cpp_features(normalized_A, normalized_B, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
-    #                        at_ltable=attr_types_ltable_2, at_rtable=attr_types_rtable_2, numeric_attr=["price", "year"])
-    
-    # '''
-    # when doing experiments on matcher, change the output log in bash scripts.
-    # '''
-
-    # cat output
-    # utils.cat_blocking_topk_output_second("amazon_google", "structured", representativeA, turn)
-    # utils.cat_match_res_output_second("amazon_google", "structured", turn)
+    # # compare the two rounds matching results
+    # match_res_1 = pd.read_csv("output/match_res/match_res.csv")
+    # exp_utils.compare_two_match_res(match_res_0, match_res_1)
     
     
 if __name__ == '__main__':
@@ -153,3 +134,5 @@ if __name__ == '__main__':
         main(turn, dtype)
         print(f"--- exp end ---")
         print(f"elapsed time: {time.time() - start - 10}")
+        
+        

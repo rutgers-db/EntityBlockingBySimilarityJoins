@@ -177,10 +177,10 @@ def match_on_neg_pres(tableA, tableB, gold_graph, gold_len, model_path, is_inter
                     attrs=schemas, usage="match", default_fea_vec_dir=default_fea_vec_dir, default_res_tab_name="neg_match_res", 
                     default_icv_dir=default_icv_dir, default_fea_names_dir=default_fea_names_dir)
 
-    rfpres = rf.apply_model(total_table, tableA, tableB, external_fea_extract=True, 
+    rfpres = rf.apply_model(total_table, tableA, tableB, external_fea_extract=True, is_match_on_neg=True,
                             default_blk_res_dir=default_fea_vec_dir, 
                             default_match_res_dir=default_match_res_dir)
-    rf.get_recall(rfpres, gold_len)
+    rf.get_recall(rfpres, gold_len, external_report=True)
     
     
 def debug_rf_matcher(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 

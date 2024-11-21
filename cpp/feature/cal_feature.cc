@@ -72,8 +72,16 @@ void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &f
                                              int lcltid, int rcltid, int *const &curDCIdx, double ***const &curCache, 
                                              const std::vector<int> &featureLength, const std::string &func, ui attrpos)
 {
-    if(lcltid == rcltid)
-        featureValues.back().emplace_back(1.0);
+    if(lcltid == rcltid) {
+        if(func == "overlap") {
+            const auto &ldocs = tok == "dlm" ? curGrpDlm.at(lcltid) : curGrpQgm.at(lcltid);
+            size_t maxlen = 0;
+            for(const auto &ldoc : ldocs)
+                maxlen = std::max(ldoc.size(), maxlen);
+            featureValues.back().emplace_back(maxlen * 1.0);
+        } 
+        else featureValues.back().emplace_back(1.0);
+    }
     else {
         double maxVal = setjoinP(ltokens, rtokens);
         const auto &ldocs = tok == "dlm" ? curGrpDlm.at(lcltid) : curGrpQgm.at(lcltid);

@@ -1070,6 +1070,8 @@ void MultiWriter::writeBlockResMegallenCSV(const Table &tableA, const Table &tab
 		}
 	}
 
+	fclose(csvfile);
+
 	std::string statOutputPath = directory + "stat.txt";
 	FILE *statfile = fopen(statOutputPath.c_str(), "w");
 	if(statfile == nullptr) {

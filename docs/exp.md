@@ -255,3 +255,6 @@ Secret/new:
 16. table_a: $6014120$, gold: $1858025$
 17. table_a: $12023166$, gold: $117969$
 18. table_a: $12014120$, gold: $2952282$
+
+## B. Experiments Notes
+The missing values will influence the performance of value matcher, if we do not impute the missing values, after considering interchangeable values in feature extraction, the F1 score will decrease.
