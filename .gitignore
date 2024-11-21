@@ -3,13 +3,17 @@
 *.txt
 *.joblib
 
-!CMakeLists.txt
-!requirements.txt
-
 <<<<<<< Updated upstream
 *.so 
 =======
 *.joblib
 *.so
 >>>>>>> Stashed changes
-/bin
+bin/*
+
+!CMakeLists.txt
+!requirements.txt
+!demo.out
+!demo.so 
+!demo.txt
+!demo.joblib
