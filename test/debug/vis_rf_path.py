@@ -64,14 +64,7 @@ false_neg = pd.read_csv("test/debug/false_neg.csv")
 for idx, row in false_neg.iterrows():
     lid = int(row["ltable_id"])
     rid = int(row["rtable_id"])
-    
-<<<<<<< Updated upstream
-    print(f"left tuple: {tableA.loc[map_A[lid]]}")
-    print(f"right tuple: {tableB.loc[map_B[rid]]}")
-    
-    em.debug_randomforest_matcher(rf.rf, tableA.loc[map_A[lid]], tableB.loc[map_B[rid]], rf.features, H.columns, 
-                                  exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'])
-=======
+
     lid, rid = 0, 1878
     
     print(f"left tuple: {tableA.loc[map_A[lid]]}")
@@ -81,4 +74,3 @@ for idx, row in false_neg.iterrows():
     
     debug_utils.debug_randomforest_matcher_inter(rf.rf, tableA.loc[map_A[lid]], tableB.loc[map_B[rid]], rf.features, H.columns, 
                                                  pro_fea_vec, exclude_attrs=['ltable_id', 'rtable_id', 'label'])
->>>>>>> Stashed changes

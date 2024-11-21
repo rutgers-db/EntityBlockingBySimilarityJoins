@@ -46,22 +46,13 @@ def main(turn, dtype):
     # select representative / most informative attribute
     representativeA = exp_utils.get_representative_attr(tableA, tableB)
 
-<<<<<<< Updated upstream
-    # sample a subset
-    run_sample_lib(sample_strategy="cluster", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
-=======
     # sample a subset for training
     run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
->>>>>>> Stashed changes
                    step2_tau=0.18, num_data=2)
 
     # train the model and build the graph
     _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
-<<<<<<< Updated upstream
                               num_tree=11, sample_size=450, ground_truth_label=True, training_strategy="tuning", 
-=======
-                              num_tree=10, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
->>>>>>> Stashed changes
                               inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
 
     # extract the rule-based blocker
@@ -92,23 +83,11 @@ def main(turn, dtype):
     # match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
     #                   at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
     
-<<<<<<< Updated upstream
-    # utils.cat_blocking_topk_output_first("amazon_google", "structured", turn)
-    # utils.cat_match_res_output_first("amazon_google", "structured", turn)
-    
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.85, group_strategy="doc", num_data=2)
-
-    # cluster_pairs(cluster, "title", gold_graph)
-    
-    match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-                           at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
-=======
     # exp_utils.cat_match_res_output_mid(data_name, dtype, turn)
     
     # # second-round match: on the entire blocking results
     # match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
     #                        at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
->>>>>>> Stashed changes
     
     # exp_utils.cat_match_res_output_second(data_name, dtype, turn)
     
