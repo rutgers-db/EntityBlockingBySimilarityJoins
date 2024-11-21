@@ -2,6 +2,10 @@
 *.csv
 *.txt
 *.joblib
+
+!CMakeLists.txt
+!requirements.txt
+
 <<<<<<< Updated upstream
 *.so 
 =======
