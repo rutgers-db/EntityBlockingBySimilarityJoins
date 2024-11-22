@@ -54,6 +54,13 @@ public:
 public:
     FeatureIndex() = default;
     ~FeatureIndex() {
+        if(featureValCache == nullptr && discreteCacheIdx == nullptr)
+            return;
+        else if((featureValCache == nullptr) ^ (discreteCacheIdx == nullptr)) {
+            std::cerr << "error in managing the memory of FeatureIndex" << std::endl;
+            exit(1);
+        }
+
         int attrSize = (int)attrCahceLength.size();
         for(int i = 0; i < attrSize; i++) {
             for(int j = 0; j < attrCahceLength[i]; j++) {
@@ -73,6 +80,10 @@ public:
 public:
     // get the column index for a specific feature
     int calCahceIndex(const std::string &func, const std::string &tok, int numFeature);
+
+public:
+    // release memory
+    void releaseMemory();
 
 private:
     // sort according to idf

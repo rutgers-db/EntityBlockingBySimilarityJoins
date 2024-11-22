@@ -27,6 +27,27 @@ int FeatureIndex::calCahceIndex(const std::string &func, const std::string &tok,
 }
 
 
+void FeatureIndex::releaseMemory()
+{
+    int attrSize = (int)attrCahceLength.size();
+    for(int i = 0; i < attrSize; i++) {
+        for(int j = 0; j < attrCahceLength[i]; j++) {
+            for(int k = 0; k < attrCahceLength[i]; k++)
+                delete[] featureValCache[i][j][k];
+            delete[] featureValCache[i][j];
+        }
+        delete[] featureValCache[i];
+        delete[] discreteCacheIdx[i];
+    }
+    delete[] featureValCache;
+    delete[] discreteCacheIdx;
+
+    featureValCache = nullptr;
+    discreteCacheIdx = nullptr;
+    attrCahceLength.clear();
+}
+
+
 // sort according to idf
 void FeatureIndex::normalizeTokens(const GroupTokens &grpToks, GroupTokensInt &grpToksInt)
 {

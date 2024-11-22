@@ -210,6 +210,7 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
     double initTime = initEnd.tv_sec - initBegin.tv_sec + (initEnd.tv_usec - initBegin.tv_usec) / 1e6;
     std::cout << initTime << " " << time << std::endl;
 
+    CalculateFeature::index.releaseMemory();
     return;
 }
 
@@ -338,6 +339,7 @@ void FeatureEngineering::extractFeatures4TopK(int isInterchangeable, bool flagCo
     double time = end.tv_sec - begin.tv_sec + (end.tv_usec - begin.tv_usec) / 1e6;
     std::cout << time << std::endl;
 
+    CalculateFeature::index.releaseMemory();
     return;
 }
 

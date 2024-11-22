@@ -102,7 +102,7 @@ def match_via_megallen_features(tableA, tableB, gold_graph, gold_len, model_path
     rfpres = rf.apply_model(total_table, tableA, tableB, external_fea_extract=False, 
                             default_blk_res_dir=default_blk_res_dir, 
                             default_match_res_dir=default_match_res_dir)
-    rf.get_recall(rfpres, gold_len, external_report=False)
+    rf.get_recall(rfpres, gold_len, external_report=True)
 
 
 def match_via_cpp_features(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
@@ -140,7 +140,7 @@ def match_via_cpp_features(tableA, tableB, gold_graph, gold_len, model_path, is_
     rfpres = rf.apply_model(total_table, tableA, tableB, external_fea_extract=True, 
                             default_blk_res_dir=default_blk_res_dir, 
                             default_match_res_dir=default_match_res_dir)
-    rf.get_recall(rfpres, gold_len, external_report=False)
+    rf.get_recall(rfpres, gold_len, external_report=True)
     
     
 def match_on_neg_pres(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
