@@ -1,7 +1,10 @@
 # author: Yunqi Li
 # contact: liyunqixa@gmail.com
 import deepmatcher as dm
+import py_entitymatching as em
 import pandas as pd
+import torch
+from typing import Literal
 import simjoin_entitymatching.utils.path_helper as ph
 
 
@@ -73,15 +76,75 @@ class DeepMatcher:
             
             # concat
             blk_res = c_blk_res if i == 0 else pd.concat([blk_res, c_blk_res], ignore_index=True)
+            
+        # split train : validation : test = 0.3334 : 0.1667 : 0.5
+        IJ = em.split_train_test(blk_res, train_proportion=0.5, random_state=0)
+        train = IJ["train"]
+        test = IJ["test"]
+        GH = em.split_train_test(train, train_proportion=0.6667, random_state=0)
+        train = GH["train"]
+        validation = GH["test"]
         
         # dump
-        path_dm_blk_res = ph.get_deep_matcher_input_path(default_blk_res_dir)
+        path_dm_blk_res, _, path_dm_train, \
+        path_dm_validation, path_dm_test = ph.get_deep_matcher_input_path(default_blk_res_dir)
         blk_res.to_csv(path_dm_blk_res, index=False)
         
+        # three subtables
+        train.to_csv(path_dm_train, index=False)
+        validation.to_csv(path_dm_validation, index=False)
+        test.to_csv(path_dm_test, index=False)
         
-    def train_model(self, default_blk_res_dir=""):
-        pass
+        
+    def train_model(self, path_model, mode=Literal["sif", "rnn", "attention", "hybrid"], default_blk_res_dir=""):
+        _, dir_dm_input, _, _, _ = ph.get_deep_matcher_input_path(default_blk_res_dir)
+        
+        # load
+        train, validation, test = dm.data.process(
+            path=dir_dm_input,
+            train='train.csv',
+            validation='validation.csv',
+            test='test.csv')
+        print(train.head())
+        
+        # model
+        model = dm.MatchingModel(attr_summarizer=mode)
+        
+        # check model path
+        path_model_split = path_model.split('.')
+        path_format = path_model_split[-1]
+        if path_format != "pth":
+            raise NameError(f"model path is incorrect : {path_model}")
+        
+        # train
+        model.run_train(
+            train,
+            validation,
+            epochs=10,
+            batch_size=16,
+            best_save_path=path_model,
+            pos_neg_ratio=3)
+
+        return model
     
     
-    def store_model(self, path_model):
-        pass
+    def apply_model(self, path_model, mode=Literal["sif", "rnn", "attention", "hybrid"], default_blk_res_dir=""):
+        # check model path
+        path_model_split = path_model.split('.')
+        path_format = path_model_split[-1]
+        if path_format != "pth":
+            raise NameError(f"model path is incorrect : {path_model}")
+        
+        model = dm.MatchingModel(attr_summarizer=mode)
+        model.load_state_dict(torch.load(path_model))
+        
+        # apply the model to test
+        # load
+        _, dir_dm_input, _, _, _ = ph.get_deep_matcher_input_path(default_blk_res_dir)
+        _, _, test = dm.data.process(
+            path=dir_dm_input,
+            train='train.csv',
+            validation='validation.csv',
+            test='test.csv')
+        print(test.head())
+        model.run_eval(test)

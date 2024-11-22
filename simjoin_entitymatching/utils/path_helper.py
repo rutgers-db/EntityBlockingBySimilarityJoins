@@ -29,11 +29,19 @@ def get_deep_matcher_input_path(default_blk_res_dir=""):
     cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     if default_blk_res_dir == "":
         blk_res_path = '/'.join([cur_parent_dir, "..", "..", "output", "blk_res", "blk_res_dm.csv"])
+        root_dir = '/'.join([cur_parent_dir, "..", "..", "output", "blk_res"])
     else:
         default_blk_res_dir = default_blk_res_dir[ : -1] if default_blk_res_dir[-1] == '/' \
                                                          else default_blk_res_dir
         blk_res_path = '/'.join([default_blk_res_dir, "blk_res_dm.csv"])
-    return blk_res_path
+        root_dir = default_blk_res_dir
+        
+    # subtables
+    path_dm_train = '/'.join([root_dir, "train.csv"])
+    path_dm_validation = '/'.join([root_dir, "validation.csv"])
+    path_dm_test = '/'.join([root_dir, "test.csv"])
+        
+    return blk_res_path, root_dir, path_dm_train, path_dm_validation, path_dm_test
 
 
 def get_chunked_match_res_path(table_id, default_match_res_dir=""):
