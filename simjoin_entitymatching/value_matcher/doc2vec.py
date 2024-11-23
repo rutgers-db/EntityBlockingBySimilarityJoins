@@ -452,14 +452,14 @@ class Doc2Vec:
 
 
     def group_interchangeable_parallel(self, blk_attr, tau, tottable=100, 
-                                       default_icv_dir=""):
+                                       default_icv_dir="", default_match_res_dir=""):
         # parallel
         manager = multiprocessing.Manager()
         return_dict = manager.dict()
         processes = []
         for i in range(tottable):
             pgroup = multiprocessing.Process(target=self._group_interchangeable, 
-                                             args=(blk_attr, i, return_dict))
+                                             args=(blk_attr, i, return_dict, default_match_res_dir))
             processes.append(pgroup)
             pgroup.start()
         # wait

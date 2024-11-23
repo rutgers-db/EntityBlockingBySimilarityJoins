@@ -7,11 +7,13 @@ import py_entitymatching as em
 from typing import Literal
 import pandas as pd
 import os
+from collections import defaultdict
 from sklearn.model_selection import GridSearchCV
 import py_entitymatching.utils.generic_helper as gh
 import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
+from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
 
 
 def _get_recall(gold_graph, candidates, num_golds):
@@ -101,6 +103,7 @@ def _save_neg_match_res(predictions, tableA, tableB):
     
     # save
     pres_df.to_csv("output/exp/match_res0.csv", index=False)
+    pres_df.to_csv("output/exp/match_res.csv", index=False)
     neg_pres_df.to_csv("output/exp/neg_match_res0.csv", index=False)
 
 
@@ -212,13 +215,30 @@ def apply_model(tableA, tableB, exp_rf, E, is_conact=False, prev_pred=None):
                                  append=True, target_attr='predicted', inplace=False, 
                                  return_probs=True, probs_attr='proba')
     print(predictions.head())
+    eval_pred = predictions
     
     if is_conact:
-        predictions = pd.concat([predictions[predictions['predicted'] == 1], prev_pred], ignore_index=True)
-        _set_metadata(predictions, "_id", "ltable_id", "rtable_id", tableA, tableB)
+        idx_map = defaultdict()
+        row_index = prev_pred.index
+        for ridx in row_index:
+            lid = prev_pred.loc[ridx, "ltable_id"]
+            rid = prev_pred.loc[ridx, "rtable_id"]
+            idx_map[(lid, rid)] = ridx
+            
+        predictions = predictions[predictions["predicted"] == 1]
+            
+        for _, row in predictions.iterrows():
+            lid = row["ltable_id"]
+            rid = row["rtable_id"]
+            prev_ridx = idx_map[(lid, rid)]
+            prev_pred.loc[prev_ridx, "predicted"] = 1
+            
+        # _set_metadata(prev_pred, "_id", "ltable_id", "rtable_id", tableA, tableB)
+        
+        eval_pred = prev_pred
     
     # Evaluate the predictions
-    eval_result = em.eval_matches(predictions, 'label', 'predicted')
+    eval_result = em.eval_matches(eval_pred, 'label', 'predicted')
     print("------ report exp model results ------")
     em.print_eval_summary(eval_result)
     print("------ end ------")
@@ -257,6 +277,10 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     pred1 = apply_model(tableA, tableB, model, test)
     # _get_recall(gold_graph, pred1, gold_len)
     
+    # group
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, 
+                                           default_match_res_dir="output/exp")
+    
     # get the negative results
     default_fea_vec_dir = "output/exp"
     print(f"neg fea vec writing to ... {default_fea_vec_dir}")
@@ -273,5 +297,9 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # apply on the second-round test data
     pred3 = apply_model(tableA, tableB, model, test2)
     # _get_recall(gold_graph, pred3, gold_len)
+    
+    '''
+    to be fixed: _set_meta_data reporting "_id" not present
+    '''
     
     
