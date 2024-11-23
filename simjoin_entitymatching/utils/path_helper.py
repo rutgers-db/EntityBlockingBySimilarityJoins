@@ -55,3 +55,25 @@ def get_chunked_match_res_path(table_id, default_match_res_dir=""):
         match_res_path = '/'.join([default_match_res_dir, "match_res" + str(table_id) + ".csv"])
         neg_match_res_path = '/'.join([default_match_res_dir, "neg_match_res" + str(table_id) + ".csv"])
     return match_res_path, neg_match_res_path
+
+
+def get_blk_res_stat_path(default_blk_res_dir=""):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_blk_res_dir == "":
+        path_block_stat = "/".join([cur_parent_dir, "..", "..", "output", "blk_res", "stat.txt"])
+    else:
+        default_blk_res_dir = default_blk_res_dir[ : -1] if default_blk_res_dir[-1] == '/' \
+                                                         else default_blk_res_dir
+        path_block_stat = "/".join([default_blk_res_dir, "stat.txt"])
+    return path_block_stat
+
+
+def get_match_res_stat_path(default_match_res_dir=""):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_match_res_dir == "":
+        path_match_stat = "/".join([cur_parent_dir, "..", "..", "output", "match_res", "stat.txt"])
+    else:
+        default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
+                                                             else default_match_res_dir
+        path_match_stat = "/".join([default_match_res_dir, "stat.txt"])
+    return path_match_stat

@@ -14,6 +14,7 @@ import copy
 import pathlib
 import subprocess
 import cloudpickle
+from typing import Literal
 import py_entitymatching.utils.generic_helper as gh
 # debug
 from py_entitymatching.catalog.catalog import Catalog
@@ -21,6 +22,8 @@ import py_entitymatching.catalog.catalog_manager as cm
 import time
 # self-defined
 from simjoin_entitymatching.feature.feature_base import NewFeatures
+import simjoin_entitymatching.utils.path_helper as ph
+
 
 class RandomForest:
 	'''
@@ -95,7 +98,7 @@ class RandomForest:
 			print("F1 Score   : %.4f" % f1)
 			print(cur_golds, num_golds, len(candidates))
 
-		return recall, density
+		return recall, density, f1
  
  
 	def get_recall_check(self, candidates, num_golds, check_file_path, check=0):
@@ -294,7 +297,22 @@ class RandomForest:
 				print(len(self.features.feature_name), file=fname_file)
 				for fname in self.features.feature_name:
 					print(fname, file=fname_file)
-		
+  
+  
+	def re_sample_data(self, tableA, tableB, sample_size=-1, default_blk_res_dir=""):
+		path_blk_res_stat = ph.get_blk_res_stat_path(default_blk_res_dir)
+		with open(path_blk_res_stat, "r") as stat_file:
+			stat_line = stat_file.readlines()
+			total_table, _ = (int(val) for val in stat_line[0].split())
+   
+		for tab_id in range(total_table):
+			path_blk_res = ph.get_chunked_blk_res_path(tab_id, default_blk_res_dir)
+			blk_res = pd.read_csv(path_blk_res)
+			tot_blk_res = blk_res if tab_id == 0 else pd.concat([tot_blk_res, blk_res], ignore_index=True)
+   
+		self._set_metadata(tot_blk_res, key="_id", fk_ltable="ltable_id", fk_rtable="rtable_id", ltable=tableA, rtable=tableB)
+		self.cand = tot_blk_res if sample_size == -1 else em.sample_table(tot_blk_res, sample_size=sample_size)
+  
 	
 	def train_model_normal(self, tableA, tableB, num_tree, sample_size, if_balanced=True):
 		if len(self.cand) < sample_size and sample_size != -1:
@@ -408,7 +426,8 @@ class RandomForest:
                             			 attrs_after='label', 
 										 show_progress=False)
 
-		train_H = em.impute_table(train_H, exclude_attrs=["id", "ltable_id", "rtable_id", "label"], strategy="mean")
+		# train_H = em.impute_table(train_H, exclude_attrs=["id", "ltable_id", "rtable_id", "label"], strategy="mean")
+		train_H = em.impute_table(train_H, exclude_attrs=["id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
   
 		print(train_H.head())
   
@@ -636,7 +655,9 @@ class RandomForest:
 									 ltable=tableA, rtable=tableB,
 									 fk_ltable="ltable_id", fk_rtable="rtable_id")
 		self.label_cand(H)
-		H = em.impute_table(H, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
+  
+		# H = em.impute_table(H, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
+		H = em.impute_table(H, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
 
 		predictions = self.rf.predict(table=H, exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'], 
 								 	  append=True, target_attr='predicted', inplace=True, 

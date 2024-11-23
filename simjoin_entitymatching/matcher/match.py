@@ -1,11 +1,12 @@
 # author: Yunqi Li
 # contact: liyunqixa@gmail.com
+from typing import Literal
+import pathlib
 import simjoin_entitymatching.matcher.random_forest as randf
 import simjoin_entitymatching.value_matcher.doc2vec as docv
 import simjoin_entitymatching.blocker.graph as bg
+import simjoin_entitymatching.utils.path_helper as ph
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
-from typing import Literal
-import pathlib
 
 
 def train_model(tableA, tableB, gold_graph, blocking_attr, 
@@ -73,13 +74,7 @@ def train_model(tableA, tableB, gold_graph, blocking_attr,
 def match_via_megallen_features(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
                                at_ltable=None, at_rtable=None, group=None, cluster=None, default_blk_res_dir="", 
                                default_match_res_dir="", default_fea_names_dir=""):
-    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
-    if default_blk_res_dir == "":
-        path_block_stat = "/".join([cur_parent_dir, "..", "..", "output", "blk_res", "stat.txt"])
-    else:
-        default_blk_res_dir = default_blk_res_dir[ : -1] if default_blk_res_dir[-1] == '/' \
-                                                         else default_blk_res_dir
-        path_block_stat = "/".join([default_blk_res_dir, "stat.txt"])
+    path_block_stat = ph.get_blk_res_stat_path(default_blk_res_dir)
     
     with open(path_block_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
@@ -108,13 +103,7 @@ def match_via_megallen_features(tableA, tableB, gold_graph, gold_len, model_path
 def match_via_cpp_features(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
                            numeric_attr, at_ltable=None, at_rtable=None, default_blk_res_dir="", default_match_res_dir="", 
                            default_fea_names_dir="", default_icv_dir=""):
-    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
-    if default_blk_res_dir == "":
-        path_block_stat = "/".join([cur_parent_dir, "..", "..", "output", "blk_res", "stat.txt"])
-    else:
-        default_blk_res_dir = default_blk_res_dir[ : -1] if default_blk_res_dir[-1] == '/' \
-                                                         else default_blk_res_dir
-        path_block_stat = "/".join([default_blk_res_dir, "stat.txt"])
+    path_block_stat = ph.get_blk_res_stat_path(default_blk_res_dir)
     
     with open(path_block_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
@@ -146,13 +135,7 @@ def match_via_cpp_features(tableA, tableB, gold_graph, gold_len, model_path, is_
 def match_on_neg_pres(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
                       numeric_attr, at_ltable=None, at_rtable=None, default_match_res_dir="",
                       default_fea_names_dir="", default_icv_dir=""):
-    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
-    if default_match_res_dir == "":
-        path_match_stat = "/".join([cur_parent_dir, "..", "..", "output", "match_res", "stat.txt"])
-    else:
-        default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
-                                                             else default_match_res_dir
-        path_match_stat = "/".join([default_match_res_dir, "stat.txt"])
+    path_match_stat = ph.get_match_res_stat_path(default_match_res_dir)
     
     with open(path_match_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
@@ -186,13 +169,7 @@ def match_on_neg_pres(tableA, tableB, gold_graph, gold_len, model_path, is_inter
 def debug_rf_matcher(tableA, tableB, gold_graph, gold_len, model_path, is_interchangeable, flag_consistent, 
                      numeric_attr, at_ltable=None, at_rtable=None, default_match_res_dir="",
                      default_fea_names_dir="", default_icv_dir=""):
-    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
-    if default_match_res_dir == "":
-        path_match_stat = "/".join([cur_parent_dir, "..", "..", "output", "match_res", "stat.txt"])
-    else:
-        default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
-                                                             else default_match_res_dir
-        path_match_stat = "/".join([default_match_res_dir, "stat.txt"])
+    path_match_stat = ph.get_match_res_stat_path(default_match_res_dir)
     
     with open(path_match_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
