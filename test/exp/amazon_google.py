@@ -44,31 +44,31 @@ def main(turn, dtype, mode="match_exp"):
     attr_types_ltable['manufacturer'] = "str_eq_1w"
     attr_types_rtable['manufacturer'] = "str_eq_1w"
     
+    # select representative / most informative attribute
+    representativeA = exp_utils.get_representative_attr(tableA, tableB)
+
+    # sample a subset for training
+    run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
+                step2_tau=0.18, num_data=2)
+
+    # train the model and build the graph
+    _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
+                            num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
+                            inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+
+    # extract the rule-based blocker
+    extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
+                        additional_rule_path=None, optimal_rule_path=None)
+
+    # block
+    run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
+                        path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
+                        table_size=100000, is_join_topk=0, is_idf_weighted=1, 
+                        num_data=2)
+    
     if mode == "match_exp":
         run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, len(gold), impute_strategy="mean")
     else:
-        # select representative / most informative attribute
-        representativeA = exp_utils.get_representative_attr(tableA, tableB)
-
-        # sample a subset for training
-        run_sample_lib(sample_strategy="down", blocking_attr="title", cluster_tau=0.9, sample_tau=4.0, 
-                    step2_tau=0.18, num_data=2)
-
-        # train the model and build the graph
-        _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
-                                num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
-                                inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
-
-        # extract the rule-based blocker
-        extract_block_rules(trigraph=trigraph, rule_path=path_rule, move_strategy="basic", 
-                            additional_rule_path=None, optimal_rule_path=None)
-
-        # block
-        run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
-                            path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
-                            table_size=100000, is_join_topk=0, is_idf_weighted=1, 
-                            num_data=2)
-        
         # first-round match
         match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
                                     at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
