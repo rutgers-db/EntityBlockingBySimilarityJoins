@@ -232,8 +232,9 @@ def apply_model(tableA, tableB, exp_rf, E, is_conact=False, prev_pred=None):
             rid = row["rtable_id"]
             prev_ridx = idx_map[(lid, rid)]
             prev_pred.loc[prev_ridx, "predicted"] = 1
-            
-        # _set_metadata(prev_pred, "_id", "ltable_id", "rtable_id", tableA, tableB)
+        
+        # print(prev_pred.columns)
+        _set_metadata(prev_pred, "id", "ltable_id", "rtable_id", tableA, tableB)
         
         eval_pred = prev_pred
     
@@ -291,15 +292,14 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     H2 = pd.read_csv("output/exp/feature_vec0.csv")
     _label_cand(gold_graph, H2)
     H2.rename(columns={"id": "_id"}, inplace=True)
+    _set_metadata(H2, "_id", "ltable_id", "rtable_id", tableA, tableB)
+    if impute_strategy == "constant":
+        em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
+    else:
+        em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
     pred2 = apply_model(tableA, tableB, model, H2, True, pred1)
     # _get_recall(gold_graph, pred2, gold_len)
     
     # apply on the second-round test data
     pred3 = apply_model(tableA, tableB, model, test2)
     # _get_recall(gold_graph, pred3, gold_len)
-    
-    '''
-    to be fixed: _set_meta_data reporting "_id" not present
-    '''
-    
-    

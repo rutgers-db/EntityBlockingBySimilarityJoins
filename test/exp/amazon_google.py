@@ -45,7 +45,7 @@ def main(turn, dtype, mode="match_exp"):
     attr_types_rtable['manufacturer'] = "str_eq_1w"
     
     if mode == "match_exp":
-        run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, len(gold), impute_strategy="constant")
+        run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, len(gold), impute_strategy="mean")
     else:
         # select representative / most informative attribute
         representativeA = exp_utils.get_representative_attr(tableA, tableB)
