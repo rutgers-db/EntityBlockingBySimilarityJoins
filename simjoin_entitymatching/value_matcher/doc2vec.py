@@ -427,6 +427,7 @@ class Doc2Vec:
             partial_name = "/".join([default_match_res_dir, "match_res" + str(tableid) + ".csv"])    
         partial_match_res = pd.read_csv(partial_name)
 
+        # print(partial_match_res.columns)
         for _, row in partial_match_res.iterrows():
             ori_lstr, ori_lid = row[lattr], row["ltable_id"]
             ori_rstr, ori_rid = row[rattr], row["rtable_id"]

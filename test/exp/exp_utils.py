@@ -7,7 +7,9 @@ from simjoin_entitymatching.utils.utils import read_csv_table, read_csv_golds, d
 
 
 def get_paths(data_name, data_type, exp_turn):
-    dir_path = "../datasets/tables/megallen/amazon-google-structured"
+    data_name_split = data_name.split('_')
+    dir_name = '-'.join([data_name_split[0], data_name_split[1], data_type])
+    dir_path = "../datasets/tables/megallen/" + dir_name
     path_tableA = "/".join([dir_path, "table_a.csv"])
     path_tableB = "/".join([dir_path, "table_b.csv"])
     path_gold = "/".join([dir_path, "gold.csv"])

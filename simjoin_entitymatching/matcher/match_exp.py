@@ -107,75 +107,83 @@ def _save_neg_match_res(predictions, tableA, tableB):
     neg_pres_df.to_csv("output/exp/neg_match_res0.csv", index=False)
 
 
-def split_and_dump_data(tableA, tableB, gold_graph, impute_strategy=Literal["mean", "constant"], default_blk_res_dir=""):
+def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_index=None, E_index=None, 
+                        impute_strategy=Literal["mean", "constant"], default_blk_res_dir=""):
     path_blk_res_stat = ph.get_blk_res_stat_path(default_blk_res_dir)
     with open(path_blk_res_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
         total_table, _ = (int(val) for val in stat_line[0].split())
-
-    for tab_id in range(total_table):
-        # read H1
-        path_fea_vec = ph.get_chunked_fea_vec_path(tab_id, default_blk_res_dir)
-        H1 = em.read_csv_metadata(path_fea_vec, 
-                                  key="id", 
-                                  ltable=tableA, rtable=tableB,
-                                  fk_ltable="ltable_id", fk_rtable="rtable_id")
-        H1.rename(columns={"id": "_id"}, inplace=True)
-        em.set_key(H1, "_id")
         
-        # read H2
-        path_fea_vec = path_fea_vec[ : -4] + "_py.csv"
-        H2 = em.read_csv_metadata(path_fea_vec, 
-                                  key="_id", 
-                                  ltable=tableA, rtable=tableB,
-                                  fk_ltable="ltable_id", fk_rtable="rtable_id")
-        
-        # label and impute    
-        _label_cand(gold_graph, H1)
-        _label_cand(gold_graph, H2)
-        
-        if impute_strategy == "mean":
-            H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
-            H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
-        else:
-            H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
-            H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
-            
-        # conact
-        tot_H1 = H1 if tab_id == 0 else pd.concat([tot_H1, H1], ignore_index=True)
-        tot_H2 = H2 if tab_id == 0 else pd.concat([tot_H2, H2], ignore_index=True)
-        
-    tot_H1 = _set_metadata(tot_H1, key="_id", fk_ltable="ltable_id", fk_rtable="rtable_id", ltable=tableA, rtable=tableB)
-    tot_H2 = _set_metadata(tot_H2, key="_id", fk_ltable="ltable_id", fk_rtable="rtable_id", ltable=tableA, rtable=tableB)
-    
-    # split
-    # T: train, E: test
-    # T : E = 1 : 1
-    TE = em.split_train_test(tot_H1, train_proportion=0.5, random_state=0)
-    T = TE["train"]
-    E = TE["test"]
-    T2 = tot_H2.loc[T.index.values]
-    E2 = tot_H2.loc[E.index.values]
-    T2.reset_index(drop=True, inplace=True)
-    E2.reset_index(drop=True, inplace=True)
-    
     # dump
     exp_dir = "output/exp"
     is_exist = os.path.exists(exp_dir)
     if not is_exist:
         os.mkdir(exp_dir)
         print(f"experiments directory is not presented, creat a new one")
-    
-    path_train = "/".join([exp_dir, "train1.csv"])
-    path_test = "/".join([exp_dir, "test1.csv"])
-    path_train2 = "/".join([exp_dir, "train2.csv"])
-    path_test2 = "/".join([exp_dir, "test2.csv"])
-    T.to_csv(path_train, index=False)
-    E.to_csv(path_test, index=False)
-    T2.to_csv(path_train2, index=False)
-    E2.to_csv(path_test2, index=False)
-    
-    return T, E, T2, E2
+
+    for tab_id in range(total_table):
+        if external_extract == True:
+            # read H1
+            path_fea_vec = ph.get_chunked_fea_vec_path(tab_id, default_blk_res_dir)
+            H1 = em.read_csv_metadata(path_fea_vec, 
+                                      key="id", 
+                                      ltable=tableA, rtable=tableB,
+                                      fk_ltable="ltable_id", fk_rtable="rtable_id")
+            H1.rename(columns={"id": "_id"}, inplace=True)
+            em.set_key(H1, "_id")
+            # label and impute
+            _label_cand(gold_graph, H1)
+            if impute_strategy == "mean":
+                H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
+            else:
+                H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
+            # concat
+            tot_H1 = H1 if tab_id == 0 else pd.concat([tot_H1, H1], ignore_index=True)
+        else:
+            # read H2
+            path_fea_vec = ph.get_chunked_fea_vec_path(tab_id, default_blk_res_dir)
+            path_fea_vec = path_fea_vec[ : -4] + "_py.csv"
+            H2 = em.read_csv_metadata(path_fea_vec, 
+                                      key="_id", 
+                                      ltable=tableA, rtable=tableB,
+                                      fk_ltable="ltable_id", fk_rtable="rtable_id")
+            # label and impute    
+            _label_cand(gold_graph, H2)
+            if impute_strategy == "mean":
+                H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
+            else:
+                H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
+            # concat
+            tot_H2 = H2 if tab_id == 0 else pd.concat([tot_H2, H2], ignore_index=True)
+        
+    # split
+    # T: train, E: test
+    # T : E = 1 : 1
+    if external_extract == True:
+        tot_H1 = _set_metadata(tot_H1, key="_id", fk_ltable="ltable_id", fk_rtable="rtable_id", ltable=tableA, rtable=tableB)
+        
+        T2 = tot_H1.loc[T_index.values]
+        E2 = tot_H1.loc[E_index.values]
+        
+        path_train2 = "/".join([exp_dir, "train2.csv"])
+        path_test2 = "/".join([exp_dir, "test2.csv"])
+        T2.to_csv(path_train2, index=False)
+        E2.to_csv(path_test2, index=False)
+        
+        return T2, E2
+    else:
+        tot_H2 = _set_metadata(tot_H2, key="_id", fk_ltable="ltable_id", fk_rtable="rtable_id", ltable=tableA, rtable=tableB)
+        
+        TE = em.split_train_test(tot_H2, train_proportion=0.5, random_state=0)
+        T = TE["train"]
+        E = TE["test"]
+        
+        path_train = "/".join([exp_dir, "train1.csv"])
+        path_test = "/".join([exp_dir, "test1.csv"])
+        T.to_csv(path_train, index=False)
+        E.to_csv(path_test, index=False)
+        
+        return T, E
 
 
 def train_model(T, num_tree=10):
@@ -263,13 +271,8 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     run_feature_megallen(tableA, tableB, feature_tab=rf.features, total_table=total_table, is_interchangeable=0, 
                          flag_consistent=0, attrs_after=None, group=None, cluster=None, n_jobs=-1)
     
-    schemas = list(tableA)[1:]
-    schemas = [attr for attr in schemas if attr not in ["price", "year"]]
-    run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
-                    attrs=schemas, usage="match")
-    
     # split original data
-    train, test, train2, test2 = split_and_dump_data(tableA, tableB, gold_graph, impute_strategy=impute_strategy)
+    train, test = split_and_dump_data(tableA, tableB, gold_graph, impute_strategy=impute_strategy)
     
     # train the model on half portion of the blk_res
     model = train_model(train)
@@ -281,6 +284,11 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # group
     group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, 
                                            default_match_res_dir="output/exp")
+    
+    schemas = list(tableA)[1:]
+    schemas = [attr for attr in schemas if attr not in ["price", "year"]]
+    run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
+                    attrs=schemas, usage="match")
     
     # get the negative results
     default_fea_vec_dir = "output/exp"
@@ -299,6 +307,9 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
     pred2 = apply_model(tableA, tableB, model, H2, True, pred1)
     # _get_recall(gold_graph, pred2, gold_len)
+    
+    _, test2 = split_and_dump_data(tableA, tableB, gold_graph, external_extract=True, T_index=train.index, 
+                                        E_index=test.index, impute_strategy=impute_strategy)
     
     # apply on the second-round test data
     pred3 = apply_model(tableA, tableB, model, test2)

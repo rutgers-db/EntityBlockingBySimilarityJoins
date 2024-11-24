@@ -89,7 +89,7 @@ def main(turn, dtype, mode="match_exp"):
         
         # second-round match: on the entire blocking results
         match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-                            at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+                               at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
         
         exp_utils.cat_match_res_output_second(data_name, dtype, turn)
         

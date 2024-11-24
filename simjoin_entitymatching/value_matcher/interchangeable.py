@@ -191,7 +191,8 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 		print('training done', flush=True)
 		for attr_ in attrs:
 			doc2vec.load_model(usage=1, attr=attr_, default_model_dir=default_vmatcher_dir)
-			grp, clt = doc2vec.group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir)
+			grp, clt = doc2vec.group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
+                                                     		  default_match_res_dir)
 			group[attr_], cluster[attr_] = grp, clt
 
 	elif group_strategy == 'mix':
