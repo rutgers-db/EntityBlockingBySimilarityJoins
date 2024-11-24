@@ -62,9 +62,9 @@ def main(turn, dtype, mode="match_exp"):
 
     # block
     run_simjoin_block_lib(blocking_attr="title", blocking_attr_type="str_bt_5w_10w", blocking_top_k=150000, 
-                        path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
-                        table_size=100000, is_join_topk=0, is_idf_weighted=1, 
-                        num_data=2)
+                          path_tableA="", path_tableB="", path_gold="", path_rule=path_rule, 
+                          table_size=100000, is_join_topk=0, is_idf_weighted=1, 
+                          num_data=2)
     
     if mode == "match_exp":
         run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, len(gold), impute_strategy="mean")
@@ -84,10 +84,10 @@ def main(turn, dtype, mode="match_exp"):
         group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2)
         
         # second-round match: only on negative results of the first-round    
-        # match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-        #                   at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+        match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+                          at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
         
-        # exp_utils.cat_match_res_output_mid(data_name, dtype, turn)
+        exp_utils.cat_match_res_output_mid(data_name, dtype, turn)
         
         # second-round match: on the entire blocking results
         match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
