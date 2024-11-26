@@ -105,6 +105,54 @@ def _save_neg_match_res(predictions, tableA, tableB):
     pres_df.to_csv("output/exp/match_res0.csv", index=False)
     pres_df.to_csv("output/exp/match_res.csv", index=False)
     neg_pres_df.to_csv("output/exp/neg_match_res0.csv", index=False)
+    
+    
+def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, tableB):
+    # need to rename since "itertuples()" can not parse the attrs with space or underline at the front
+    predictions.rename(columns={'_id':'id'}, inplace=True)
+    
+    # Save predictions
+    columns_ = ["_id", "ltable_id", "rtable_id"]
+    schemas = list(tableA)[1:]
+    lsch = ["ltable_" + sch for sch in schemas]
+    rsch = ["rtable_" + sch for sch in schemas]
+    columns_.extend(lsch)
+    columns_.extend(rsch)
+    columns_.extend(["first proba", "second proba"])
+    
+    rowsA = list(tableA.index)
+    rowsB = list(tableB.index)
+    mapA = {tableA.loc[rowidx, 'id'] : rowidx for rowidx in rowsA}
+    mapB = {tableB.loc[rowidx, 'id'] : rowidx for rowidx in rowsB}
+    
+    true_positive = pd.DataFrame(columns=columns_)
+    false_positive = pd.DataFrame(columns=columns_)
+            
+    for _, row in predictions.iterrows():
+        lid = row["ltable_id"]
+        rid = row["rtable_id"]
+        prev_ridx = idx_map[(lid, rid)]
+
+        # change prediction
+        if prev_predictions.loc[prev_ridx, "predicted"] == 0:
+            row_id = row["id"]
+            lidx = mapA[lid]
+            ridx = mapB[rid]
+            new_line = [row_id, lid, rid]
+            new_line.extend([tableA.loc[lidx, sch] for sch in schemas])
+            new_line.extend([tableB.loc[ridx, sch] for sch in schemas])
+            new_line.extend([prev_predictions.loc[prev_ridx, "proba"], row["proba"]])
+            
+            # true positive
+            if row["label"] == 1:
+                true_positive.loc[len(true_positive)] = new_line
+            # false positive
+            elif row["label"] == 0:
+                false_positive.loc[len(false_positive)] = new_line
+    
+    # save
+    true_positive.to_csv("output/debug/true_positive_second.csv", index=False)
+    false_positive.to_csv("output/debug/false_positive_second.csv", index=False)
 
 
 def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_index=None, E_index=None, 
@@ -135,7 +183,7 @@ def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_in
             _label_cand(gold_graph, H1)
             if impute_strategy == "mean":
                 H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
-            else:
+            elif impute_strategy == "constant":
                 H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
             # concat
             tot_H1 = H1 if tab_id == 0 else pd.concat([tot_H1, H1], ignore_index=True)
@@ -151,7 +199,7 @@ def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_in
             _label_cand(gold_graph, H2)
             if impute_strategy == "mean":
                 H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
-            else:
+            elif impute_strategy == "constant":
                 H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
             # concat
             tot_H2 = H2 if tab_id == 0 else pd.concat([tot_H2, H2], ignore_index=True)
@@ -216,7 +264,7 @@ def train_model(T, num_tree=10):
     return exp_rf
     
     
-def apply_model(tableA, tableB, exp_rf, E, is_conact=False, prev_pred=None):
+def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
     _set_metadata(E, "_id", "ltable_id", "rtable_id", tableA, tableB)
     # Predict on E
     predictions = exp_rf.predict(table=E, exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'], 
@@ -225,7 +273,8 @@ def apply_model(tableA, tableB, exp_rf, E, is_conact=False, prev_pred=None):
     print(predictions.head())
     eval_pred = predictions
     
-    if is_conact:
+
+    if is_concat:
         idx_map = defaultdict()
         row_index = prev_pred.index
         for ridx in row_index:
@@ -234,6 +283,9 @@ def apply_model(tableA, tableB, exp_rf, E, is_conact=False, prev_pred=None):
             idx_map[(lid, rid)] = ridx
             
         predictions = predictions[predictions["predicted"] == 1]
+        
+        # save results for debug
+        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
             
         for _, row in predictions.iterrows():
             lid = row["ltable_id"]
@@ -282,7 +334,7 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # _get_recall(gold_graph, pred1, gold_len)
     
     # group
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, 
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2, 
                                            default_match_res_dir="output/exp")
     
     schemas = list(tableA)[1:]
@@ -301,15 +353,15 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     _label_cand(gold_graph, H2)
     H2.rename(columns={"id": "_id"}, inplace=True)
     _set_metadata(H2, "_id", "ltable_id", "rtable_id", tableA, tableB)
-    if impute_strategy == "constant":
+    if impute_strategy == "mean":
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
-    else:
+    elif impute_strategy == "constant":
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
     pred2 = apply_model(tableA, tableB, model, H2, True, pred1)
     # _get_recall(gold_graph, pred2, gold_len)
     
     _, test2 = split_and_dump_data(tableA, tableB, gold_graph, external_extract=True, T_index=train.index, 
-                                        E_index=test.index, impute_strategy=impute_strategy)
+                                   E_index=test.index, impute_strategy=impute_strategy)
     
     # apply on the second-round test data
     pred3 = apply_model(tableA, tableB, model, test2)
