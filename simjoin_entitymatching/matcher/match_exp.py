@@ -7,8 +7,13 @@ import py_entitymatching as em
 from typing import Literal
 import pandas as pd
 import os
+import joblib
 from collections import defaultdict
 from sklearn.model_selection import GridSearchCV
+import gensim.utils
+from numpy import dot
+from numpy.linalg import norm
+
 import py_entitymatching.utils.generic_helper as gh
 import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.matcher.random_forest as randf
@@ -96,6 +101,7 @@ def _save_neg_match_res(predictions, tableA, tableB):
         rval = [tableB.loc[ridx, sch] for sch in schemas]
         new_line.extend(lval)
         new_line.extend(rval)
+        
         if int(pres) == 1:
             pres_df.loc[len(pres_df)] = new_line
         else:
@@ -118,7 +124,7 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
     rsch = ["rtable_" + sch for sch in schemas]
     columns_.extend(lsch)
     columns_.extend(rsch)
-    columns_.extend(["first proba", "second proba"])
+    columns_.extend(["first proba", "second proba", "cosine"])
     
     rowsA = list(tableA.index)
     rowsB = list(tableB.index)
@@ -127,6 +133,8 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
     
     true_positive = pd.DataFrame(columns=columns_)
     false_positive = pd.DataFrame(columns=columns_)
+    
+    value_matcher = joblib.load("simjoin_entitymatching/value_matcher/model/doc2vec_title.joblib")
             
     for _, row in predictions.iterrows():
         lid = row["ltable_id"]
@@ -143,6 +151,15 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
             new_line.extend([tableB.loc[ridx, sch] for sch in schemas])
             new_line.extend([prev_predictions.loc[prev_ridx, "proba"], row["proba"]])
             
+            l_title = tableA.loc[lidx, "title"]
+            r_title = tableB.loc[ridx, "title"]
+            l_docs = gensim.utils.simple_preprocess(l_title)
+            r_docs = gensim.utils.simple_preprocess(r_title)
+            l_vec = value_matcher.infer_vector(l_docs)
+            r_vec = value_matcher.infer_vector(r_docs)
+            cos_sim = dot(l_vec, r_vec) / (norm(l_vec) * norm(r_vec))
+            new_line.append(cos_sim)
+            
             # true positive
             if row["label"] == 1:
                 true_positive.loc[len(true_positive)] = new_line
@@ -156,7 +173,7 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
 
 
 def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_index=None, E_index=None, 
-                        impute_strategy=Literal["mean", "constant"], default_blk_res_dir=""):
+                        impute_strategy=Literal["mean", "constant", "none"], default_blk_res_dir=""):
     path_blk_res_stat = ph.get_blk_res_stat_path(default_blk_res_dir)
     with open(path_blk_res_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
@@ -291,7 +308,8 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
             lid = row["ltable_id"]
             rid = row["rtable_id"]
             prev_ridx = idx_map[(lid, rid)]
-            prev_pred.loc[prev_ridx, "predicted"] = 1
+            if prev_pred.loc[prev_ridx, "proba"] >= 0.05:
+                prev_pred.loc[prev_ridx, "predicted"] = 1
         
         # print(prev_pred.columns)
         _set_metadata(prev_pred, "id", "ltable_id", "rtable_id", tableA, tableB)
@@ -309,7 +327,7 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
     return predictions
     
     
-def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, impute_strategy=Literal["mean", "constant"]):
+def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, impute_strategy=Literal["mean", "constant", "none"]):
     # select features
     rf = randf.RandomForest()
     rf.generate_features(tableA, tableB, at_ltable=at_ltable, at_rtable=at_rtable, wrtie_fea_names=True)
@@ -334,7 +352,7 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # _get_recall(gold_graph, pred1, gold_len)
     
     # group
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2, 
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, 
                                            default_match_res_dir="output/exp")
     
     schemas = list(tableA)[1:]
