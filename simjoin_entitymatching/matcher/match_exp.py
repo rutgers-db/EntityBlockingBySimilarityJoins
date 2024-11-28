@@ -16,6 +16,7 @@ from numpy.linalg import norm
 
 import py_entitymatching.utils.generic_helper as gh
 import simjoin_entitymatching.utils.path_helper as ph
+import simjoin_entitymatching.utils.visualize as vis
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
@@ -263,7 +264,7 @@ def train_model(T, num_tree=10):
     }
 
     grid_search = GridSearchCV(estimator=exp_rf.clf, param_grid=param_grid,
-                                cv=5, n_jobs=1, verbose=2)
+                                cv=5, n_jobs=-1, verbose=2)
     
     # process the feature tables to numpy ndarray
     exclude_attrs = ["_id", "ltable_id", "rtable_id", "label"]
@@ -384,3 +385,5 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # apply on the second-round test data
     pred3 = apply_model(tableA, tableB, model, test2)
     # _get_recall(gold_graph, pred3, gold_len)
+    
+    vis.show_semantic_distribution()
