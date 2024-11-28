@@ -8,6 +8,7 @@ from typing import Literal
 import pandas as pd
 import os
 import joblib
+import networkx as nx
 from collections import defaultdict
 from sklearn.model_selection import GridSearchCV
 import gensim.utils
@@ -16,7 +17,7 @@ from numpy.linalg import norm
 
 import py_entitymatching.utils.generic_helper as gh
 import simjoin_entitymatching.utils.path_helper as ph
-import simjoin_entitymatching.utils.visualize as vis
+import simjoin_entitymatching.utils.visualize_helper as vis
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
@@ -293,12 +294,18 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
     
 
     if is_concat:
+        trans_graph = nx.Graph()
+        
         idx_map = defaultdict()
         row_index = prev_pred.index
         for ridx in row_index:
             lid = prev_pred.loc[ridx, "ltable_id"]
             rid = prev_pred.loc[ridx, "rtable_id"]
             idx_map[(lid, rid)] = ridx
+            if prev_pred.loc[ridx, "predicted"] == 1:
+                l_node = str(lid) + "A"
+                r_node = str(rid) + "B"
+                trans_graph.add_edge(l_node, r_node)
             
         predictions = predictions[predictions["predicted"] == 1]
         
@@ -309,8 +316,12 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
             lid = row["ltable_id"]
             rid = row["rtable_id"]
             prev_ridx = idx_map[(lid, rid)]
+            l_node = str(lid) + "A"
+            r_node = str(rid) + "B"
+            # if trans_graph.has_node(l_node) and trans_graph.has_node(r_node):
+            #     if len(nx.common_neighbors(trans_graph, l_node, r_node)) >= 1:
             if prev_pred.loc[prev_ridx, "proba"] >= 0.05:
-                prev_pred.loc[prev_ridx, "predicted"] = 1
+                    prev_pred.loc[prev_ridx, "predicted"] = 1
         
         # print(prev_pred.columns)
         _set_metadata(prev_pred, "id", "ltable_id", "rtable_id", tableA, tableB)
@@ -386,4 +397,4 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     pred3 = apply_model(tableA, tableB, model, test2)
     # _get_recall(gold_graph, pred3, gold_len)
     
-    vis.show_semantic_distribution()
+    # vis.show_semantic_distribution()

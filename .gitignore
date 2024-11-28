@@ -2,6 +2,7 @@
 *.csv
 *.txt
 *.joblib
+*.png
 
 <<<<<<< Updated upstream
 *.so 
