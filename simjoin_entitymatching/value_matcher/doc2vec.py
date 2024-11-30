@@ -12,7 +12,10 @@ import time
 import subprocess
 import multiprocessing
 import re
+import networkx as nx
+
 from simjoin_entitymatching.value_matcher.utils import DSU, run_cosine_exe
+import simjoin_entitymatching.utils.path_helper as ph
 
 # debug
 from py_entitymatching.catalog.catalog import Catalog
@@ -264,14 +267,7 @@ class Doc2Vec:
         '''
 
         # label
-        if default_icv_dir == "":
-            vec_path = "/".join([self.cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
-            vec_label_path = "/".join([self.cur_parent_dir, "ic_values", "vec_interchangeable_label.txt"])
-        else:
-            default_icv_dir = default_icv_dir[ : -1] if default_icv_dir[-1] == '/' \
-                                                     else default_icv_dir
-            vec_path = "/".join([default_icv_dir, "vec_interchangeable.txt"])
-            vec_label_path = "/".join([default_icv_dir, "vec_interchangeable_label.txt"])
+        vec_path, vec_label_path = ph.get_icval_vec_path(default_icv_dir)
         run_cosine_exe(vec_path, vec_label_path, tau)
 
         # read
@@ -293,6 +289,36 @@ class Doc2Vec:
             group[bag_of_words[fa]].add(doc)
 
         return group
+    
+    
+    def _label_and_group_graph(self, tau, pair_list, word2id, transitive_closure=False, 
+                               default_icv_dir=""):
+        '''
+        use the (undirected) graph instead of dsu to group interchangeable values
+        '''
+        
+        # label
+        path_vec, path_vec_label = ph.get_icval_vec_path(default_icv_dir)
+        run_cosine_exe(path_vec, path_vec_label, tau)
+        
+        # graph
+        graph = nx.Graph()
+        graph.add_nodes_from(word2id)
+        
+        # read
+        with open(path_vec_label, "r") as laebl_file:
+            labels = laebl_file.readlines()
+            if(len(labels) != len(pair_list)):
+                raise ValueError(f"Error in vec label file: {len(labels)}, {len(pair_list)}")
+            for idx, row in enumerate(pair_list):
+                if labels[idx] == "1\n":
+                    lid = word2id[tuple(row[0])]
+                    rid = word2id[tuple(row[1])]
+                    graph.add_edge(lid, rid)
+                    
+        # transitive colusre
+        raise NotImplementedError(f"transitive closure not implemented!")
+                
     
 
     def _flush_group_and_cluster(self, blk_attr, ori_grp, ori_clt, 
@@ -419,12 +445,7 @@ class Doc2Vec:
         words_list, pair_list, vec_list = [], [], []
         ori_doc2pre_doc = defaultdict(set)
 
-        if default_match_res_dir == "":
-            partial_name = "/".join([self.cur_parent_dir, "..", "..", "output", "match_res", "match_res" + str(tableid) + ".csv"])
-        else:
-            default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
-                                                                 else default_match_res_dir
-            partial_name = "/".join([default_match_res_dir, "match_res" + str(tableid) + ".csv"])    
+        partial_name, _ = ph.get_chunked_match_res_path(tableid, default_match_res_dir)    
         partial_match_res = pd.read_csv(partial_name)
 
         # print(partial_match_res.columns)
@@ -450,6 +471,41 @@ class Doc2Vec:
         bag_of_words = set(words_list)
 
         return_dict[tableid] = (bag_of_words, pair_list, vec_list, ori_doc2pre_doc)
+        
+        
+    def _group_interchangeable_external(self, target_attr, tableid, return_dict,
+                                        default_match_res_dir=""):
+        '''
+        worker for grouping each chunk of match result
+        used for external grouping using c++
+        '''
+        
+        # apply
+        lattr = "ltable_" + target_attr
+        rattr = "rtable_" + target_attr
+        vec_dict = defaultdict()
+
+        # read
+        partial_name, _ = ph.get_chunked_match_res_path(tableid, default_match_res_dir)   
+        partial_match_res = pd.read_csv(partial_name)
+        
+        # infer
+        for _, row in partial_match_res.iterrows():
+            ori_lstr = row[lattr]
+            ori_rstr = row[rattr]
+            if pd.isnull(ori_lstr) == True or pd.isnull(ori_rstr) == True:
+                continue
+            # process to model
+            lstr = utils.simple_preprocess(ori_lstr)
+            rstr = utils.simple_preprocess(ori_rstr)
+            # infer vecs
+            lvec = self.model.infer_vector(lstr)
+            rvec = self.model.infer_vector(rstr)
+            # add
+            vec_dict[ori_lstr] = lvec
+            vec_dict[ori_rstr] = rvec
+
+        return_dict[tableid] = vec_dict
 
 
     def group_interchangeable_parallel(self, blk_attr, tau, tottable=100, 
@@ -485,12 +541,7 @@ class Doc2Vec:
         word2id = { word: idx for idx, word in enumerate(bag_of_words) }
 
         # clustering
-        if default_icv_dir == "":
-            vec_path = "/".join([self.cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
-        else:
-            default_icv_dir = default_icv_dir[ : -1] if default_icv_dir[-1] == '/' \
-                                                     else default_icv_dir
-            vec_path = "/".join([default_icv_dir, "vec_interchangeable.txt"])
+        vec_path = ph.get_icval_vec_input_path(default_icv_dir)
             
         with open(vec_path, "w") as vecfile:
             stat = [str(len(pair_list)), '\n']
@@ -537,7 +588,50 @@ class Doc2Vec:
 
         self._flush_group_and_cluster(blk_attr, ori_group, ori_cluster)
         return ori_group, ori_cluster
+    
+    
+    def _group_interchangeable_parallel(self, blk_attr, tau, tottable=1, default_icv_dir="", 
+                                        default_match_res_dir=""):
+        '''
+        used for external grouping using c++
+        '''
+        
+        # lanuch
+        manager = multiprocessing.Manager()
+        return_dict = manager.dict()
+        processes = []
+        for i in range(tottable):
+            pgroup = multiprocessing.Process(target=self._group_interchangeable_external, 
+                                             args=(blk_attr, i, return_dict, default_match_res_dir))
+            processes.append(pgroup)
+            pgroup.start()
+            
+        # join
+        for pgroup in processes:
+            pgroup.join()
+            if pgroup.exitcode > 0:
+                raise ValueError(f"error in worker: {pgroup.exitcode}")
+            
+        # collect result
+        vec_dict = defaultdict()
+        for val in return_dict.values():
+            vec_dict.update(val)
 
+        # report
+        vec_path = ph.get_icval_vec_input_path(default_icv_dir)
+        with open(vec_path, "w") as vecfile:
+            stat = [str(len(vec_dict)), '\n']
+            vecfile.writelines(stat)
+            for k, v in vec_dict:
+                # str
+                vecfile.writelines([k])
+                # vectors
+                v = [str(e) + ' ' for e in v]
+                v.insert(0, str(len(v)) + ' ')
+                v.append('\n')
+                vecfile.writelines(v)
+    
+    
     # io
     def load_sample_res(self, tableA, tableB, default_sample_res_dir=""):
         if default_sample_res_dir == "":

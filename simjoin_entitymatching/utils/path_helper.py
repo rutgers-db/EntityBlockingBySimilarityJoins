@@ -77,3 +77,27 @@ def get_match_res_stat_path(default_match_res_dir=""):
                                                              else default_match_res_dir
         path_match_stat = "/".join([default_match_res_dir, "stat.txt"])
     return path_match_stat
+
+
+def get_icval_vec_input_path(default_icv_dir):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_icv_dir == "":
+        vec_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
+    else:
+        default_icv_dir = default_icv_dir[ : -1] if default_icv_dir[-1] == '/' \
+                                                    else default_icv_dir
+        vec_path = "/".join([default_icv_dir, "vec_interchangeable.txt"])
+    return vec_path
+
+
+def get_icval_vec_path(default_icv_dir):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_icv_dir == "":
+        vec_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
+        vec_label_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable_label.txt"])
+    else:
+        default_icv_dir = default_icv_dir[ : -1] if default_icv_dir[-1] == '/' \
+                                                    else default_icv_dir
+        vec_path = "/".join([default_icv_dir, "vec_interchangeable.txt"])
+        vec_label_path = "/".join([default_icv_dir, "vec_interchangeable_label.txt"])
+    return vec_path, vec_label_path

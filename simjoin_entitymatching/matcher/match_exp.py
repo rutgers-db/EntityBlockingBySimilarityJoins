@@ -368,7 +368,7 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
                                            default_match_res_dir="output/exp")
     
     schemas = list(tableA)[1:]
-    schemas = [attr for attr in schemas if attr not in ["price", "year"]]
+    schemas = [attr for attr in schemas if attr not in ["price", "year", "manufacturer"]]
     run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
                     attrs=schemas, usage="match")
     
