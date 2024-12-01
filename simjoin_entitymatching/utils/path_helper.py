@@ -83,11 +83,13 @@ def get_icval_vec_input_path(default_icv_dir):
     cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     if default_icv_dir == "":
         vec_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
+        pair_path = "/".join([cur_parent_dir, "ic_values", "pair_interchangeable.txt"])
     else:
         default_icv_dir = default_icv_dir[ : -1] if default_icv_dir[-1] == '/' \
                                                     else default_icv_dir
         vec_path = "/".join([default_icv_dir, "vec_interchangeable.txt"])
-    return vec_path
+        pair_path = "/".join([default_icv_dir, "pair_interchangeable.txt"])
+    return vec_path, pair_path
 
 
 def get_icval_vec_path(default_icv_dir):

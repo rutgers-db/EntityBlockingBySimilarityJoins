@@ -484,6 +484,7 @@ class Doc2Vec:
         lattr = "ltable_" + target_attr
         rattr = "rtable_" + target_attr
         vec_dict = defaultdict()
+        vec_pair = []
 
         # read
         partial_name, _ = ph.get_chunked_match_res_path(tableid, default_match_res_dir)   
@@ -504,8 +505,9 @@ class Doc2Vec:
             # add
             vec_dict[ori_lstr] = lvec
             vec_dict[ori_rstr] = rvec
+            vec_pair.append((ori_lstr, ori_rstr))
 
-        return_dict[tableid] = vec_dict
+        return_dict[tableid] = vec_dict, vec_pair
 
 
     def group_interchangeable_parallel(self, blk_attr, tau, tottable=100, 
@@ -614,22 +616,33 @@ class Doc2Vec:
             
         # collect result
         vec_dict = defaultdict()
+        vec_pair = []
         for val in return_dict.values():
-            vec_dict.update(val)
+            vec_dict.update(val[0])
+            vec_pair.extend(val[1])
+        vec_pair = list(set(vec_pair))
 
         # report
-        vec_path = ph.get_icval_vec_input_path(default_icv_dir)
+        vec_path, pair_path = ph.get_icval_vec_input_path(default_icv_dir)
+        # vec
         with open(vec_path, "w") as vecfile:
             stat = [str(len(vec_dict)), '\n']
             vecfile.writelines(stat)
             for k, v in vec_dict:
                 # str
-                vecfile.writelines([k])
+                vecfile.writelines([k + "\n"])
                 # vectors
                 v = [str(e) + ' ' for e in v]
                 v.insert(0, str(len(v)) + ' ')
                 v.append('\n')
                 vecfile.writelines(v)
+        # candidare pair
+        with open(pair_path, "w") as pairfile:
+            stat = [str(len(vec_pair)), "\n"]
+            pairfile.writelines(stat)
+            for pair in vec_pair:
+                pairfile.writelines([pair[0] + "\n"])
+                pairfile.writelines([pair[1] + "\n"])
     
     
     # io
