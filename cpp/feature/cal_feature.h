@@ -9,6 +9,7 @@
 #ifndef _CAL_FEATURE_H_
 #define _CAL_FEATURE_H_
 
+#include "group/graph.h"
 #include "feature/feature_index.h"
 #include "feature/feature_utils.h"
 
@@ -38,6 +39,7 @@ private:
                                     const std::vector<std::string> &ltokens, 
                                     const std::vector<std::string> &rtokens, 
                                     bool isCoeff = false);
+
     // calculate features with on side has interchangeable values
     // tokens, cltid: the entity does not have interchangeable values
     // ictokens, iccltid: the entity has interchangeable values
@@ -45,10 +47,15 @@ private:
                                    const std::vector<std::string> &tokens, const std::vector<std::string> &ictokens, 
                                    const FeatureIndex::GroupToken &curGrpDlm, const FeatureIndex::GroupToken &curGrpQgm, 
                                    int cltid, int iccltid);
+    static void calOneSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
+                                   const std::vector<std::string> &tokens, const std::vector<std::string> &ictokens, 
+                                   const Graph &semanticGraph);
 
     static void calOneSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
                                    const std::string &str, const std::string &icstr, const FeatureIndex::Group &curGrp,
                                    int cltid, int iccltid, const std::string &func);
+    static void calOneSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
+                                   const std::string &str, const std::string &icstr, const Graph &semanticGraph);
 
     // double side
     static void calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setjoinP, const std::string &tok, 

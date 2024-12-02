@@ -5,6 +5,12 @@
 #include "group/graph.h"
 
 
+bool Graph::isDocContained(const std::string &doc)
+{
+    return doc2Id.find(doc) != doc2Id.end();
+}
+
+
 double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs)
 {
     std::vector<double> tmp;
@@ -155,6 +161,14 @@ void Graph::buildSemanticGraph(const std::string &pathGraph)
 }
 
 
+void Graph::updateTokenizedDocs(const std::vector<std::vector<std::string>> &dlm, 
+                                const std::vector<std::vector<std::string>> &qgm)
+{
+    docsDlm = dlm;
+    docsQgm = qgm;
+}
+
+
 bool Graph::checkEdgeExistence(int u, int v) const
 {
     return std::count(graLists[u].begin(), graLists[u].end(), v) > 0;
@@ -188,4 +202,40 @@ void Graph::writeSemanticGraph(const std::string &pathGraph)
     }
 
     graphStream << std::flush;
+}
+
+
+void Graph::retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors)
+{
+    if(!isDocContained(doc)) {
+        std::cerr << "no such key : " << doc << std::endl;
+        exit(1);
+    }
+
+    int id = doc2Id[doc];
+    for(const auto &to : graLists[id]) 
+        neighbors.emplace_back(docs[to]);
+}
+
+
+void Graph::retrieveTokenizedNeighbors(const std::string &doc, const std::string &type,
+                                       std::vector<std::vector<std::string>> &neighbors)
+{
+    if(!isDocContained(doc)) {
+        std::cerr << "no such key : " << doc << std::endl;
+        exit(1);
+    }
+
+    if(type != "doc" || type != "qgm") {
+        std::cerr << "no such tokenizer type : " << type << std::endl;
+        exit(1);
+    }
+
+    int id = doc2Id[doc];
+    for(const auto &to : graLists[id]) {
+        if(type == "dlm")
+            neighbors.emplace_back(docsDlm[to]);
+        else
+            neighbors.emplace_back(docsQgm[to]);
+    }
 }

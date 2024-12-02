@@ -49,6 +49,16 @@ void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &feat
 }
 
 
+void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
+                                          const std::vector<std::string> &tokens, const std::vector<std::string> &ictokens, 
+                                          const Graph &semanticGraph)
+{
+    double maxVal = setJoinP(tokens, ictokens);
+    std::vector<std::vector<std::string>> neighbors;
+    // semanticGraph.retrieveTokenizedNeighbors(tokens, tok, neighbors);
+}
+
+
 void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
                                           const std::string &str, const std::string &icstr, const FeatureIndex::Group &curGrp,
                                           int cltid, int iccltid, const std::string &func)

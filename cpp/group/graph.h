@@ -27,10 +27,14 @@ public:
     int numVertex{0};
     int numEdge{0};
 
+    // docs & tokens
     std::vector<std::string> docs;
+    std::vector<std::vector<std::string>> docsDlm; // dlm_dc0
+    std::vector<std::vector<std::string>> docsQgm; // qgm_3
+
     std::vector<std::vector<double>> vecs;
     std::unordered_map<std::string, int> doc2Id;
-    std::vector<std::vector<int>> graLists;                 
+    std::vector<std::vector<int>> graLists;          
 
 public:
     Graph() = default;
@@ -41,6 +45,8 @@ public:
     Graph(Graph &&other) = delete;
 
 private:
+    bool isDocContained(const std::string &doc);
+
     double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs);
 
     void readVertex(std::string info, int &id, std::string &doc);
@@ -52,7 +58,10 @@ public:
     // we do not perform further check for z's neighbors for x
     void buildSemanticGraph(const std::vector<std::string> &_docs, const std::vector<std::vector<double>> &_vecs, 
                             const std::vector<std::pair<std::string, std::string>> &candidates);
+
     void buildSemanticGraph(const std::string &pathGraph);
+    void updateTokenizedDocs(const std::vector<std::vector<std::string>> &dlm, 
+                             const std::vector<std::vector<std::string>> &qgm);
 
     // as the graph is sparse, we do not perform binary search
     bool checkEdgeExistence(int u, int v) const;
@@ -60,6 +69,11 @@ public:
     void printMetaData() const;
 
     void writeSemanticGraph(const std::string &pathGraph);
+
+    // retrieve one-hop neighbors
+    void retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors);
+    void retrieveTokenizedNeighbors(const std::string &doc, const std::string &type,
+                                    std::vector<std::vector<std::string>> &neighbors);
 };
 
 #endif // _GRAPH_H_
