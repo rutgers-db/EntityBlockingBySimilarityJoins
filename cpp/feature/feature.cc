@@ -5,16 +5,24 @@
 #include "feature/feature.h"
 
 
-void FeatureEngineering::readGroups(int totalAttr, const std::vector<std::string> &attrVec, FeatureIndex::Groups &group, 
-                                    FeatureIndex::GroupTokens &groupTokensDlm, FeatureIndex::GroupTokens &groupTokensQgm, 
-                                    FeatureIndex::Cluster &cluster, std::vector<int> &keyLength, 
-                                    const std::string &defaultICVDir)
+std::string FeatureEngineering::getDefaultICVDir(const std::string &defaultICVDir)
 {
     std::string fullPath = __FILE__;
     size_t lastSlash = fullPath.find_last_of("/\\");
     std::string directory = fullPath.substr(0, lastSlash + 1);
     directory = defaultICVDir == "" ? directory + "../../simjoin_entitymatching/value_matcher/ic_values/" 
 									: (defaultICVDir.back() == '/' ? defaultICVDir : defaultICVDir + "/");
+
+    return directory;
+}
+
+
+void FeatureEngineering::readGroups(int totalAttr, const std::vector<std::string> &attrVec, FeatureIndex::Groups &group, 
+                                    FeatureIndex::GroupTokens &groupTokensDlm, FeatureIndex::GroupTokens &groupTokensQgm, 
+                                    FeatureIndex::Cluster &cluster, std::vector<int> &keyLength, 
+                                    const std::string &defaultICVDir)
+{
+    std::string directory = getDefaultICVDir(defaultICVDir);
 
     for(int i = 0; i < totalAttr; i ++) {
         
@@ -59,6 +67,19 @@ void FeatureEngineering::readGroups(int totalAttr, const std::vector<std::string
         }
 
         grpFile.close();
+    }
+}
+
+
+void FeatureEngineering::readGraphs(int totalAttr, const std::vector<std::string> &attrVec, Graphs &semanticGraph, 
+                                    const std::string &defaultICVDir = "")
+{
+    std::string directory = getDefaultICVDir(defaultICVDir);
+
+    for(int i = 0; i < totalAttr; i ++) {
+        std::string graphPath = directory + "interchangeable_graph_" + attrVec[i] + ".txt";
+        semanticGraph.emplace_back();
+        semanticGraph.back().buildSemanticGraph(graphPath);
     }
 }
 

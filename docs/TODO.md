@@ -4,7 +4,7 @@
 2. interchangeable value for blocker
 3. feature part implements some redundant parts (e.g., sim funcs), could be eliminated in the future
 4. Modify the SimFuncs return value for empty sets from 1 to NaN
-5. group.cc should use feature_index
+5. current the cluster-based group is implemented by Python, and we do not write wrapper class for it. But for group-based group, we implement in in ```group```, so everything is in the ```Graph``` class. In the future, we should move some parts in ```feature``` to the ```group``` to form a wrapper class for cluster-based group.
 6. usage of length filter in calculation features, but what if no pairs pass length filter?
 7. make the similarity join apis public
 8. word2vec & glove value matcher

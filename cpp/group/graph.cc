@@ -14,6 +14,40 @@ double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vect
 }
 
 
+void Graph::readVertex(std::string info, int &id, std::string &doc)
+{
+    std::istringstream iss(info);
+    std::string token;
+    char delim = ' ';
+
+    // char
+    getline(iss, token, ' ');
+    // id
+    getline(iss, token, ' ');
+    id = std::stoi(token);
+    // doc
+    getline(iss, token);
+    doc = token;
+};
+
+
+void Graph::readEdge(std::string info, int &from, int &to)
+{
+    std::istringstream iss(info);
+    std::string token;
+    char delim = ' ';
+
+    // char
+    getline(iss, token, ' ');
+    // from
+    getline(iss, token, ' ');
+    from = std::stoi(token);
+    // to
+    getline(iss, token);
+    to = std::stoi(token);
+}
+
+
 void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std::vector<std::vector<double>> &_vecs, 
                                const std::vector<std::pair<std::string, std::string>> &candidates)
 {
@@ -89,6 +123,38 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
 }
 
 
+void Graph::buildSemanticGraph(const std::string &pathGraph)
+{
+    std::ifstream streamGraph(pathGraph.c_str(), std::ios::in);
+
+    streamGraph >> numVertex >> numEdge;
+
+    for(int i = 0; i < numVertex; i++) {
+        std::string info;
+        getline(streamGraph, info);
+        // parse
+        int id = 0;
+        std::string doc;
+        readVertex(info, id, doc);
+        docs.emplace_back(doc);
+        doc2Id[doc] = id;
+    }
+
+    for(int i = 0; i < numEdge; i++) {
+        std::string info;
+        getline(streamGraph, info);
+        // parse
+        int from = 0, to = 0;
+        readEdge(info, from, to);
+        graLists[from].emplace_back(to);
+        graLists[to].emplace_back(from);
+    }
+
+    for(const auto &edge : graLists)
+        std::sort(edge.begin(), edge.end());
+}
+
+
 bool Graph::checkEdgeExistence(int u, int v) const
 {
     return std::count(graLists[u].begin(), graLists[u].end(), v) > 0;
@@ -108,7 +174,7 @@ void Graph::writeSemanticGraph(const std::string &pathGraph)
     graphStream << numVertex << " " << numEdge << std::endl;
 
     // vertices
-    for(int i = 0; i < numVertex; i++) 
+    for(int i = 0; i < numVertex; i++)
         graphStream << "v " << i << " " << docs[i] << std::endl;
 
     // edges

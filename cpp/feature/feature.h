@@ -6,6 +6,7 @@
 #define _FEATURE_H_
 
 #include "common/io.h"
+#include "group/graph.h"
 #include "feature/feature_utils.h"
 #include "feature/feature_index.h"
 #include "feature/cal_feature.h"
@@ -30,15 +31,24 @@ struct FeatureArguments
 class FeatureEngineering
 {
 public:
+    using Graphs = std::vector<Graph>;
+
+public:
     FeatureEngineering() = default;
     ~FeatureEngineering() = default;
     FeatureEngineering(const FeatureEngineering &other) = delete;
     FeatureEngineering(FeatureEngineering &&other) = delete;
 
+private:
+    static std::string getDefaultICVDir(const std::string &defaultICVDir);
+
 public:
     static void readGroups(int totalAttr, const std::vector<std::string> &attrVec, FeatureIndex::Groups &group, 
                            FeatureIndex::GroupTokens &groupTokensDlm, FeatureIndex::GroupTokens &groupTokensQgm, 
                            FeatureIndex::Cluster &cluster, std::vector<int> &keyLength, 
+                           const std::string &defaultICVDir = "");
+
+    static void readGraphs(int totalAttr, const std::vector<std::string> &attrVec, Graphs &semanticGraph, 
                            const std::string &defaultICVDir = "");
 
     static void readFeatures(ui &numFeatures, Rule *&featureNames, std::vector<std::string> &nameCopy, 

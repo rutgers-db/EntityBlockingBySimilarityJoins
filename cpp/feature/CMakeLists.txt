@@ -2,6 +2,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../../../shared_lib)
 add_library(feature SHARED ../common/io.cc 
                            ../common/tokenizer.cc 
                            ../common/dataframe.cc 
+                           ../group/graph.cc
                            cal_feature.cc
                            feature_index.cc
                            feature_utils.cc
