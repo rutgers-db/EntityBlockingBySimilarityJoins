@@ -31,9 +31,6 @@ struct FeatureArguments
 class FeatureEngineering
 {
 public:
-    using Graphs = std::vector<Graph>;
-
-public:
     FeatureEngineering() = default;
     ~FeatureEngineering() = default;
     FeatureEngineering(const FeatureEngineering &other) = delete;
@@ -48,7 +45,7 @@ public:
                            FeatureIndex::Cluster &cluster, std::vector<int> &keyLength, 
                            const std::string &defaultICVDir = "");
 
-    static void readGraphs(int totalAttr, const std::vector<std::string> &attrVec, Graphs &semanticGraph, 
+    static void readGraphs(int totalAttr, const std::vector<std::string> &attrVec, std::vector<Graph> &semanticGraphs, 
                            const std::string &defaultICVDir = "");
 
     static void readFeatures(ui &numFeatures, Rule *&featureNames, std::vector<std::string> &nameCopy, 

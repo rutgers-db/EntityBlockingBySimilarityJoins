@@ -113,7 +113,7 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
     }
 
     int tmpc = 0;
-    for(const auto &edges : graLists) {
+    for(auto &edges : graLists) {
         std::sort(edges.begin(), edges.end());
         auto iter = std::unique(edges.begin(), edges.end());
         if(iter != edges.end()) {
@@ -156,7 +156,7 @@ void Graph::buildSemanticGraph(const std::string &pathGraph)
         graLists[to].emplace_back(from);
     }
 
-    for(const auto &edge : graLists)
+    for(auto &edge : graLists)
         std::sort(edge.begin(), edge.end());
 }
 

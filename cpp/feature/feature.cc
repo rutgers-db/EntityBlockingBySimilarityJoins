@@ -71,19 +71,19 @@ void FeatureEngineering::readGroups(int totalAttr, const std::vector<std::string
 }
 
 
-void FeatureEngineering::readGraphs(int totalAttr, const std::vector<std::string> &attrVec, Graphs &semanticGraph, 
-                                    const std::string &defaultICVDir = "")
+void FeatureEngineering::readGraphs(int totalAttr, const std::vector<std::string> &attrVec, std::vector<Graph> &semanticGraphs, 
+                                    const std::string &defaultICVDir)
 {
     std::string directory = getDefaultICVDir(defaultICVDir);
 
     for(int i = 0; i < totalAttr; i ++) {
         // build
         std::string graphPath = directory + "interchangeable_graph_" + attrVec[i] + ".txt";
-        semanticGraph.emplace_back();
-        semanticGraph.back().buildSemanticGraph(graphPath);
+        semanticGraphs.emplace_back();
+        semanticGraphs.back().buildSemanticGraph(graphPath);
 
         // tokenize
-        auto &curGraph = semanticGraph.back();
+        auto &curGraph = semanticGraphs.back();
         std::vector<std::vector<std::string>> dlm;
         std::vector<std::vector<std::string>> qgm;
 

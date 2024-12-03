@@ -16,7 +16,7 @@
 #include "common/stringjoin_parallel.h"
 #include "blocker/blocker_util.h"
 #include "topk/topk.h"
-#include "group/group.h"
+#include "group/group_old.h"
 #include "blocker/blocker_config.h"
 #include <bitset>
 #include <fstream>

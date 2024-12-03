@@ -41,8 +41,10 @@ public:
     explicit Graph(bool _isTransitiveClosure, double _tau) 
     : isTransitiveClosure(_isTransitiveClosure), tau(_tau) { }
     ~Graph() = default;
-    Graph(const Graph &other) = delete;
-    Graph(Graph &&other) = delete;
+
+    // for allocate vectors
+    // Graph(const Graph &other) = delete;
+    // Graph(Graph &&other) = delete;
 
 private:
     bool isDocContained(const std::string &doc) const;
