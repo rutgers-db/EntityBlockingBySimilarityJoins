@@ -184,6 +184,7 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 	numeric_attr = ["price", "year"]
 	attrs = list(tableA)[1:]
 	attrs = [attr for attr in attrs if attr not in numeric_attr]
+	attrs = ["title"]
 
 	group, cluster = {}, {}
 

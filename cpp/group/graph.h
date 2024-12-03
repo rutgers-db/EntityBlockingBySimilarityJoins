@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <assert.h>
 
 
 /*
@@ -32,7 +33,7 @@ public:
     std::vector<std::vector<std::string>> docsDlm; // dlm_dc0
     std::vector<std::vector<std::string>> docsQgm; // qgm_3
 
-    std::vector<std::vector<double>> vecs;
+    std::vector<std::vector<double>> vecs; // semantic similarity
     std::unordered_map<std::string, int> doc2Id;
     std::vector<std::vector<int>> graLists;          
 

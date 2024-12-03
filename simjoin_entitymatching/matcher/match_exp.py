@@ -364,7 +364,7 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # _get_recall(gold_graph, pred1, gold_len)
     
     # group
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.8, group_strategy="doc", num_data=2, external_group=True, 
                                            external_group_strategy="graph", is_transitive_closure=False,
                                            default_match_res_dir="output/exp")
     

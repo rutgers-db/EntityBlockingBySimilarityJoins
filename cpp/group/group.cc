@@ -28,21 +28,34 @@ void Group::readDocsAndVecs(std::vector<std::string> &docs, std::vector<std::vec
     std::ifstream streamDocs(pathDocs.c_str(), std::ios::in);
 
     int totalDocs = 0;
-    streamDocs >> totalDocs;
+    std::string header;
+    getline(streamDocs, header);
+    totalDocs = std::stoi(header);
+    // allocate
     docs.reserve(totalDocs);
     vecs.reserve(totalDocs);
 
     for(int i = 0; i < totalDocs; i++) {
-        // read
+        // read doc
         std::string doc = "";
-        streamDocs >> doc;
-        int vecSize = 0;
-        streamDocs >> vecSize;
+        getline(streamDocs, doc);
+
+        // read vec
+        std::string vecInfo;
+        getline(streamDocs, vecInfo);
+        std::istringstream iss(vecInfo);
+        std::string token;
+
+        // size
+        getline(iss, token, ' ');
+        int vecSize = std::stoi(token);
         std::vector<double> vec;
         vec.reserve(vecSize);
+
+        // values
         for(int j = 0; j < vecSize; j++) {
-            double val = 0.0;
-            streamDocs >> val;
+            getline(iss, token, ' ');
+            double val = std::stod(token);
             vec.emplace_back(val);
         }
 
@@ -65,15 +78,18 @@ void Group::readDocCandidatePairs(std::vector<std::pair<std::string, std::string
     std::ifstream streamPairs(pathPairs.c_str(), std::ios::in);
 
     int totalPairs = 0;
-    streamPairs >> totalPairs;
+    std::string header;
+    getline(streamPairs, header);
+    totalPairs = std::stoi(header);
+    // allocate
     candidates.reserve(totalPairs);
 
     for(int i = 0; i < totalPairs; i++) {
         // read
         std::string lDoc = "";
-        streamPairs >> lDoc;
+        getline(streamPairs, lDoc);
         std::string rDoc = "";
-        streamPairs >> rDoc;
+        getline(streamPairs, rDoc);
 
         // append
         candidates.emplace_back(lDoc, rDoc);
@@ -85,6 +101,12 @@ void Group::groupInterchangeableValuesByGraph(const std::string &groupAttribute,
                                               double groupTau, bool isTransitiveClosure, 
                                               const std::string &defaultICVDir)
 {
+    std::cout << "group interchangeable values on attribute : " << groupAttribute 
+        << "\tstrategy : " << groupStrategy 
+        << "\tdefault directory for output : " << defaultICVDir
+        << "\tthreshold : " << groupTau
+        << "\tis transitive closure enabled : " << isTransitiveClosure << std::endl;
+
     // io
     std::vector<std::string> docs;
     std::vector<std::vector<double>> vecs;
@@ -119,3 +141,8 @@ extern "C"
         exit(1);
     }
 }
+
+
+/*
+ * check if vectors are sorted before set_intersection
+ */

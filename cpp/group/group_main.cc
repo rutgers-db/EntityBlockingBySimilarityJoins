@@ -34,7 +34,7 @@ struct GroupArgument
     }
 
     void printArguments() const {
-        std::cerr << "group interchangeable values on attribute : " << groupAttribute 
+        std::cout << "group interchangeable values on attribute : " << groupAttribute 
         << "\tstrategy : " << groupStrategy 
         << "\tdefault directory for output : " << defaultICVDir
         << "\tthreshold : " << groupTau

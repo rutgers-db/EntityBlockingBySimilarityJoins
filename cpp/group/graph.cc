@@ -13,10 +13,23 @@ bool Graph::isDocContained(const std::string &doc) const
 
 double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs)
 {
-    std::vector<double> tmp;
-    std::set_intersection(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), std::back_inserter(tmp));
+    assert(lhs.size() == rhs.size());
+    size_t size = lhs.size();
 
-    return tmp.size() * 1.0 / std::sqrt(lhs.size() * rhs.size() * 1.0);
+    double dot = 0.0;
+    double lNorm = 0.0;
+    double rNorm = 0.0;
+
+    for(size_t idx = 0; idx < size; idx++) {
+        dot += lhs[idx] * rhs[idx];
+        lNorm += lhs[idx] * lhs[idx];
+        rNorm += rhs[idx] * rhs[idx];
+    }
+
+    lNorm = sqrt(lNorm);
+    rNorm = sqrt(rNorm);
+
+    return dot / (lNorm * rNorm);
 }
 
 
@@ -24,7 +37,7 @@ void Graph::readVertex(std::string info, int &id, std::string &doc)
 {
     std::istringstream iss(info);
     std::string token;
-    char delim = ' ';
+    // char delim = ' ';
 
     // char
     getline(iss, token, ' ');
@@ -41,7 +54,7 @@ void Graph::readEdge(std::string info, int &from, int &to)
 {
     std::istringstream iss(info);
     std::string token;
-    char delim = ' ';
+    // char delim = ' ';
 
     // char
     getline(iss, token, ' ');
@@ -68,9 +81,12 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
     // edges
     graLists.resize(count, std::vector<int> ());
     for(const auto &p : candidates) {
+        if(p.first == p.second)
+            continue;
         int lId = doc2Id[p.first];
         int rId = doc2Id[p.second]; 
         double cos = calculateCosineSim(vecs[lId], vecs[rId]);
+        // std::cout << cos << std::endl;
         if(cos >= tau) {
             graLists[lId].emplace_back(rId);
             graLists[rId].emplace_back(lId);
@@ -94,7 +110,7 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
                 if(v < i)
                     continue;
                 for(const auto &u : graLists[v]) {
-                    if(u <= i)
+                    if(u <= i || checkEdgeExistence(i, u))
                         continue;
                     double cos = calculateCosineSim(vecs[i], vecs[u]);
                     if(cos >= tau) {
@@ -133,7 +149,16 @@ void Graph::buildSemanticGraph(const std::string &pathGraph)
 {
     std::ifstream streamGraph(pathGraph.c_str(), std::ios::in);
 
-    streamGraph >> numVertex >> numEdge;
+    std::string header;
+    getline(streamGraph, header);
+    std::istringstream iss(header);
+    std::string token;
+    // |V|
+    getline(iss, token, ' ');
+    numVertex = std::stoi(token);
+    // |E|
+    getline(iss, token, ' ');
+    numEdge = std::stoi(token);
 
     for(int i = 0; i < numVertex; i++) {
         std::string info;
@@ -203,8 +228,12 @@ void Graph::writeSemanticGraph(const std::string &pathGraph)
     graphStream << numVertex << " " << numEdge << std::endl;
 
     // vertices
-    for(int i = 0; i < numVertex; i++)
+    for(int i = 0; i < numVertex; i++) {
         graphStream << "v " << i << " " << docs[i] << std::endl;
+        // for(const auto &v : vecs[i])
+        //     graphStream << v << " ";
+        // graphStream << std::endl;
+    }
 
     // edges
     int tmpc = 0;
