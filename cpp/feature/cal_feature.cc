@@ -50,12 +50,18 @@ void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &feat
 
 
 void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
-                                          const std::vector<std::string> &tokens, const std::vector<std::string> &ictokens, 
+                                          const std::string &str, const std::vector<std::string> &tokens, 
+                                          const std::vector<std::string> &ictokens, 
                                           const Graph &semanticGraph)
 {
     double maxVal = setJoinP(tokens, ictokens);
     std::vector<std::vector<std::string>> neighbors;
-    // semanticGraph.retrieveTokenizedNeighbors(tokens, tok, neighbors);
+    semanticGraph.retrieveTokenizedNeighbors(str, tok, neighbors);
+    for(const auto &doc : neighbors) {
+        double newVal = setJoinP(doc, tokens);
+        maxVal = std::max(maxVal, newVal);
+    }
+    featureValues.back().emplace_back(maxVal);
 }
 
 
@@ -76,7 +82,24 @@ void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &feat
 }
 
 
-void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setjoinP, const std::string &tok, 
+void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
+                                          const std::string &str, const std::string &icstr, const Graph &semanticGraph, const std::string &func)
+{
+    double maxVal = stringJoinP(str, icstr);
+    std::vector<std::string> neighbors;
+    semanticGraph.retrieveNeighbors(str, neighbors);
+    for(const auto &doc : neighbors) {
+        double newVal = stringJoinP(doc, str);
+        if(func == "lev") 
+            maxVal = std::min(std::abs(maxVal), std::abs(newVal));
+        else 
+            maxVal = std::max(maxVal, newVal);
+    }
+    featureValues.back().emplace_back(maxVal);
+}
+
+
+void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
                                              const std::vector<std::string> &ltokens, const std::vector<std::string> &rtokens, 
                                              const FeatureIndex::GroupToken &curGrpDlm, const FeatureIndex::GroupToken &curGrpQgm, 
                                              int lcltid, int rcltid, int *const &curDCIdx, double ***const &curCache, 
@@ -90,10 +113,11 @@ void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &f
                 maxlen = std::max(ldoc.size(), maxlen);
             featureValues.back().emplace_back(maxlen * 1.0);
         } 
-        else featureValues.back().emplace_back(1.0);
+        else 
+            featureValues.back().emplace_back(1.0);
     }
     else {
-        double maxVal = setjoinP(ltokens, rtokens);
+        double maxVal = setJoinP(ltokens, rtokens);
         const auto &ldocs = tok == "dlm" ? curGrpDlm.at(lcltid) : curGrpQgm.at(lcltid);
         const auto &rdocs = tok == "dlm" ? curGrpDlm.at(rcltid) : curGrpQgm.at(rcltid);
 
@@ -106,9 +130,44 @@ void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &f
         else {
             for(const auto &ldoc : ldocs) {
                 for(const auto &rdoc : rdocs) {
-                    double newVal = setjoinP(ldoc, rdoc);
+                    double newVal = setJoinP(ldoc, rdoc);
                     maxVal = std::max(maxVal, newVal);
                 }
+            }
+        }
+
+        featureValues.back().emplace_back(maxVal);
+    }
+}
+
+
+void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
+                                             const std::string &lstr, const std::string &rstr, const std::vector<std::string> &ltokens,
+                                             const std::vector<std::string> &rtokens, const Graph &semanticGraph, const std::string &func)
+{
+    if(semanticGraph.checkEdgeExistence(lstr, rstr)) {
+        if(func == "overlap") {
+            std::vector<std::vector<std::string>> neighbors;
+            semanticGraph.retrieveTokenizedNeighbors(lstr, tok, neighbors);
+            size_t maxlen = 0;
+            for(const auto &ldoc : neighbors)
+                maxlen = std::max(ldoc.size(), maxlen);
+            featureValues.back().emplace_back(maxlen * 1.0);
+        } 
+        else 
+            featureValues.back().emplace_back(1.0);
+    }
+    else {
+        double maxVal = setJoinP(ltokens, rtokens);
+        std::vector<std::vector<std::string>> lNeighbors;
+        std::vector<std::vector<std::string>> rNeighbors;
+        semanticGraph.retrieveTokenizedNeighbors(lstr, tok, lNeighbors);
+        semanticGraph.retrieveTokenizedNeighbors(rstr, tok, rNeighbors);
+
+        for(const auto &ldoc : lNeighbors) {
+            for(const auto &rdoc : rNeighbors) {
+                double newVal = setJoinP(ldoc, rdoc);
+                maxVal = std::max(maxVal, newVal);
             }
         }
 
@@ -150,6 +209,37 @@ void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &f
                     else 
                         maxVal = std::max(maxVal, newVal);
                 }
+            }
+        }
+
+        featureValues.back().emplace_back(maxVal);
+    }
+}
+
+
+void CalculateFeature::calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
+                                             const std::string &lstr, const std::string &rstr, const Graph &semanticGraph, 
+                                             const std::string &func)
+{
+    if(semanticGraph.checkEdgeExistence(lstr, rstr)) {
+        if(func == "lev") featureValues.back().emplace_back(0.0);
+        else if(func == "anm") featureValues.back().emplace_back(1.0);
+        else if(func == "exm") featureValues.back().emplace_back(1.0);
+    }
+    else {
+        double maxVal = stringJoinP(lstr, rstr);
+        std::vector<std::string> lNeighbors;
+        std::vector<std::string> rNeighbors;
+        semanticGraph.retrieveNeighbors(lstr, lNeighbors);
+        semanticGraph.retrieveNeighbors(rstr, rNeighbors);
+
+        for(const auto &ldoc : lNeighbors) {
+            for(const auto &rdoc : rNeighbors) {
+                double newVal = stringJoinP(ldoc, rdoc);
+                if(func == "lev") 
+                    maxVal = std::min(std::abs(maxVal), std::abs(newVal));
+                else 
+                    maxVal = std::max(maxVal, newVal);
             }
         }
 

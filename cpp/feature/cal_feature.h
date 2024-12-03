@@ -47,15 +47,18 @@ private:
                                    const std::vector<std::string> &tokens, const std::vector<std::string> &ictokens, 
                                    const FeatureIndex::GroupToken &curGrpDlm, const FeatureIndex::GroupToken &curGrpQgm, 
                                    int cltid, int iccltid);
+
     static void calOneSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
-                                   const std::vector<std::string> &tokens, const std::vector<std::string> &ictokens, 
+                                   const std::string &str, const std::vector<std::string> &tokens, 
+                                   const std::vector<std::string> &ictokens, 
                                    const Graph &semanticGraph);
 
     static void calOneSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
                                    const std::string &str, const std::string &icstr, const FeatureIndex::Group &curGrp,
                                    int cltid, int iccltid, const std::string &func);
+
     static void calOneSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
-                                   const std::string &str, const std::string &icstr, const Graph &semanticGraph);
+                                   const std::string &str, const std::string &icstr, const Graph &semanticGraph, const std::string &func);
 
     // double side
     static void calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setjoinP, const std::string &tok, 
@@ -64,10 +67,18 @@ private:
                                       int lcltid, int rcltid, int *const &curDCIdx, double ***const &curCache, 
                                       const std::vector<int> &featureLength, const std::string &func, ui attrpos);
 
+    static void calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, SetJoinFunc setJoinP, const std::string &tok, 
+                                      const std::string &lstr, const std::string &rstr, const std::vector<std::string> &ltokens,
+                                      const std::vector<std::string> &rtokens, const Graph &semanticGraph, const std::string &func);
+
     static void calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
                                       const std::string &lstr, const std::string &rstr, const FeatureIndex::Group &curGrp, 
                                       int lcltid, int rcltid, int *const &curDCIdx, double ***const &curCache, 
                                       const std::vector<int> &featureLength, const std::string &func, ui attrpos);
+
+    static void calDoubleSideFeatures(std::vector<std::vector<double>> &featureValues, StringJoinFunc stringJoinP, const std::string &tok, 
+                                      const std::string &lstr, const std::string &rstr, const Graph &semanticGraph, 
+                                      const std::string &func);
 
 public:
     // isTopK indicates whether calculating features is used for top K on matchRes

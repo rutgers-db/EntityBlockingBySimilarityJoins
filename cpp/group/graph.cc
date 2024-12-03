@@ -5,7 +5,7 @@
 #include "group/graph.h"
 
 
-bool Graph::isDocContained(const std::string &doc)
+bool Graph::isDocContained(const std::string &doc) const
 {
     return doc2Id.find(doc) != doc2Id.end();
 }
@@ -175,6 +175,14 @@ bool Graph::checkEdgeExistence(int u, int v) const
 }
 
 
+bool Graph::checkEdgeExistence(const std::string &u, const std::string &v) const
+{
+    int uId = doc2Id.at(u);
+    int vId = doc2Id.at(v);
+    return std::count(graLists[uId].begin(), graLists[uId].end(), vId) > 0;
+}
+
+
 void Graph::printMetaData() const 
 {
     std::cout << "|V| : " << numVertex << " |E| : " << numEdge << std::endl;
@@ -205,21 +213,21 @@ void Graph::writeSemanticGraph(const std::string &pathGraph)
 }
 
 
-void Graph::retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors)
+void Graph::retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors) const
 {
     if(!isDocContained(doc)) {
         std::cerr << "no such key : " << doc << std::endl;
         exit(1);
     }
 
-    int id = doc2Id[doc];
+    int id = doc2Id.at(doc);
     for(const auto &to : graLists[id]) 
         neighbors.emplace_back(docs[to]);
 }
 
 
 void Graph::retrieveTokenizedNeighbors(const std::string &doc, const std::string &type,
-                                       std::vector<std::vector<std::string>> &neighbors)
+                                       std::vector<std::vector<std::string>> &neighbors) const
 {
     if(!isDocContained(doc)) {
         std::cerr << "no such key : " << doc << std::endl;
@@ -231,7 +239,7 @@ void Graph::retrieveTokenizedNeighbors(const std::string &doc, const std::string
         exit(1);
     }
 
-    int id = doc2Id[doc];
+    int id = doc2Id.at(doc);
     for(const auto &to : graLists[id]) {
         if(type == "dlm")
             neighbors.emplace_back(docsDlm[to]);

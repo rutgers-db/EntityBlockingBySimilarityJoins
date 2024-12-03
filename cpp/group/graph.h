@@ -45,7 +45,7 @@ public:
     Graph(Graph &&other) = delete;
 
 private:
-    bool isDocContained(const std::string &doc);
+    bool isDocContained(const std::string &doc) const;
 
     double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs);
 
@@ -65,15 +65,16 @@ public:
 
     // as the graph is sparse, we do not perform binary search
     bool checkEdgeExistence(int u, int v) const;
+    bool checkEdgeExistence(const std::string &u, const std::string &v) const;
 
     void printMetaData() const;
 
     void writeSemanticGraph(const std::string &pathGraph);
 
     // retrieve one-hop neighbors
-    void retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors);
+    void retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors) const;
     void retrieveTokenizedNeighbors(const std::string &doc, const std::string &type,
-                                    std::vector<std::vector<std::string>> &neighbors);
+                                    std::vector<std::vector<std::string>> &neighbors) const;
 };
 
 #endif // _GRAPH_H_
