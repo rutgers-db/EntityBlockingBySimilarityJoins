@@ -50,7 +50,7 @@ def run_sample_bin(sample_strategy, blocking_attr, cluster_tau, sample_tau, step
         
 def sample_library_decorator(command):
     def wrapper(*args, **kwargs):
-        print("running sample compiling commands")
+        print("running sample library files")
         command(*args, **kwargs)
         print("done!")
     return wrapper

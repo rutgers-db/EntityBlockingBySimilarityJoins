@@ -5,6 +5,7 @@
 #ifndef _GROUP_H_
 #define _GROUP_H_
 
+#include "group/graph.h"
 #include <vector>
 #include <string>
 #include <fstream>
@@ -31,6 +32,13 @@ public:
                                 const std::string &defaultICVDir = "");
     static void readDocCandidatePairs(std::vector<std::pair<std::string, std::string>> &candidates, 
                                       const std::string &defaultICVDir = "");
+
+    // apis
+    static void groupInterchangeableValuesByGraph(const std::string &groupAttribute, const std::string &groupStrategy, 
+                                                  double groupTau, bool isTransitiveClosure, 
+                                                  const std::string &defaultICVDir = "");
+
+    static void groupInterchangeableValuesByCluster();
 };
 
 #endif // _GROUP_H_

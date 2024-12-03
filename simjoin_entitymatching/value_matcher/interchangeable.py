@@ -5,6 +5,8 @@ from typing import Literal
 import pathlib
 import pandas as pd
 from collections import defaultdict
+
+from simjoin_entitymatching.value_matcher.group import run_group_lib
 from simjoin_entitymatching.value_matcher.doc2vec import Doc2Vec
 from simjoin_entitymatching.feature.feature import run_feature_lib
 import simjoin_entitymatching.utils.path_helper as ph
@@ -155,8 +157,9 @@ def cluster_pairs(ori_clt, representative_attr, gold_graph, default_match_res_di
 	print(f"new count on neg result: {new_count}, gold count: {new_gold_count}, out of {len(neg_res_df)}")
 
 
-def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc", "mix"], num_data=Literal[1, 2], 
-						  default_match_res_dir="", default_vmatcher_dir="", default_icv_dir="", default_buffer_dir=""):
+def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc", "mix"], num_data=Literal[1, 2], external_group=False,
+						  external_group_strategy=Literal["graph", "cluster"], is_transitive_closure=False, 
+        				  default_match_res_dir="", default_vmatcher_dir="", default_icv_dir="", default_buffer_dir=""):
 	'''
 	apply value matcher, group interchangeable values on matching result
 		1. use doc2vec for all attrs, since for str_eq_1w there may exist values that are longer than 1 word in raw data
@@ -191,9 +194,14 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 		print('training done', flush=True)
 		for attr_ in attrs:
 			doc2vec.load_model(usage=1, attr=attr_, default_model_dir=default_vmatcher_dir)
-			grp, clt = doc2vec.group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
-                                                     		  default_match_res_dir)
-			group[attr_], cluster[attr_] = grp, clt
+			if external_group == True:
+				doc2vec._group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
+                                            			default_match_res_dir)
+				run_group_lib(attr_, external_group_strategy, group_tau, is_transitive_closure, default_icv_dir)
+			else:
+				grp, clt = doc2vec.group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
+																  default_match_res_dir)
+				group[attr_], cluster[attr_] = grp, clt
 
 	elif group_strategy == 'mix':
 		raise NotImplementedError("mix group not established")
