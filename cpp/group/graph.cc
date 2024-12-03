@@ -183,6 +183,13 @@ bool Graph::checkEdgeExistence(const std::string &u, const std::string &v) const
 }
 
 
+bool Graph::isVertexIsolated(const std::string &str) const
+{
+    int id = doc2Id.at(str);
+    return graLists[id].size() == 0;
+}
+
+
 void Graph::printMetaData() const 
 {
     std::cout << "|V| : " << numVertex << " |E| : " << numEdge << std::endl;

@@ -369,6 +369,93 @@ void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::ve
 }
 
 
+void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::vector<std::string> &attrVec, const Table &resTable, 
+                              std::vector<std::vector<double>> &featureValues, const std::vector<Graph> &semanticGraphs, bool isTopK)
+{
+    for(int ridx = 0; ridx < resTable.row_no; ridx ++) {
+        const auto &curRow = resTable.rows[ridx];
+        int lid = std::stoi(curRow[1]);
+        int rid = std::stoi(curRow[2]);
+        featureValues.emplace_back();
+
+        for(int j = 0; j < numFeatures; j ++) {
+            std::string attr = featureNames[j].attr;
+            std::string func = featureNames[j].sim;
+            std::string tok = featureNames[j].tok;
+            TokenizerType tokType = tok == "dlm" ? TokenizerType::Dlm 
+                                                 : TokenizerType::QGram;
+
+            std::string lsch = "ltable_" + attr;
+            std::string rsch = "rtable_" + attr;
+            ui lpos = resTable.inverted_schema.at(lsch);
+            ui rpos = resTable.inverted_schema.at(rsch);
+            std::string lstr = curRow[lpos];
+            std::string rstr = curRow[rpos];
+            std::vector<std::string> ltokens;
+            std::vector<std::string> rtokens;
+            FeatureUtils::tokenize(lstr, tokType, ltokens);
+            FeatureUtils::tokenize(rstr, tokType, rtokens);
+
+            auto iter = std::find(attrVec.begin(), attrVec.end(), attr);
+            if(iter == attrVec.end()) {
+                CalculateFeature::calOriginalFeatures(featureValues, func, lstr, rstr, ltokens, rtokens, isTopK);
+                continue;
+            }
+            
+            ui attrpos = std::distance(attrVec.begin(), iter);
+            const auto &curGraph = semanticGraphs[attrpos];
+            bool lHasCandidate = !curGraph.isVertexIsolated(lstr);
+            bool rHasCandidate = !curGraph.isVertexIsolated(rstr);
+
+            if(func == "jac" || func == "cos" || func == "dice" || func == "overlap") {
+                CalculateFeature::SetJoinFunc setJoinP = nullptr;
+                if(func == "jac") 
+                    setJoinP = &FeatureUtils::jaccard;
+                else if(func == "cos") 
+                    setJoinP = &FeatureUtils::cosine;
+                else if(func == "dice") 
+                    setJoinP = &FeatureUtils::dice;
+                else if(func == "overlap") {
+                    if(isTopK) setJoinP = &FeatureUtils::overlapCoeff;
+                    else setJoinP = &FeatureUtils::overlapD;
+                }
+                
+                if(!lHasCandidate && !lHasCandidate)
+                    CalculateFeature::calOriginalFeatures(featureValues, func, lstr, rstr, ltokens, rtokens, isTopK);
+                else if(lHasCandidate && !rHasCandidate)
+                    CalculateFeature::calOneSideFeatures(featureValues, setJoinP, tok, lstr, rtokens, ltokens, 
+                                                         curGraph);
+                else if(!lHasCandidate && rHasCandidate) 
+                    CalculateFeature::calOneSideFeatures(featureValues, setJoinP, tok, rstr, ltokens, rtokens, 
+                                                         curGraph);
+                else
+                    CalculateFeature::calDoubleSideFeatures(featureValues, setJoinP, tok, lstr, rstr, ltokens, rtokens, 
+                                                            curGraph, func);
+            }
+            // lev, anm, exm
+            else {
+                CalculateFeature::StringJoinFunc stringJoinP = nullptr;
+                if(func == "lev") 
+                    stringJoinP = &FeatureUtils::levDist;
+                else if(func == "anm") 
+                    stringJoinP = &FeatureUtils::absoluteNorm;
+                else if(func == "exm") 
+                    stringJoinP = &FeatureUtils::exactMatch;
+
+                if(!lHasCandidate && !rHasCandidate)
+                    CalculateFeature::calOriginalFeatures(featureValues, func, lstr, rstr, ltokens, rtokens, isTopK);
+                else if(lHasCandidate && !rHasCandidate) 
+                    CalculateFeature::calOneSideFeatures(featureValues, stringJoinP, tok, rstr, lstr, curGraph, func);
+                else if(!lHasCandidate && rHasCandidate) 
+                    CalculateFeature::calOneSideFeatures(featureValues, stringJoinP, tok, lstr, rstr, curGraph, func);
+                else
+                    CalculateFeature::calDoubleSideFeatures(featureValues, stringJoinP, tok, lstr, rstr, curGraph, func);
+            }
+        }
+    }
+}
+
+
 void CalculateFeature::calAllWithoutInterchangeable(int numFeatures, Rule *featureNames, const std::vector<std::string> &attrVec, const Table &resTable, 
                                                     std::vector<std::vector<double>> &featureValues, const std::vector<int> &featureLength, bool isTopK)
 {

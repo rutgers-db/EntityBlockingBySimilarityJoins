@@ -67,6 +67,8 @@ public:
     bool checkEdgeExistence(int u, int v) const;
     bool checkEdgeExistence(const std::string &u, const std::string &v) const;
 
+    bool isVertexIsolated(const std::string &str) const;
+
     void printMetaData() const;
 
     void writeSemanticGraph(const std::string &pathGraph);

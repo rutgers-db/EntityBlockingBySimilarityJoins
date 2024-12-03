@@ -88,6 +88,9 @@ public:
                        const FeatureIndex::GroupTokens &groupTokensDlm, const FeatureIndex::GroupTokens &groupTokensQgm, 
                        const FeatureIndex::Cluster &cluster, const std::vector<int> &featureLength, bool flagConsistent, 
                        bool isTopK);
+
+    static void calAll(int numFeatures, Rule *featureNames, const std::vector<std::string> &attrVec, const Table &resTable, 
+                       std::vector<std::vector<double>> &featureValues, const std::vector<Graph> &semanticGraphs, bool isTopK);
     
     static void calAllWithoutInterchangeable(int numFeatures, Rule *featureNames, const std::vector<std::string> &attrVec, const Table &resTable, 
                                              std::vector<std::vector<double>> &featureValues, const std::vector<int> &featureLength, bool isTopK);
