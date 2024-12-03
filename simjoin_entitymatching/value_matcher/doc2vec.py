@@ -267,7 +267,7 @@ class Doc2Vec:
         '''
 
         # label
-        vec_path, vec_label_path = ph.get_icval_vec_path(default_icv_dir)
+        vec_path, vec_label_path = ph.get_icval_vec_path(self.cur_parent_dir, default_icv_dir)
         run_cosine_exe(vec_path, vec_label_path, tau)
 
         # read
@@ -298,7 +298,7 @@ class Doc2Vec:
         '''
         
         # label
-        path_vec, path_vec_label = ph.get_icval_vec_path(default_icv_dir)
+        path_vec, path_vec_label = ph.get_icval_vec_path(self.cur_parent_dir, default_icv_dir)
         run_cosine_exe(path_vec, path_vec_label, tau)
         
         # graph
@@ -543,7 +543,7 @@ class Doc2Vec:
         word2id = { word: idx for idx, word in enumerate(bag_of_words) }
 
         # clustering
-        vec_path = ph.get_icval_vec_input_path(default_icv_dir)
+        vec_path = ph.get_icval_vec_input_path(self.cur_parent_dir, default_icv_dir)
             
         with open(vec_path, "w") as vecfile:
             stat = [str(len(pair_list)), '\n']
@@ -623,12 +623,12 @@ class Doc2Vec:
         vec_pair = list(set(vec_pair))
 
         # report
-        vec_path, pair_path = ph.get_icval_vec_input_path(default_icv_dir)
+        vec_path, pair_path = ph.get_icval_vec_input_path(self.cur_parent_dir, default_icv_dir)
         # vec
         with open(vec_path, "w") as vecfile:
             stat = [str(len(vec_dict)), '\n']
             vecfile.writelines(stat)
-            for k, v in vec_dict:
+            for k, v in vec_dict.items():
                 # str
                 vecfile.writelines([k + "\n"])
                 # vectors

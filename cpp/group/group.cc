@@ -47,6 +47,7 @@ void Group::readDocsAndVecs(std::vector<std::string> &docs, std::vector<std::vec
         }
 
         // append
+        std::sort(vec.begin(), vec.end());
         docs.emplace_back(doc);
         vecs.emplace_back(std::move(vec));
     }
@@ -97,7 +98,8 @@ void Group::groupInterchangeableValuesByGraph(const std::string &groupAttribute,
     senmaticGraph.buildSemanticGraph(docs, vecs, candidates);
 
     // write
-    std::string pathGraph = defaultICVDir + "interchangeable_graph_" 
+    std::string directory = getICVDir(defaultICVDir);
+    std::string pathGraph = directory + "interchangeable_graph_" 
                             + groupAttribute + ".txt";
     senmaticGraph.writeSemanticGraph(pathGraph);
 }

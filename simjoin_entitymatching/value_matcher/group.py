@@ -74,16 +74,18 @@ def run_group_lib(group_attribute, group_strategy, group_tau, is_transitive_clos
     group_lib_path = "/".join([cur_file_dir, "..", "..", "shared_lib", "libgroup.so"])
     group_lib = cdll.LoadLibrary(group_lib_path)
     
-    group_attribute = group_attribute.encode('utf-8')
-    group_strategy = group_strategy.encode('utf-8')
     default_icv_dir = default_icv_dir.encode('utf-8')
     
     if group_strategy == "graph":
+        group_attribute = group_attribute.encode('utf-8')
+        group_strategy = group_strategy.encode('utf-8')
         group_lib.group_interchangeable_values_by_graph.argtypes = [c_char_p, c_char_p, c_double, c_bool, c_char_p]
         group_lib.group_interchangeable_values_by_graph.restype = None
         group_lib.group_interchangeable_values_by_graph(group_attribute, group_strategy, group_tau, c_bool(is_transitive_closure), 
                                                         default_icv_dir)
     elif group_strategy == "cluster":
+        group_attribute = group_attribute.encode('utf-8')
+        group_strategy = group_strategy.encode('utf-8')
         pass
     else:
         print(f"no such group strategy : {group_strategy}")

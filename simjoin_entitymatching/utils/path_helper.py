@@ -79,8 +79,8 @@ def get_match_res_stat_path(default_match_res_dir=""):
     return path_match_stat
 
 
-def get_icval_vec_input_path(default_icv_dir):
-    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+def get_icval_vec_input_path(cur_parent_dir, default_icv_dir):
+    # cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     if default_icv_dir == "":
         vec_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
         pair_path = "/".join([cur_parent_dir, "ic_values", "pair_interchangeable.txt"])
@@ -92,8 +92,8 @@ def get_icval_vec_input_path(default_icv_dir):
     return vec_path, pair_path
 
 
-def get_icval_vec_path(default_icv_dir):
-    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+def get_icval_vec_path(cur_parent_dir, default_icv_dir):
+    # cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     if default_icv_dir == "":
         vec_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable.txt"])
         vec_label_path = "/".join([cur_parent_dir, "ic_values", "vec_interchangeable_label.txt"])
