@@ -368,29 +368,35 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
                                            external_group_strategy="graph", is_transitive_closure=False,
                                            default_match_res_dir="output/exp")
     
-    # schemas = list(tableA)[1:]
-    # schemas = [attr for attr in schemas if attr not in ["price", "year", "manufacturer"]]
+    schemas = list(tableA)[1:]
+    schemas = [attr for attr in schemas if attr not in ["price", "year", "manufacturer"]]
     # run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
     #                 attrs=schemas, usage="match")
     
-    # # get the negative results
-    # default_fea_vec_dir = "output/exp"
-    # print(f"neg fea vec writing to ... {default_fea_vec_dir}")
-    # run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=1, total_attr=len(schemas), 
-    #                 attrs=schemas, usage="match", default_fea_vec_dir=default_fea_vec_dir, default_res_tab_name="neg_match_res")
+    # get the negative results
+    default_fea_vec_dir = "output/exp"
+    print(f"neg fea vec writing to ... {default_fea_vec_dir}")
+    run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=1, total_attr=len(schemas), 
+                    attrs=schemas, usage="match", default_fea_vec_dir=default_fea_vec_dir, 
+                    default_res_tab_name="neg_match_res", group_strategy="graph")
     
-    # # apply on negative match results
-    # H2 = pd.read_csv("output/exp/feature_vec0.csv")
-    # _label_cand(gold_graph, H2)
-    # H2.rename(columns={"id": "_id"}, inplace=True)
-    # _set_metadata(H2, "_id", "ltable_id", "rtable_id", tableA, tableB)
-    # if impute_strategy == "mean":
-    #     em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
-    # elif impute_strategy == "constant":
-    #     em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
-    # pred2 = apply_model(tableA, tableB, model, H2, True, pred1)
-    # # _get_recall(gold_graph, pred2, gold_len)
+    # apply on negative match results
+    # read (tn + fn) feature vectors
+    H2 = pd.read_csv("output/exp/feature_vec0.csv")
+    _label_cand(gold_graph, H2)
+    H2.rename(columns={"id": "_id"}, inplace=True)
+    _set_metadata(H2, "_id", "ltable_id", "rtable_id", tableA, tableB)
     
+    # impute
+    if impute_strategy == "mean":
+        em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
+    elif impute_strategy == "constant":
+        em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
+        
+    # apply
+    pred2 = apply_model(tableA, tableB, model, H2, True, pred1)
+    
+    # # apply again on blocking results
     # _, test2 = split_and_dump_data(tableA, tableB, gold_graph, external_extract=True, T_index=train.index, 
     #                                E_index=test.index, impute_strategy=impute_strategy)
     

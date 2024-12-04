@@ -37,7 +37,19 @@ public:
     FeatureEngineering(FeatureEngineering &&other) = delete;
 
 private:
+    // path prefix
     static std::string getDefaultICVDir(const std::string &defaultICVDir);
+    static std::string getDefaultBlkResDir(const std::string &defaultFeatureVecDir);
+    static std::string getDefaultMatchResDir(const std::string &defaultFeatureVecDir);
+
+    // flush feature vectors
+    static void writeMatchingFeatureVectors(const std::vector<std::vector<double>> &featureValues, const Table &tab, 
+                                            const std::string &directory, const std::vector<std::string> &nameCopy, 
+                                            int tabId);
+
+    static void writeTopKFeatureVectors(const std::vector<std::vector<double>> &featureValues, const Table &tab, 
+                                        const std::string &directory, const std::vector<std::string> &nameCopy, 
+                                        ui numFeatures);
 
 public:
     static void readGroups(int totalAttr, const std::vector<std::string> &attrVec, FeatureIndex::Groups &group, 
@@ -58,6 +70,11 @@ public:
                                          const FeatureArguments *attrs, const std::string &defaultFeatureVecDir = "", 
                                          const std::string &defaultResTableName = "", const std::string &defaultICVDir = "", 
                                          const std::string &defeaultFeatureNamesDir = "");
+
+    static void extractFeatures4MatchingGraph(int isInterchangeable, int totalTable, const FeatureArguments *attrs, const std::string &defaultFeatureVecDir = "", 
+                                              const std::string &defaultResTableName = "", const std::string &defaultICVDir = "", 
+                                              const std::string &defaultFeatureNamesDir = "");
+
     /*
      * extract features for top k
      * will use interchangeable values depending on input

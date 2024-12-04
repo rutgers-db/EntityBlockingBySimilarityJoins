@@ -17,6 +17,118 @@ std::string FeatureEngineering::getDefaultICVDir(const std::string &defaultICVDi
 }
 
 
+std::string FeatureEngineering::getDefaultBlkResDir(const std::string &defaultFeatureVecDir)
+{
+    std::string fullPath = __FILE__;
+    size_t lastSlash = fullPath.find_last_of("/\\");
+    std::string directory = fullPath.substr(0, lastSlash + 1);
+    directory = defaultFeatureVecDir == "" ? directory + "../../output/blk_res/" 
+										   : (defaultFeatureVecDir.back() == '/' ? defaultFeatureVecDir 
+																				 : defaultFeatureVecDir + "/");
+    return directory;
+}
+
+
+std::string FeatureEngineering::getDefaultMatchResDir(const std::string &defaultFeatureVecDir)
+{
+    std::string fullPath = __FILE__;
+    size_t lastSlash = fullPath.find_last_of("/\\");
+    std::string directory = fullPath.substr(0, lastSlash + 1);
+    directory = defaultFeatureVecDir == "" ? directory + "../../output/match_res/" 
+										   : (defaultFeatureVecDir.back() == '/' ? defaultFeatureVecDir 
+																				 : defaultFeatureVecDir + "/");
+    return directory;
+}
+
+
+void FeatureEngineering::writeMatchingFeatureVectors(const std::vector<std::vector<double>> &featureValues, const Table &tab, 
+                                                     const std::string &directory, const std::vector<std::string> &nameCopy, 
+                                                     int tabId)
+{
+    // flush
+    std::string featureVecPath = directory + "feature_vec" + std::to_string(tabId) + ".csv";
+    FILE *fvfile = fopen(featureVecPath.c_str(), "w");
+
+    // header
+    fprintf(fvfile, "id,ltable_id,rtable_id");
+    for(const auto &copy : nameCopy)
+        fprintf(fvfile, ",%s", copy.c_str());
+    fprintf(fvfile, "\n");
+
+    // no need for escaping
+    for(int ridx = 0; ridx < tab.row_no; ridx ++) {
+        const auto &curRow = tab.rows[ridx];
+        int _id = std::stoi(curRow[0]);
+        int lid = std::stoi(curRow[1]);
+        int rid = std::stoi(curRow[2]);
+        fprintf(fvfile, "%d,%d,%d", _id, lid, rid);
+        for(const auto &val : featureValues[ridx]) {
+            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)
+                fprintf(fvfile, ",");
+            else
+                fprintf(fvfile, ",%.10lf", val);
+        }
+        fprintf(fvfile, "\n");
+    }
+
+    fflush(fvfile);
+    fclose(fvfile);
+}
+
+
+void FeatureEngineering::writeTopKFeatureVectors(const std::vector<std::vector<double>> &featureValues, const Table &tab, 
+                                                 const std::string &directory, const std::vector<std::string> &nameCopy, 
+                                                 ui numFeatures)
+{
+    // flush
+    std::string featureVecPath = directory + "feature_vec.csv";
+    FILE *fvfile = fopen(featureVecPath.c_str(), "w");
+
+    // header
+    fprintf(fvfile, "id,ltable_id,rtable_id");
+    for(const auto &copy : nameCopy)
+        fprintf(fvfile, ",%s", copy.c_str());
+    fprintf(fvfile, "\n");
+
+    // no need for escaping
+    // for top k, we need to fill in NaN
+    std::vector<double> means(numFeatures, 0.0);
+    std::vector<int> length(numFeatures, 0);
+    for(int ridx = 0; ridx < tab.row_no; ridx ++) {
+        const auto &curRow = featureValues[ridx];
+        int rsize = (int)curRow.size();
+        for(int j = 0; j < rsize; j++) {
+            double val = curRow[j];
+            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)   
+                continue;
+            ++ length[j];
+            means[j] += val;
+        }
+    }
+    for(int i = 0; i < numFeatures; i++)
+        means[i] /= length[i];
+    
+
+    for(int ridx = 0; ridx < tab.row_no; ridx ++) {
+        const auto &curRow = tab.rows[ridx];
+        int _id = std::stoi(curRow[0]);
+        int lid = std::stoi(curRow[1]);
+        int rid = std::stoi(curRow[2]);
+        fprintf(fvfile, "%d,%d,%d", _id, lid, rid);
+        for(int j = 0; j < numFeatures; j++) {
+            double val = featureValues[ridx][j];
+            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)
+                fprintf(fvfile, ",%.10lf", means[j]);
+            else
+                fprintf(fvfile, ",%.10lf", val);
+        }
+        fprintf(fvfile, "\n");
+    }
+
+    fclose(fvfile);
+}
+
+
 void FeatureEngineering::readGroups(int totalAttr, const std::vector<std::string> &attrVec, FeatureIndex::Groups &group, 
                                     FeatureIndex::GroupTokens &groupTokensDlm, FeatureIndex::GroupTokens &groupTokensQgm, 
                                     FeatureIndex::Cluster &cluster, std::vector<int> &keyLength, 
@@ -161,12 +273,7 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
 
     // io
     std::vector<int> keyLength;
-    std::string fullPath = __FILE__;
-    size_t lastSlash = fullPath.find_last_of("/\\");
-    std::string directory = fullPath.substr(0, lastSlash + 1);
-    directory = defaultFeatureVecDir == "" ? directory + "../../output/blk_res/" 
-										   : (defaultFeatureVecDir.back() == '/' ? defaultFeatureVecDir 
-																				 : defaultFeatureVecDir + "/");
+    std::string directory = getDefaultBlkResDir(defaultFeatureVecDir);
 
     std::string resTableName = defaultResTableName == "" ? "blk_res" : defaultResTableName;
     for(int i = 0; i < totalTable; i ++) {
@@ -214,33 +321,7 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
                                                            featureValues, featureLength, false);
 
         // flush
-        std::string featureVecPath = directory + "feature_vec" + std::to_string(i) + ".csv";
-        FILE *fvfile = fopen(featureVecPath.c_str(), "w");
-
-        // header
-        fprintf(fvfile, "id,ltable_id,rtable_id");
-        for(const auto &copy : nameCopy)
-            fprintf(fvfile, ",%s", copy.c_str());
-        fprintf(fvfile, "\n");
-
-        // no need for escaping
-        for(int ridx = 0; ridx < blkRes.row_no; ridx ++) {
-            const auto &curRow = blkRes.rows[ridx];
-            int _id = std::stoi(curRow[0]);
-            int lid = std::stoi(curRow[1]);
-            int rid = std::stoi(curRow[2]);
-            fprintf(fvfile, "%d,%d,%d", _id, lid, rid);
-            for(const auto &val : featureValues[ridx]) {
-                if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)
-                    fprintf(fvfile, ",");
-                else
-                    fprintf(fvfile, ",%.10lf", val);
-            }
-            fprintf(fvfile, "\n");
-        }
-
-        fflush(fvfile);
-        fclose(fvfile);
+        writeMatchingFeatureVectors(featureValues, blkRes, directory, nameCopy, i);
     }
 
     gettimeofday(&end, NULL);
@@ -249,6 +330,78 @@ void FeatureEngineering::extractFeatures4Matching(int isInterchangeable, bool fl
     std::cout << initTime << " " << time << std::endl;
 
     CalculateFeature::index.releaseMemory();
+    return;
+}
+
+
+void FeatureEngineering::extractFeatures4MatchingGraph(int isInterchangeable, int totalTable, const FeatureArguments *attrs, 
+                                                       const std::string &defaultFeatureVecDir, const std::string &defaultResTableName, 
+                                                       const std::string &defaultICVDir, const std::string &defaultFeatureNamesDir)
+{
+    int totalAttr = attrs->totalAttr;
+    std::vector<std::string> attrVec;
+    std::vector<int> featureLength;
+    for(int i = 0; i < totalAttr; i++) {
+        attrVec.emplace_back(attrs->attributes[i]);
+        featureLength.emplace_back(CalculateFeature::index.calNumFeature(attrs->attributes[i]));
+    }
+
+    printf("is interchangeable: %d", isInterchangeable);
+    printf("number of tables: %d\tnumber of attrs: %d\n", totalTable, totalAttr);
+    for(const auto &attr : attrVec)
+        printf("%s\t", attr.c_str());
+    printf("\n");
+
+    CSVReader reader;
+    std::vector<Graph> semanticGraphs;
+
+    // io
+    std::vector<int> keyLength;
+    std::string directory = getDefaultBlkResDir(defaultFeatureVecDir);
+    std::string resTableName = defaultResTableName == "" ? "blk_res" : defaultResTableName;
+    for(int i = 0; i < totalTable; i ++) {
+        std::string blkResPath = directory + resTableName + std::to_string(i) + ".csv";
+        bool success = reader.reading_one_table(blkResPath, false);
+    }
+
+    if(isInterchangeable) 
+        readGraphs(totalAttr, attrVec, semanticGraphs, defaultICVDir);
+    printf("done io\n");
+    fflush(stdout);
+
+    // get feature table
+    // assign function
+    ui numFeatures;
+    Rule *featureNames;
+    std::vector<std::string> nameCopy;
+    readFeatures(numFeatures, featureNames, nameCopy, defaultFeatureNamesDir);
+
+    // group
+    timeval begin, end;
+    gettimeofday(&begin, NULL);
+
+#pragma omp parallel for
+    for(int i = 0; i < totalTable; i++) {
+        Table blkRes = reader.tables[i];
+        blkRes.Profile();
+        std::vector<std::vector<double>> featureValues;
+
+        // cal
+        if(isInterchangeable)
+            CalculateFeature::calAll(numFeatures, featureNames, attrVec, blkRes, featureValues, 
+                                     semanticGraphs, false);
+        else
+            CalculateFeature::calAllWithoutInterchangeable(numFeatures, featureNames, attrVec, blkRes, 
+                                                           featureValues, featureLength, false);
+
+        // flush
+        writeMatchingFeatureVectors(featureValues, blkRes, directory, nameCopy, i);
+    }
+
+    gettimeofday(&end, NULL);
+    double time = end.tv_sec - begin.tv_sec + (end.tv_usec - begin.tv_usec) / 1e6;
+    std::cout << time << std::endl;
+
     return;
 }
 
@@ -286,12 +439,7 @@ void FeatureEngineering::extractFeatures4TopK(int isInterchangeable, bool flagCo
 
     // io
     std::vector<int> keyLength;
-    std::string fullPath = __FILE__;
-    size_t lastSlash = fullPath.find_last_of("/\\");
-    std::string directory = fullPath.substr(0, lastSlash + 1);
-    directory = defaultFeatureVecDir == "" ? defaultFeatureVecDir + "../../output/match_res/" 
-										   : (defaultFeatureVecDir.back() == '/' ? defaultFeatureVecDir 
-																			 : defaultFeatureVecDir + "/");
+    std::string directory = getDefaultMatchResDir(defaultFeatureVecDir);
     std::string matchresPath = directory + "match_res.csv";
     bool success = reader.reading_one_table(matchresPath, false);
     Table matchRes = reader.tables[0];
@@ -327,51 +475,7 @@ void FeatureEngineering::extractFeatures4TopK(int isInterchangeable, bool flagCo
                                                         featureValues, featureLength, true);
 
     // flush
-    std::string featureVecPath = directory + "feature_vec.csv";
-    FILE *fvfile = fopen(featureVecPath.c_str(), "w");
-
-    // header
-    fprintf(fvfile, "id,ltable_id,rtable_id");
-    for(const auto &copy : nameCopy)
-        fprintf(fvfile, ",%s", copy.c_str());
-    fprintf(fvfile, "\n");
-
-    // no need for escaping
-    // for top k, we need to fill in NaN
-    std::vector<double> means(numFeatures, 0.0);
-    std::vector<int> length(numFeatures, 0);
-    for(int ridx = 0; ridx < matchRes.row_no; ridx ++) {
-        const auto &curRow = featureValues[ridx];
-        int rsize = (int)curRow.size();
-        for(int j = 0; j < rsize; j++) {
-            double val = curRow[j];
-            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)   
-                continue;
-            ++ length[j];
-            means[j] += val;
-        }
-    }
-    for(int i = 0; i < numFeatures; i++)
-        means[i] /= length[i];
-    
-
-    for(int ridx = 0; ridx < matchRes.row_no; ridx ++) {
-        const auto &curRow = matchRes.rows[ridx];
-        int _id = std::stoi(curRow[0]);
-        int lid = std::stoi(curRow[1]);
-        int rid = std::stoi(curRow[2]);
-        fprintf(fvfile, "%d,%d,%d", _id, lid, rid);
-        for(int j = 0; j < numFeatures; j++) {
-            double val = featureValues[ridx][j];
-            if(std::abs(std::abs(val) - std::abs(FeatureUtils::NaN)) < 1e-5)
-                fprintf(fvfile, ",%.10lf", means[j]);
-            else
-                fprintf(fvfile, ",%.10lf", val);
-        }
-        fprintf(fvfile, "\n");
-    }
-
-    fclose(fvfile);
+    writeTopKFeatureVectors(featureValues, matchRes, directory, nameCopy, numFeatures);
 
     gettimeofday(&end, NULL);
     double time = end.tv_sec - begin.tv_sec + (end.tv_usec - begin.tv_usec) / 1e6;
@@ -387,10 +491,16 @@ extern "C"
     void extract_features_4_matching(int is_interchangeable, bool flag_consistent, int total_table, 
                                      const FeatureArguments *attrs, const char *default_fea_vec_dir, 
                                      const char *default_res_tab_name, const char *default_icv_dir, 
-                                     const char *default_fea_names_dir) {
-        FeatureEngineering::extractFeatures4Matching(is_interchangeable, flag_consistent, total_table, attrs, 
-                                                     default_fea_vec_dir, default_res_tab_name, default_icv_dir, 
-                                                     default_fea_names_dir);
+                                     const char *default_fea_names_dir, const char *group_strategy) {
+        std::string groupStrategy = group_strategy;
+        if(groupStrategy == "cluster")
+            FeatureEngineering::extractFeatures4Matching(is_interchangeable, flag_consistent, total_table, attrs, 
+                                                        default_fea_vec_dir, default_res_tab_name, default_icv_dir, 
+                                                        default_fea_names_dir);
+        else
+            FeatureEngineering::extractFeatures4MatchingGraph(is_interchangeable, total_table, attrs, 
+                                                              default_fea_vec_dir, default_res_tab_name, default_icv_dir, 
+                                                              default_fea_names_dir);
     }
 
     void extract_features_4_topk(int is_interchangeable, bool flag_consistent, int total_table, 
