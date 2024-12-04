@@ -19,12 +19,15 @@ int main(int argc, char *argv[])
         strcpy(attrs->attributes[i], argv[6 + i]);
     }
     std::string defaultFeatureVecDir = argv[6 + attrs->totalAttr];
-    std::string defaultICVDir = argv[7 + attrs->totalAttr];
-    std::string defaultFeatureNamesDir = argv[8 + attrs->totalAttr];
+    std::string defaultResTableName = argv[7 + attrs->totalAttr];
+    std::string defaultICVDir = argv[8 + attrs->totalAttr];
+    std::string defaultFeatureNamesDir = argv[9 + attrs->totalAttr];
     
     if(usage == "match")
-        FeatureEngineering::extractFeatures4Matching(isInterchangeable, flagConsistent, totalTable, attrs, 
-                                                     defaultFeatureVecDir, defaultICVDir, defaultFeatureNamesDir);
+        // FeatureEngineering::extractFeatures4Matching(isInterchangeable, flagConsistent, totalTable, attrs, 
+        //                                              defaultFeatureVecDir, defaultICVDir, defaultFeatureNamesDir);
+        FeatureEngineering::extractFeatures4MatchingGraph(isInterchangeable, totalTable, attrs, defaultFeatureVecDir, 
+                                                          defaultResTableName, defaultICVDir, defaultFeatureNamesDir);
     else if(usage == "topk")
         FeatureEngineering::extractFeatures4TopK(isInterchangeable, flagConsistent, totalTable, attrs, 
                                                  defaultFeatureVecDir, defaultICVDir, defaultFeatureNamesDir);

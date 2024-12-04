@@ -34,6 +34,11 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    -tabname|--res_tab_name)
+      RES_TAB_NAME="$2"
+      shift # past argument
+      shift # past value
+      ;;
     -icvd|--icv_dir)
       ICV_DIR="$2"
       shift # past argument
@@ -63,16 +68,17 @@ echo "Flag Consistent                          : ${FLAG_CONSISTENT}"
 echo "Total Table                              : ${TOTAL_TABLE}"
 echo "Total Attributes                         : ${TOTAL_ATTR}"
 echo "Attributes                               : ${POSITIONAL_ARGS[@]}"
-echo "Default Feature Vectors Directory:       : ${FEATURE_VEC_DIR}"
+echo "Default Feature Vectors Directory        : ${FEATURE_VEC_DIR}"
+echo "Default Table Name                       : ${RES_TAB_NAME}"
 echo "Default Interchangeable Value Directory  : ${ICV_DIR}"
-echo "Default Feature Names Directory:         : ${FEATURE_NAMES_DIR}"
+echo "Default Feature Names Directory          : ${FEATURE_NAMES_DIR}"
 echo "The attributes not included above will be calculated by default"
 
 ##############################
 # change this line if needed #
 ##############################
 bin/feature $USAGE $IS_INTERCHANGEABLE $FLAG_CONSISTENT $TOTAL_TABLE $TOTAL_ATTR ${POSITIONAL_ARGS[@]} \
-            "${FEATURE_VEC_DIR}" "${ICV_DIR}" "${FEATURE_NAMES_DIR}"
+            "${FEATURE_VEC_DIR}" "${RES_TAB_NAME}" "${ICV_DIR}" "${FEATURE_NAMES_DIR}"
 
 if [ $? -eq 0 ]; then
     echo "done feature."

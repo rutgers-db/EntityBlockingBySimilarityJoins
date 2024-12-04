@@ -60,7 +60,7 @@ void Group::readDocsAndVecs(std::vector<std::string> &docs, std::vector<std::vec
         }
 
         // append
-        std::sort(vec.begin(), vec.end());
+        // std::sort(vec.begin(), vec.end());
         docs.emplace_back(doc);
         vecs.emplace_back(std::move(vec));
     }

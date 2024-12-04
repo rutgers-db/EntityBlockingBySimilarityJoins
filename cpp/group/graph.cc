@@ -171,6 +171,7 @@ void Graph::buildSemanticGraph(const std::string &pathGraph)
         doc2Id[doc] = id;
     }
 
+    graLists.resize(numVertex, std::vector<int> ());
     for(int i = 0; i < numEdge; i++) {
         std::string info;
         getline(streamGraph, info);
@@ -196,12 +197,16 @@ void Graph::updateTokenizedDocs(const std::vector<std::vector<std::string>> &dlm
 
 bool Graph::checkEdgeExistence(int u, int v) const
 {
+    assert(u < numVertex && v < numVertex);
     return std::count(graLists[u].begin(), graLists[u].end(), v) > 0;
 }
 
 
 bool Graph::checkEdgeExistence(const std::string &u, const std::string &v) const
 {
+    if(!isDocContained(u) || !isDocContained(v))
+        return false;
+
     int uId = doc2Id.at(u);
     int vId = doc2Id.at(v);
     return std::count(graLists[uId].begin(), graLists[uId].end(), vId) > 0;
@@ -210,6 +215,9 @@ bool Graph::checkEdgeExistence(const std::string &u, const std::string &v) const
 
 bool Graph::isVertexIsolated(const std::string &str) const
 {
+    if(!isDocContained(str))
+        return true;
+
     int id = doc2Id.at(str);
     return graLists[id].size() == 0;
 }
@@ -270,7 +278,7 @@ void Graph::retrieveTokenizedNeighbors(const std::string &doc, const std::string
         exit(1);
     }
 
-    if(type != "doc" || type != "qgm") {
+    if(type != "dlm" && type != "qgm") {
         std::cerr << "no such tokenizer type : " << type << std::endl;
         exit(1);
     }
