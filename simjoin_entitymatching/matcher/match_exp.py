@@ -265,7 +265,7 @@ def train_model(T, num_tree=10):
     }
 
     grid_search = GridSearchCV(estimator=exp_rf.clf, param_grid=param_grid,
-                                cv=5, n_jobs=-1, verbose=2)
+                                cv=5, n_jobs=-1, verbose=0)
     
     # process the feature tables to numpy ndarray
     exclude_attrs = ["_id", "ltable_id", "rtable_id", "label"]
@@ -320,7 +320,7 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
             r_node = str(rid) + "B"
             # if trans_graph.has_node(l_node) and trans_graph.has_node(r_node):
             #     if len(nx.common_neighbors(trans_graph, l_node, r_node)) >= 1:
-            if prev_pred.loc[prev_ridx, "proba"] >= 0.05:
+            if prev_pred.loc[prev_ridx, "proba"] >= 0.0:
                     prev_pred.loc[prev_ridx, "predicted"] = 1
         
         # print(prev_pred.columns)
@@ -364,7 +364,7 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     # _get_recall(gold_graph, pred1, gold_len)
     
     # group
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.8, group_strategy="doc", num_data=2, external_group=True, 
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
                                            external_group_strategy="graph", is_transitive_closure=False,
                                            default_match_res_dir="output/exp")
     

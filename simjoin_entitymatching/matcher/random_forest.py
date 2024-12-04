@@ -445,7 +445,7 @@ class RandomForest:
 		}
   
 		grid_search = GridSearchCV(estimator=self.rf.clf, param_grid=param_grid,
-								   cv=5, n_jobs=1, verbose=2)
+								   cv=5, n_jobs=1, verbose=0)
 		
 		# process the feature tables to numpy ndarray
 		exclude_attrs = ["id", "ltable_id", "rtable_id", "label"]

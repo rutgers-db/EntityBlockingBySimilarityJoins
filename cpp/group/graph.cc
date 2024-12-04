@@ -81,10 +81,12 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
     // edges
     graLists.resize(count, std::vector<int> ());
     for(const auto &p : candidates) {
-        if(p.first == p.second)
+        int lId = doc2Id.at(p.first);
+        int rId = doc2Id.at(p.second); 
+
+        if(lId == rId || checkEdgeExistence(lId, rId))
             continue;
-        int lId = doc2Id[p.first];
-        int rId = doc2Id[p.second]; 
+
         double cos = calculateCosineSim(vecs[lId], vecs[rId]);
         // std::cout << cos << std::endl;
         if(cos >= tau) {
