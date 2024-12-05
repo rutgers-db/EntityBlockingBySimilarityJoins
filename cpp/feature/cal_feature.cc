@@ -420,7 +420,7 @@ void CalculateFeature::calAll(int numFeatures, Rule *featureNames, const std::ve
                     else setJoinP = &FeatureUtils::overlapD;
                 }
                 
-                if(!lHasCandidate && !lHasCandidate)
+                if(!lHasCandidate && !rHasCandidate)
                     CalculateFeature::calOriginalFeatures(featureValues, func, lstr, rstr, ltokens, rtokens, isTopK);
                 else if(lHasCandidate && !rHasCandidate)
                     CalculateFeature::calOneSideFeatures(featureValues, setJoinP, tok, lstr, rtokens, ltokens, 
