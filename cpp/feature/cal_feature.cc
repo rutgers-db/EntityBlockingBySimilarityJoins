@@ -87,7 +87,7 @@ void CalculateFeature::calOneSideFeatures(std::vector<std::vector<double>> &feat
 {
     double maxVal = stringJoinP(str, icstr);
     std::vector<std::string> neighbors;
-    semanticGraph.retrieveNeighbors(str, neighbors);
+    semanticGraph.retrieveNeighbors(icstr, neighbors);
     for(const auto &doc : neighbors) {
         double newVal = stringJoinP(doc, str);
         if(func == "lev") 
