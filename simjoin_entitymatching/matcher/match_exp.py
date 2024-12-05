@@ -320,7 +320,7 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
             r_node = str(rid) + "B"
             # if trans_graph.has_node(l_node) and trans_graph.has_node(r_node):
             #     if len(nx.common_neighbors(trans_graph, l_node, r_node)) >= 1:
-            if prev_pred.loc[prev_ridx, "proba"] >= 0.0:
+            if prev_pred.loc[prev_ridx, "proba"] >= 0.05:
                     prev_pred.loc[prev_ridx, "predicted"] = 1
         
         # print(prev_pred.columns)
@@ -365,17 +365,18 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     
     # group
     group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
-                                           external_group_strategy="graph", is_transitive_closure=False,
+                                           external_group_strategy="graph", is_transitive_closure=True,
                                            default_match_res_dir="output/exp")
+    print("group done", flush=True)
     
     schemas = list(tableA)[1:]
-    schemas = [attr for attr in schemas if attr not in ["price", "year", "manufacturer"]]
+    schemas = [attr for attr in schemas if attr not in ["price", "year", "manufacturer", "description"]]
     # run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
     #                 attrs=schemas, usage="match")
     
     # get the negative results
     default_fea_vec_dir = "output/exp"
-    print(f"neg fea vec writing to ... {default_fea_vec_dir}")
+    print(f"neg fea vec writing to ... {default_fea_vec_dir}", flush=True)
     run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=1, total_attr=len(schemas), 
                     attrs=schemas, usage="match", default_fea_vec_dir=default_fea_vec_dir, 
                     default_res_tab_name="neg_match_res", group_strategy="graph")

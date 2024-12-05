@@ -351,6 +351,7 @@ void FeatureEngineering::extractFeatures4MatchingGraph(int isInterchangeable, in
     for(const auto &attr : attrVec)
         printf("%s\t", attr.c_str());
     printf("\n");
+    fflush(stdout);
 
     CSVReader reader;
     std::vector<Graph> semanticGraphs;

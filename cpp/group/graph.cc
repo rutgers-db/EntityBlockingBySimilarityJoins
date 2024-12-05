@@ -78,6 +78,9 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
     for(const auto &doc : docs)
         doc2Id[doc] = count ++;
 
+    // stat
+    numVertex = count;
+
     // edges
     graLists.resize(count, std::vector<int> ());
     for(const auto &p : candidates) {
@@ -96,9 +99,6 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
         }
     }
 
-    // stat
-    numVertex = count;
-
     // transitive closure
     if(isTransitiveClosure) {
         std::cout << "adding edges" << std::endl;
@@ -109,8 +109,8 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
             // check two-hop neighbors of i in order
             // a ~ b, b ~ c, thus a ~ c if sim(a, c) > tau
             for(const auto &v : graLists[i]) {
-                if(v < i)
-                    continue;
+                // if(v < i)
+                //     continue;
                 for(const auto &u : graLists[v]) {
                     if(u <= i || checkEdgeExistence(i, u))
                         continue;
@@ -123,6 +123,10 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
             }
 
             // add
+            std::sort(lazyNeighb.begin(), lazyNeighb.end());
+            size_t as = std::distance(lazyNeighb.begin(), std::unique(lazyNeighb.begin(), lazyNeighb.end()));
+            lazyNeighb.resize(as);
+            numEdge -= (int)as;
             for(const auto &u : lazyNeighb) {
                 graLists[i].emplace_back(u);
                 graLists[u].emplace_back(i);
@@ -157,9 +161,11 @@ void Graph::buildSemanticGraph(const std::string &pathGraph)
     std::string token;
     // |V|
     getline(iss, token, ' ');
+    // std::cout << token << std::endl << std::flush;
     numVertex = std::stoi(token);
     // |E|
     getline(iss, token, ' ');
+    // std::cout << token << std::endl << std::flush;
     numEdge = std::stoi(token);
 
     for(int i = 0; i < numVertex; i++) {
@@ -200,6 +206,10 @@ void Graph::updateTokenizedDocs(const std::vector<std::vector<std::string>> &dlm
 bool Graph::checkEdgeExistence(int u, int v) const
 {
     assert(u < numVertex && v < numVertex);
+    // if(u >= numVertex || v >= numVertex) {
+    //     std::cerr << "error in : " << u << " " << v << " " << numVertex << std::endl;
+    //     exit(1);
+    // }
     return std::count(graLists[u].begin(), graLists[u].end(), v) > 0;
 }
 

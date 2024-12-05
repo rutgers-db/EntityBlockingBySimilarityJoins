@@ -22,7 +22,7 @@ public:
     Group(const Group &other) = delete;
     Group(Group &&other) = delete;
 
-private:
+public:
     // interchangeable values directory
     static std::string getICVDir(const std::string &defaultICVDir);
 

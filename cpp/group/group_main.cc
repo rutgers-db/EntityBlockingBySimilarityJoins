@@ -61,12 +61,13 @@ int main(int argc, char *argv[])
     if(arguments.groupStrategy == "graph") {
         // build
         Graph senmaticGraph(arguments.isTransitiveClosure, arguments.groupTau);
-        senmaticGraph.buildSemanticGraph(docs, vecs, candidates);
+        // senmaticGraph.buildSemanticGraph(docs, vecs, candidates);
 
         // write
-        std::string pathGraph = arguments.defaultICVDir + "interchangeable_graph_" 
+        std::string pathGraph = Group::getICVDir(arguments.defaultICVDir) + "interchangeable_graph_" 
                                 + arguments.groupAttribute + ".txt";
-        senmaticGraph.writeSemanticGraph(pathGraph);
+        // senmaticGraph.writeSemanticGraph(pathGraph);
+        senmaticGraph.buildSemanticGraph(pathGraph);
     }
     else if(arguments.groupStrategy == "cluster") {
 
