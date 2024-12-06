@@ -66,38 +66,42 @@ def main(turn, dtype, mode="match_exp"):
                           table_size=100000, is_join_topk=0, is_idf_weighted=1, 
                           num_data=2)
     
-    if mode == "match_exp":
-        run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, len(gold), impute_strategy="mean")
-    else:
-        # first-round match
-        match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
-                                    at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
+    # if mode == "match_exp":
+    #     file_name = '/'.join(["output/exp/match_stat", data_name + "_" + dtype + ".txt"])
+    #     filep = open(file_name, "w")
+    #     run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, filep, impute_strategy="mean")
+    #     filep.flush()
+    #     filep.close()
+    # else:
+    #     # first-round match
+    #     match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 
+    #                                 at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
         
-        match_res_0 = pd.read_csv("output/match_res/match_res.csv")
-        match_res_0.to_csv("output/match_res/match_res_py.csv", index=False)
+    #     match_res_0 = pd.read_csv("output/match_res/match_res.csv")
+    #     match_res_0.to_csv("output/match_res/match_res_py.csv", index=False)
         
-        # cat the output to stat directory
-        exp_utils.cat_blocking_topk_output(data_name, dtype, representativeA, turn)
-        exp_utils.cat_match_res_output_first(data_name, dtype, turn)
+    #     # cat the output to stat directory
+    #     exp_utils.cat_blocking_topk_output(data_name, dtype, representativeA, turn)
+    #     exp_utils.cat_match_res_output_first(data_name, dtype, turn)
         
-        # indentify interchangeable values in first-round matching results
-        group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2)
+    #     # indentify interchangeable values in first-round matching results
+    #     group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2)
         
-        # second-round match: only on negative results of the first-round    
-        match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-                          at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+    #     # second-round match: only on negative results of the first-round    
+    #     match_on_neg_pres(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+    #                       at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
         
-        exp_utils.cat_match_res_output_mid(data_name, dtype, turn)
+    #     exp_utils.cat_match_res_output_mid(data_name, dtype, turn)
         
-        # second-round match: on the entire blocking results
-        match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
-                            at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
+    #     # second-round match: on the entire blocking results
+    #     match_via_cpp_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=1, flag_consistent=0, 
+    #                         at_ltable=attr_types_ltable, at_rtable=attr_types_rtable, numeric_attr=["price", "year"])
         
-        exp_utils.cat_match_res_output_second(data_name, dtype, turn)
+    #     exp_utils.cat_match_res_output_second(data_name, dtype, turn)
         
-        # compare the two rounds matching results
-        match_res_1 = pd.read_csv("output/match_res/match_res.csv")
-        exp_utils.compare_two_match_res(match_res_0, match_res_1)
+    #     # compare the two rounds matching results
+    #     match_res_1 = pd.read_csv("output/match_res/match_res.csv")
+    #     exp_utils.compare_two_match_res(match_res_0, match_res_1)
     
     
 if __name__ == '__main__':

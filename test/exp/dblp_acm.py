@@ -65,7 +65,11 @@ def main(turn, dtype, mode="match_exp"):
                           num_data=2)
     
     if mode == "match_exp":
-        run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, len(gold), impute_strategy="mean")
+        file_name = '/'.join(["output/exp/match_stat", data_name + "_" + dtype + ".txt"])
+        filep = open(file_name, "w")
+        run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, filep, impute_strategy="mean")
+        filep.flush()
+        filep.close()
     else:
         # first-round match
         match_via_megallen_features(tableA, tableB, gold_graph, len(gold), model_path=path_rf, is_interchangeable=0, flag_consistent=0, 

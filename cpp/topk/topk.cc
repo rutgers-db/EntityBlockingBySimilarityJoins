@@ -389,51 +389,115 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &topKidMapA, const std::vec
 							   const std::vector<std::pair<int, int>> &golds, uint64_t K, uint64_t cartesian, 
 							   std::ofstream &statStream)
 {
-	std::vector<std::pair<int, int>> tmp5, tmp2, tmp;
+	/*
+	 * K: 50
+	 * tmpx: K / x
+	 * e.g., tmp3_50: K * 3 / 50, corresponding K = 3
+	 */
+	// sparkly K = 50, 20, 10
+	std::vector<std::pair<int, int>> tmp5, tmp2_5, tmp;
+	// newly added K = 8, 5, 3
+	std::vector<std::pair<int, int>> tmp3_50, tmp10, tmp8_50;
+
 	for(uint64_t i = 0; i < K; i++) {
 		int lid = topKidMapA[id2Pair[q.top().id].first];
 		int rid = topKidMapB[id2Pair[q.top().id].second];
-		if(i >= K * 4 / 5) {
+		// newly added
+		if(i >= K * 47 / 50) {
 			tmp5.emplace_back(lid, rid);
-			tmp2.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp3_50.emplace_back(lid, rid);
+			tmp10.emplace_back(lid, rid);
+			tmp8_50.emplace_back(lid, rid);
+		}
+		else if(i >= K * 9 / 10) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp10.emplace_back(lid, rid);
+			tmp8_50.emplace_back(lid, rid);
+		}
+		else if(i >= K * 42 / 50) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp8_50.emplace_back(lid, rid);
+		}
+		// sparkly
+		else if(i >= K * 4 / 5) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
 			tmp.emplace_back(lid, rid);
 		}
 		else if(i >= K * 3 / 5) {
-			tmp2.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
 			tmp.emplace_back(lid, rid);
 		}
 		else {
 			tmp.emplace_back(lid, rid);
 		}
-		q.pop();
 	}
 
 	auto tmpGolds = golds;
 
 	__gnu_parallel::sort(tmpGolds.begin(), tmpGolds.end());
+	// sparkly
 	__gnu_parallel::sort(tmp5.begin(), tmp5.end());
-	__gnu_parallel::sort(tmp2.begin(), tmp2.end());
+	__gnu_parallel::sort(tmp2_5.begin(), tmp2_5.end());
 	__gnu_parallel::sort(tmp.begin(), tmp.end());
+	// newly added
+	__gnu_parallel::sort(tmp3_50.begin(), tmp3_50.end());
+	__gnu_parallel::sort(tmp10.begin(), tmp10.end());
+	__gnu_parallel::sort(tmp8_50.begin(), tmp8_50.end());
 
-	std::vector<std::pair<int, int>> internal5, internal2, internal;
+	// sparkly
+	std::vector<std::pair<int, int>> internal5, internal2_5, internal;
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp5.begin(), tmp5.end(), 
 									 std::back_inserter(internal5));
-	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp2.begin(), tmp2.end(), 
-									 std::back_inserter(internal2));
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp2_5.begin(), tmp2_5.end(), 
+									 std::back_inserter(internal2_5));
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp.begin(), tmp.end(), 
 									 std::back_inserter(internal));
+	// newly added
+	std::vector<std::pair<int, int>> internal3_50, internal10, internal8_50;
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp3_50.begin(), tmp3_50.end(), 
+									 std::back_inserter(internal3_50));
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp10.begin(), tmp10.end(), 
+									 std::back_inserter(internal10));
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp8_50.begin(), tmp8_50.end(), 
+									 std::back_inserter(internal8_50));
 
 	statStream << "*********************" << std::endl;
 	statStream << "-------------- recall on representative attribute threshold accepting --------------" << std::endl;
+	// newly added
+	statStream << "     K: " << K * 3 / 50 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal3_50.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp3_50.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp3_50.size() * 1.0 / cartesian << std::endl;
+	statStream << std::endl;
+	statStream << "     K: " << K / 10 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal10.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp10.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp10.size() * 1.0 / cartesian << std::endl;
+	statStream << std::endl;
+	statStream << "     K: " << K * 8 / 50 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal8_50.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp8_50.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp8_50.size() * 1.0 / cartesian << std::endl;
+	// sparkly
 	statStream << "     K: " << K / 5 << std::endl;
 	statStream << std::setprecision(4) << "recall: " << internal5.size() * 1.0 / golds.size() << std::endl;
 	statStream << "   |C|: " << tmp5.size() << std::endl;
 	statStream << std::setprecision(4) << "  CSSR: " << tmp5.size() * 1.0 / cartesian << std::endl;
 	statStream << std::endl;
 	statStream << "     K: " << K * 2 / 5 << std::endl;
-	statStream << std::setprecision(4) << "recall: " << internal2.size() * 1.0 / golds.size() << std::endl;
-	statStream << "   |C|: " << tmp2.size() << std::endl;
-	statStream << std::setprecision(4) << "  CSSR: " << tmp2.size() * 1.0 / cartesian << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal2_5.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp2_5.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp2_5.size() * 1.0 / cartesian << std::endl;
 	statStream << std::endl;
 	statStream << "     K: " << K << std::endl;
 	statStream << std::setprecision(4) << "recall: " << internal.size() * 1.0 / golds.size() << std::endl;
@@ -830,17 +894,52 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &sortedIdMap, const std::ve
 {
 	uint64_t sizeK = K <= (uint64_t)sortedIdMap.size() ? K : (uint64_t)sortedIdMap.size();
 	
-	std::vector<std::pair<int, int>> tmp5, tmp2, tmp;
+	/*
+	 * K: 50
+	 * tmpx: K / x
+	 * e.g., tmp3_50: K * 3 / 50, corresponding K = 3
+	 */
+	// sparkly K = 50, 20, 10
+	std::vector<std::pair<int, int>> tmp5, tmp2_5, tmp;
+	// newly added K = 8, 5, 3
+	std::vector<std::pair<int, int>> tmp3_50, tmp10, tmp8_50;
+
 	for(uint64_t i = 0; i < sizeK; i++) {
 		int lid = allPairs[sortedIdMap[i]].first;
 		int rid = allPairs[sortedIdMap[i]].second;
-		if(i < sizeK / 5) {
+		// newly added
+		if(i < sizeK * 3 / 50) {
 			tmp5.emplace_back(lid, rid);
-			tmp2.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp3_50.emplace_back(lid, rid);
+			tmp10.emplace_back(lid, rid);
+			tmp8_50.emplace_back(lid, rid);
+		}
+		else if(i < sizeK / 10) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp10.emplace_back(lid, rid);
+			tmp8_50.emplace_back(lid, rid);
+		}
+		else if(i < sizeK * 8 / 50) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp8_50.emplace_back(lid, rid);
+		}
+		// sparkly
+		else if(i < sizeK / 5) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
 			tmp.emplace_back(lid, rid);
 		}
 		else if(i < sizeK * 2 / 5) {
-			tmp2.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
 			tmp.emplace_back(lid, rid);
 		}
 		else {
@@ -851,29 +950,59 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &sortedIdMap, const std::ve
 	auto tmpGolds = golds;
 
 	__gnu_parallel::sort(tmpGolds.begin(), tmpGolds.end());
+	// sparkly
 	__gnu_parallel::sort(tmp5.begin(), tmp5.end());
-	__gnu_parallel::sort(tmp2.begin(), tmp2.end());
+	__gnu_parallel::sort(tmp2_5.begin(), tmp2_5.end());
 	__gnu_parallel::sort(tmp.begin(), tmp.end());
+	// newly added
+	__gnu_parallel::sort(tmp3_50.begin(), tmp3_50.end());
+	__gnu_parallel::sort(tmp10.begin(), tmp10.end());
+	__gnu_parallel::sort(tmp8_50.begin(), tmp8_50.end());
 
-	std::vector<std::pair<int, int>> internal5, internal2, internal;
+	// sparkly
+	std::vector<std::pair<int, int>> internal5, internal2_5, internal;
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp5.begin(), tmp5.end(), 
 									 std::back_inserter(internal5));
-	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp2.begin(), tmp2.end(), 
-									 std::back_inserter(internal2));
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp2_5.begin(), tmp2_5.end(), 
+									 std::back_inserter(internal2_5));
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp.begin(), tmp.end(), 
 									 std::back_inserter(internal));
+	// newly added
+	std::vector<std::pair<int, int>> internal3_50, internal10, internal8_50;
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp3_50.begin(), tmp3_50.end(), 
+									 std::back_inserter(internal3_50));
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp10.begin(), tmp10.end(), 
+									 std::back_inserter(internal10));
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp8_50.begin(), tmp8_50.end(), 
+									 std::back_inserter(internal8_50));
 
 	statStream << "*********************" << std::endl;
 	statStream << "-------------- recall on all similarity scores --------------" << std::endl;
+	// newly added
+	statStream << "     K: " << K * 3 / 50 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal3_50.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp3_50.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp3_50.size() * 1.0 / cartesian << std::endl;
+	statStream << std::endl;
+	statStream << "     K: " << K / 10 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal10.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp10.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp10.size() * 1.0 / cartesian << std::endl;
+	statStream << std::endl;
+	statStream << "     K: " << K * 8 / 50 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal8_50.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp8_50.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp8_50.size() * 1.0 / cartesian << std::endl;
+	// sparkly
 	statStream << "     K: " << K / 5 << std::endl;
 	statStream << std::setprecision(4) << "recall: " << internal5.size() * 1.0 / golds.size() << std::endl;
 	statStream << "   |C|: " << tmp5.size() << std::endl;
 	statStream << std::setprecision(4) << "  CSSR: " << tmp5.size() * 1.0 / cartesian << std::endl;
 	statStream << std::endl;
 	statStream << "     K: " << K * 2 / 5 << std::endl;
-	statStream << std::setprecision(4) << "recall: " << internal2.size() * 1.0 / golds.size() << std::endl;
-	statStream << "   |C|: " << tmp2.size() << std::endl;
-	statStream << std::setprecision(4) << "  CSSR: " << tmp2.size() * 1.0 / cartesian << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal2_5.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp2_5.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp2_5.size() * 1.0 / cartesian << std::endl;
 	statStream << std::endl;
 	statStream << "     K: " << K << std::endl;
 	statStream << std::setprecision(4) << "recall: " << internal.size() * 1.0 / golds.size() << std::endl;

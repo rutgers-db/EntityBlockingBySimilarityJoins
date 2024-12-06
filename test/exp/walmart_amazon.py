@@ -41,8 +41,12 @@ def main(turn, dtype, mode="match_exp"):
     # fix attributes' type for tables
     attr_types_ltable = au.get_attr_types(tableA)
     attr_types_rtable = au.get_attr_types(tableB)
-    attr_types_ltable['authors'] = "str_bt_1w_5w"
-    attr_types_rtable['authors'] = "str_bt_1w_5w"
+    attr_types_ltable['title'] = "str_bt_5w_10w"
+    attr_types_rtable['title'] = "str_bt_5w_10w"
+    attr_types_ltable['brand'] = "str_eq_1w"
+    attr_types_rtable['brand'] = "str_eq_1w"
+    attr_types_ltable['modelno'] = "str_eq_1w"
+    attr_types_rtable['modelno'] = "str_eq_1w"
     
     # select representative / most informative attribute
     representativeA = exp_utils.get_representative_attr(tableA, tableB)

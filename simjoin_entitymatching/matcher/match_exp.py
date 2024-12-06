@@ -7,6 +7,7 @@ import py_entitymatching as em
 from typing import Literal
 import pandas as pd
 import os
+import six
 import joblib
 import networkx as nx
 from collections import defaultdict
@@ -16,6 +17,7 @@ from numpy import dot
 from numpy.linalg import norm
 
 import py_entitymatching.utils.generic_helper as gh
+from py_entitymatching.debugmatcher.debug_gui_utils import _get_metric
 import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.utils.visualize_helper as vis
 import simjoin_entitymatching.matcher.random_forest as randf
@@ -72,6 +74,12 @@ def _set_metadata(dataframe, key, fk_ltable, fk_rtable, ltable, rtable):
     em.set_rtable(dataframe, rtable)
     
     return dataframe
+
+
+def _print_eval_summary(eval_summary, filep):
+    m = _get_metric(eval_summary)
+    for key, value in six.iteritems(m):
+        print(key + " : " + value, file=filep)
 
 
 def _save_neg_match_res(predictions, tableA, tableB):
@@ -283,7 +291,7 @@ def train_model(T, num_tree=10):
     return exp_rf
     
     
-def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
+def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=None):
     _set_metadata(E, "_id", "ltable_id", "rtable_id", tableA, tableB)
     # Predict on E
     predictions = exp_rf.predict(table=E, exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'], 
@@ -331,7 +339,7 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
     # Evaluate the predictions
     eval_result = em.eval_matches(eval_pred, 'label', 'predicted')
     print("------ report exp model results ------")
-    em.print_eval_summary(eval_result)
+    _print_eval_summary(eval_result, filep=filep)
     print("------ end ------")
     
     _save_neg_match_res(predictions, tableA, tableB)
@@ -339,7 +347,7 @@ def apply_model(tableA, tableB, exp_rf, E, is_concat=False, prev_pred=None):
     return predictions
     
     
-def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, impute_strategy=Literal["mean", "constant", "none"]):
+def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, filep, impute_strategy=Literal["mean", "constant", "none"]):
     # select features
     rf = randf.RandomForest()
     rf.generate_features(tableA, tableB, at_ltable=at_ltable, at_rtable=at_rtable, wrtie_fea_names=True)
@@ -360,19 +368,20 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
     model = train_model(train)
     
     # apply on test result
-    pred1 = apply_model(tableA, tableB, model, test)
+    pred1 = apply_model(tableA, tableB, model, test, filep)
     # _get_recall(gold_graph, pred1, gold_len)
     
     # group
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
-                                           external_group_strategy="graph", is_transitive_closure=True,
+    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2, external_group=True, 
+                                           external_group_strategy="graph", is_transitive_closure=False,
                                            default_match_res_dir="output/exp")
     print("group done", flush=True)
     
     schemas = list(tableA)[1:]
-    schemas = [attr for attr in schemas if attr not in ["price", "year", ""]]
+    schemas = [attr for attr in schemas if attr not in ["price", "year", "", ""]]
     # run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
     #                 attrs=schemas, usage="match")
+    schemas = ["title"]
     
     # get the negative results
     default_fea_vec_dir = "output/exp"
@@ -395,7 +404,7 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, gold_len, 
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
         
     # apply
-    pred2 = apply_model(tableA, tableB, model, H2, True, pred1)
+    pred2 = apply_model(tableA, tableB, model, H2, filep, True, pred1)
     
     # # apply again on blocking results
     # _, test2 = split_and_dump_data(tableA, tableB, gold_graph, external_extract=True, T_index=train.index, 
