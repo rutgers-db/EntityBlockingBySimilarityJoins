@@ -117,19 +117,19 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
                     double cos = calculateCosineSim(vecs[i], vecs[u]);
                     if(cos >= tau) {
                         lazyNeighb.emplace_back(u);
-                        ++ numEdge;
+                        // ++ numEdge;
                     }
                 }
             }
 
             // add
             std::sort(lazyNeighb.begin(), lazyNeighb.end());
-            size_t as = std::distance(lazyNeighb.begin(), std::unique(lazyNeighb.begin(), lazyNeighb.end()));
-            lazyNeighb.resize(as);
-            numEdge -= (int)as;
+            auto iter = std::unique(lazyNeighb.begin(), lazyNeighb.end());
+            lazyNeighb.resize(std::distance(lazyNeighb.begin(), iter));
             for(const auto &u : lazyNeighb) {
                 graLists[i].emplace_back(u);
                 graLists[u].emplace_back(i);
+                ++ numEdge;
             }
         }
     }
