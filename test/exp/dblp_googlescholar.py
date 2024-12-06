@@ -66,6 +66,8 @@ def main(turn, dtype, mode="match_exp"):
                           table_size=100000, is_join_topk=0, is_idf_weighted=1, 
                           num_data=2)
     
+    exp_utils.cat_blocking_topk_output(data_name, dtype, representativeA)
+    
     # if mode == "match_exp":
     #     file_name = '/'.join(["output/exp/match_stat", data_name + "_" + dtype + ".txt"])
     #     filep = open(file_name, "w")

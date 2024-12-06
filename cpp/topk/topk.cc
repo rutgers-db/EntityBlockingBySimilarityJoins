@@ -440,6 +440,7 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &topKidMapA, const std::vec
 		else {
 			tmp.emplace_back(lid, rid);
 		}
+		q.pop();
 	}
 
 	auto tmpGolds = golds;
