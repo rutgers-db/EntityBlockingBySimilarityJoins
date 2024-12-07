@@ -396,14 +396,24 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &topKidMapA, const std::vec
 	 */
 	// sparkly K = 50, 20, 10
 	std::vector<std::pair<int, int>> tmp5, tmp2_5, tmp;
-	// newly added K = 8, 5, 3
-	std::vector<std::pair<int, int>> tmp3_50, tmp10, tmp8_50;
+	// newly added K = 8, 5, 3, 1
+	std::vector<std::pair<int, int>> tmp50, tmp3_50, tmp10, tmp8_50;
 
 	for(uint64_t i = 0; i < K; i++) {
 		int lid = topKidMapA[id2Pair[q.top().id].first];
 		int rid = topKidMapB[id2Pair[q.top().id].second];
 		// newly added
-		if(i >= K * 47 / 50) {
+		if(i >= K * 49 / 50) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp50.emplace_back(lid, rid);
+			tmp3_50.emplace_back(lid, rid);
+			tmp10.emplace_back(lid, rid);
+			tmp8_50.emplace_back(lid, rid);
+		}
+		else if(i >= K * 47 / 50) {
 			tmp5.emplace_back(lid, rid);
 			tmp2_5.emplace_back(lid, rid);
 			tmp.emplace_back(lid, rid);
@@ -451,6 +461,7 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &topKidMapA, const std::vec
 	__gnu_parallel::sort(tmp2_5.begin(), tmp2_5.end());
 	__gnu_parallel::sort(tmp.begin(), tmp.end());
 	// newly added
+	__gnu_parallel::sort(tmp50.begin(), tmp50.end());
 	__gnu_parallel::sort(tmp3_50.begin(), tmp3_50.end());
 	__gnu_parallel::sort(tmp10.begin(), tmp10.end());
 	__gnu_parallel::sort(tmp8_50.begin(), tmp8_50.end());
@@ -464,7 +475,9 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &topKidMapA, const std::vec
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp.begin(), tmp.end(), 
 									 std::back_inserter(internal));
 	// newly added
-	std::vector<std::pair<int, int>> internal3_50, internal10, internal8_50;
+	std::vector<std::pair<int, int>> internal50, internal3_50, internal10, internal8_50;
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp50.begin(), tmp50.end(), 
+									 std::back_inserter(internal50));
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp3_50.begin(), tmp3_50.end(), 
 									 std::back_inserter(internal3_50));
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp10.begin(), tmp10.end(), 
@@ -475,6 +488,11 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &topKidMapA, const std::vec
 	statStream << "*********************" << std::endl;
 	statStream << "-------------- recall on representative attribute threshold accepting --------------" << std::endl;
 	// newly added
+	statStream << "     K: " << K / 50 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal50.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp50.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp50.size() * 1.0 / cartesian << std::endl;
+	statStream << std::endl;
 	statStream << "     K: " << K * 3 / 50 << std::endl;
 	statStream << std::setprecision(4) << "recall: " << internal3_50.size() * 1.0 / golds.size() << std::endl;
 	statStream << "   |C|: " << tmp3_50.size() << std::endl;
@@ -903,13 +921,23 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &sortedIdMap, const std::ve
 	// sparkly K = 50, 20, 10
 	std::vector<std::pair<int, int>> tmp5, tmp2_5, tmp;
 	// newly added K = 8, 5, 3
-	std::vector<std::pair<int, int>> tmp3_50, tmp10, tmp8_50;
+	std::vector<std::pair<int, int>> tmp50, tmp3_50, tmp10, tmp8_50;
 
 	for(uint64_t i = 0; i < sizeK; i++) {
 		int lid = allPairs[sortedIdMap[i]].first;
 		int rid = allPairs[sortedIdMap[i]].second;
 		// newly added
-		if(i < sizeK * 3 / 50) {
+		if(i < sizeK / 50) {
+			tmp5.emplace_back(lid, rid);
+			tmp2_5.emplace_back(lid, rid);
+			tmp.emplace_back(lid, rid);
+
+			tmp50.emplace_back(lid, rid);
+			tmp3_50.emplace_back(lid, rid);
+			tmp10.emplace_back(lid, rid);
+			tmp8_50.emplace_back(lid, rid);
+		}
+		else if(i < sizeK * 3 / 50) {
 			tmp5.emplace_back(lid, rid);
 			tmp2_5.emplace_back(lid, rid);
 			tmp.emplace_back(lid, rid);
@@ -956,6 +984,7 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &sortedIdMap, const std::ve
 	__gnu_parallel::sort(tmp2_5.begin(), tmp2_5.end());
 	__gnu_parallel::sort(tmp.begin(), tmp.end());
 	// newly added
+	__gnu_parallel::sort(tmp50.begin(), tmp50.end());
 	__gnu_parallel::sort(tmp3_50.begin(), tmp3_50.end());
 	__gnu_parallel::sort(tmp10.begin(), tmp10.end());
 	__gnu_parallel::sort(tmp8_50.begin(), tmp8_50.end());
@@ -969,7 +998,9 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &sortedIdMap, const std::ve
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp.begin(), tmp.end(), 
 									 std::back_inserter(internal));
 	// newly added
-	std::vector<std::pair<int, int>> internal3_50, internal10, internal8_50;
+	std::vector<std::pair<int, int>> internal50, internal3_50, internal10, internal8_50;
+	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp50.begin(), tmp50.end(), 
+									 std::back_inserter(internal50));
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp3_50.begin(), tmp3_50.end(), 
 									 std::back_inserter(internal3_50));
 	__gnu_parallel::set_intersection(tmpGolds.begin(), tmpGolds.end(), tmp10.begin(), tmp10.end(), 
@@ -980,6 +1011,11 @@ void TopK::getCurrentRecallExp(const std::vector<ui> &sortedIdMap, const std::ve
 	statStream << "*********************" << std::endl;
 	statStream << "-------------- recall on all similarity scores --------------" << std::endl;
 	// newly added
+	statStream << "     K: " << K / 50 << std::endl;
+	statStream << std::setprecision(4) << "recall: " << internal50.size() * 1.0 / golds.size() << std::endl;
+	statStream << "   |C|: " << tmp50.size() << std::endl;
+	statStream << std::setprecision(4) << "  CSSR: " << tmp50.size() * 1.0 / cartesian << std::endl;
+	statStream << std::endl;
 	statStream << "     K: " << K * 3 / 50 << std::endl;
 	statStream << std::setprecision(4) << "recall: " << internal3_50.size() * 1.0 / golds.size() << std::endl;
 	statStream << "   |C|: " << tmp3_50.size() << std::endl;

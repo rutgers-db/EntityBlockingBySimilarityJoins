@@ -53,7 +53,7 @@ def main(turn, dtype, mode="match_exp"):
 
     # train the model and build the graph
     _, trigraph = train_model(tableA, tableB, gold_graph, blocking_attr="title", model_path=path_rf, tree_path=path_tree, range_path=path_range,
-                              num_tree=11, sample_size=-1, ground_truth_label=True, training_strategy="tuning", 
+                              num_tree=11, sample_size=-1, ground_truth_label=False, training_strategy="tuning", 
                               inmemory=1, num_data=2, at_ltable=attr_types_ltable, at_rtable=attr_types_rtable)
 
     # extract the rule-based blocker
@@ -66,7 +66,7 @@ def main(turn, dtype, mode="match_exp"):
                           table_size=100000, is_join_topk=0, is_idf_weighted=1, 
                           num_data=2)
     
-    exp_utils.cat_blocking_topk_output(data_name, dtype, representativeA)
+    exp_utils.cat_blocking_topk_output(data_name, dtype, representativeA, turn)
     
     # if mode == "match_exp":
     #     file_name = '/'.join(["output/exp/match_stat", data_name + "_" + dtype + ".txt"])
