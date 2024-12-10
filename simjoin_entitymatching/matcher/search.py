@@ -68,7 +68,7 @@ def _get_word_embeddings(attr, group_tau, default_vmatcher_dir="", default_icv_d
         index_vecs[rid] = r_vec
         query_vecs[lid] = l_vec
         
-    return index_buck, index_vecs, query_vecs, prev_dim
+    return match_tab, index_buck, index_vecs, query_vecs, prev_dim
 
 
 def _search_KNN(dimension, K, index_buck, index_vecs, query_vecs, search_strategy=Literal["exact", "approximate"]):
@@ -86,23 +86,37 @@ def _search_KNN(dimension, K, index_buck, index_vecs, query_vecs, search_strateg
     search_index.add(index_data)
     
     # query
-    nn_res = defaultdict(list)
+    nn_res = defaultdict(set)
     for k, v in query_vecs.items():
         faiss.normalize_L2(v)
         _, idx = search_index.search(v, K)
         nn_id = index_buck[idx]
-        nn_res[k] = nn_id
+        nn_res[k] = set(nn_id)
         
     return nn_res
+
+
+def _slim_match_tab(match_tab, nn_res):
+    row_index = match_tab.index
+    for ridx in row_index:
+        lid = match_tab.loc[ridx, "ltable_id"]
+        rid = match_tab.loc[ridx, "rtable_id"]
+        if rid not in nn_res[lid]:
+            match_tab.loc[ridx, "predicted"] = 0
+            
+    return match_tab
 
 
 def filter_match_res(attr, group_tau, K, search_strategy=Literal["exact", "approximate"], 
                      default_vmatcher_dir="", default_icv_dir="", default_match_res_dir=""):
     # get word embeddings
-    index_buck, index_vecs, query_vecs, dim = _get_word_embeddings(attr, group_tau, default_vmatcher_dir, 
-                                                                   default_icv_dir, default_match_res_dir)
+    match_tab, index_buck, index_vecs, query_vecs, dim = _get_word_embeddings(attr, group_tau, default_vmatcher_dir, 
+                                                                              default_icv_dir, default_match_res_dir)
     
     # similarity search
     nn_res = _search_KNN(dim, K, index_buck, index_vecs, query_vecs, search_strategy)
     
     # filter
+    match_tab = _slim_match_tab(match_tab, nn_res)
+    
+    return match_tab

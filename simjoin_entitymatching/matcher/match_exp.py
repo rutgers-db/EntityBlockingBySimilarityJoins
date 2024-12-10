@@ -71,6 +71,7 @@ def _save_neg_match_res(predictions, tableA, tableB):
     rsch = ["rtable_" + sch for sch in schemas]
     columns_.extend(lsch)
     columns_.extend(rsch)
+    columns_.extend(["label", "predicted"])
     rowsA = list(tableA.index)
     rowsB = list(tableB.index)
     mapA = {tableA.loc[rowidx, 'id'] : rowidx for rowidx in rowsA}
@@ -89,6 +90,7 @@ def _save_neg_match_res(predictions, tableA, tableB):
         rval = [tableB.loc[ridx, sch] for sch in schemas]
         new_line.extend(lval)
         new_line.extend(rval)
+        new_line.extend([getattr(row, "label"), getattr(row, "predicted")])
         
         if int(pres) == 1:
             pres_df.loc[len(pres_df)] = new_line
