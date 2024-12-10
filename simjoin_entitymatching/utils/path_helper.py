@@ -114,3 +114,14 @@ def get_icval_vec_path(cur_parent_dir, default_icv_dir):
         vec_path = "/".join([default_icv_dir, "vec_interchangeable.txt"])
         vec_label_path = "/".join([default_icv_dir, "vec_interchangeable_label.txt"])
     return vec_path, vec_label_path
+
+
+def get_nearest_neighbors_vec_path(default_icv_dir):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_icv_dir == "":
+        vec_path = "/".join([cur_parent_dir, "..", "value_matcher", "ic_values", "nn_dis.txt"])
+    else:
+        default_icv_dir = default_icv_dir[ : -1] if default_icv_dir[-1] == '/' \
+                                                    else default_icv_dir
+        vec_path = "/".join([default_icv_dir, "nn_dis.txt"])
+    return vec_path

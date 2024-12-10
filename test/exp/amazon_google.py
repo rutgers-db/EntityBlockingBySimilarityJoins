@@ -5,6 +5,7 @@ experiment script on amazon_google
 import sys
 sys.path.append(".")
 import pandas as pd
+import py_entitymatching as em
 import py_entitymatching.feature.attributeutils as au
 from argparse import ArgumentParser
 import time
@@ -70,7 +71,7 @@ def main(turn, dtype, mode="match_exp"):
     if mode == "match_exp":
         file_name = '/'.join(["output/exp/match_stat", data_name + "_" + dtype + ".txt"])
         filep = open(file_name, "w")
-        run_experiments(tableA, tableB, attr_types_ltable, attr_types_rtable, gold_graph, filep, impute_strategy="constant")
+        run_experiments(tableA, tableB, "title", attr_types_ltable, attr_types_rtable, gold_graph, filep, impute_strategy="constant")
         filep.flush()
         filep.close()
     else:

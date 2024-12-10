@@ -18,24 +18,25 @@ from numpy.linalg import norm
 
 import py_entitymatching.utils.generic_helper as gh
 from py_entitymatching.debugmatcher.debug_gui_utils import _get_metric
+
 import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.utils.visualize_helper as vis
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
+from simjoin_entitymatching.matcher.search import filter_match_res_memory, filter_match_res_disk
 
 
-def _label_cand(gold_graph, C):
-    C.insert(C.shape[1], 'label', 0)
-    row_index = list(C.index)
-
-    for index in row_index:
-        id1 = str(C.loc[index, 'ltable_id']) + 'A'
-        id2 = str(C.loc[index, 'rtable_id']) + 'B'
+def _label_cand(gold_graph, tab):
+    tab.insert(tab.shape[1], 'label', 0)
+    
+    for index in tab.index:
+        id1 = str(tab.loc[index, 'ltable_id']) + 'A'
+        id2 = str(tab.loc[index, 'rtable_id']) + 'B'
         if gold_graph.has_edge(id1, id2) == True:
-            C.loc[index, 'label'] = 1
+            tab.loc[index, 'label'] = 1
             
-    return C
+    return tab
 
 
 def _set_metadata(dataframe, key, fk_ltable, fk_rtable, ltable, rtable):
@@ -58,7 +59,15 @@ def _print_eval_summary(eval_summary, filep):
     m = _get_metric(eval_summary)
     for key, value in six.iteritems(m):
         print(key + " : " + value, file=filep)
-
+        
+        
+def _eval_results(pred_df, tableA, tableB, filep):
+    _set_metadata(pred_df, "_id", "ltable_id", "rtable_id", tableA, tableB)
+    eval_result = em.eval_matches(pred_df, 'label', 'predicted')
+    print("------ report exp model results ------")
+    _print_eval_summary(eval_result, filep=filep)
+    print("------ end ------")
+    
 
 def _save_neg_match_res(predictions, tableA, tableB):
     # need to rename since "itertuples()" can not parse the attrs with space or underline at the front
@@ -72,6 +81,7 @@ def _save_neg_match_res(predictions, tableA, tableB):
     columns_.extend(lsch)
     columns_.extend(rsch)
     columns_.extend(["label", "predicted"])
+    
     rowsA = list(tableA.index)
     rowsB = list(tableB.index)
     mapA = {tableA.loc[rowidx, 'id'] : rowidx for rowidx in rowsA}
@@ -79,6 +89,7 @@ def _save_neg_match_res(predictions, tableA, tableB):
     
     pres_df = pd.DataFrame(columns=columns_)
     neg_pres_df = pd.DataFrame(columns=columns_)
+    tot_df = pd.DataFrame(columns=columns_)
 
     for row in predictions.itertuples():
         pres = getattr(row, 'predicted')
@@ -96,11 +107,15 @@ def _save_neg_match_res(predictions, tableA, tableB):
             pres_df.loc[len(pres_df)] = new_line
         else:
             neg_pres_df.loc[len(neg_pres_df)] = new_line
+        tot_df.loc[len(tot_df)] = new_line
     
     # save
+    tot_df.to_csv("output/exp/tot_match_res0.csv", index=False)
     pres_df.to_csv("output/exp/match_res0.csv", index=False)
     pres_df.to_csv("output/exp/match_res.csv", index=False)
     neg_pres_df.to_csv("output/exp/neg_match_res0.csv", index=False)
+    
+    return tot_df, pres_df, neg_pres_df
     
     
 def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, tableB):
@@ -166,6 +181,7 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
 
 def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_index=None, E_index=None, 
                         impute_strategy=Literal["mean", "constant", "none"], default_blk_res_dir=""):
+    # read stat
     path_blk_res_stat = ph.get_blk_res_stat_path(default_blk_res_dir)
     with open(path_blk_res_stat, "r") as stat_file:
         stat_line = stat_file.readlines()
@@ -178,38 +194,43 @@ def split_and_dump_data(tableA, tableB, gold_graph, external_extract=False, T_in
         os.mkdir(exp_dir)
         print(f"experiments directory is not presented, creat a new one")
 
-    for tab_id in range(total_table):
-        if external_extract == True:
-            # read H1
+    if external_extract == True:
+        # read H1
+        for tab_id in range(total_table):
             path_fea_vec = ph.get_chunked_fea_vec_path(tab_id, default_blk_res_dir)
             H1 = em.read_csv_metadata(path_fea_vec, 
-                                      key="id", 
-                                      ltable=tableA, rtable=tableB,
-                                      fk_ltable="ltable_id", fk_rtable="rtable_id")
+                                    key="id", 
+                                    ltable=tableA, rtable=tableB,
+                                    fk_ltable="ltable_id", fk_rtable="rtable_id")
             H1.rename(columns={"id": "_id"}, inplace=True)
             em.set_key(H1, "_id")
+            
             # label and impute
             _label_cand(gold_graph, H1)
             if impute_strategy == "mean":
                 H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
             elif impute_strategy == "constant":
                 H1 = em.impute_table(H1, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
+                
             # concat
             tot_H1 = H1 if tab_id == 0 else pd.concat([tot_H1, H1], ignore_index=True)
-        else:
-            # read H2
+    else:
+        # read H2
+        for tab_id in range(total_table):
             path_fea_vec = ph.get_chunked_fea_vec_path(tab_id, default_blk_res_dir)
             path_fea_vec = path_fea_vec[ : -4] + "_py.csv"
             H2 = em.read_csv_metadata(path_fea_vec, 
-                                      key="_id", 
-                                      ltable=tableA, rtable=tableB,
-                                      fk_ltable="ltable_id", fk_rtable="rtable_id")
+                                    key="_id", 
+                                    ltable=tableA, rtable=tableB,
+                                    fk_ltable="ltable_id", fk_rtable="rtable_id")
+            
             # label and impute    
             _label_cand(gold_graph, H2)
             if impute_strategy == "mean":
                 H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="mean")
             elif impute_strategy == "constant":
                 H2 = em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
+                
             # concat
             tot_H2 = H2 if tab_id == 0 else pd.concat([tot_H2, H2], ignore_index=True)
         
@@ -312,12 +333,12 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
     _print_eval_summary(eval_result, filep=filep)
     print("------ end ------")
     
-    _save_neg_match_res(eval_pred, tableA, tableB)
+    tot_df, pres_df, neg_pres_df = _save_neg_match_res(eval_pred, tableA, tableB)
     
-    return predictions
+    return predictions, tot_df, pres_df, neg_pres_df
     
     
-def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, filep, impute_strategy=Literal["mean", "constant", "none"]):
+def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, filep, impute_strategy=Literal["mean", "constant", "none"]):
     # select features
     rf = randf.RandomForest()
     rf.generate_features(tableA, tableB, at_ltable=at_ltable, at_rtable=at_rtable, wrtie_fea_names=True)
@@ -338,19 +359,22 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, filep, imp
     model = train_model(train)
     
     # apply on test result
-    pred1 = apply_model(tableA, tableB, model, test, filep)
+    pred1, _, pres_df1, _ = apply_model(tableA, tableB, model, test, filep)
+    
+    # additional filter
+    slim_pred1 = filter_match_res_memory(match_tab=pres_df1, attr="title", group_tau=0.8, K=1, search_strategy="exact", 
+                                         default_match_res_dir="output/exp")
+    
+    # Evaluate the predictions
+    _eval_results(slim_pred1, tableA, tableB, filep)
     
     # group
-    group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2, external_group=True, 
-                                           external_group_strategy="graph", is_transitive_closure=False,
-                                           default_match_res_dir="output/exp")
+    _, _ = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
+                                 external_group_strategy="graph", is_transitive_closure=False,
+                                 default_match_res_dir="output/exp")
     print("group done", flush=True)
     
-    schemas = list(tableA)[1:]
-    schemas = [attr for attr in schemas if attr not in ["price", "year", "", ""]]
-    # run_feature_lib(is_interchangeable=1, flag_consistent=0, total_table=total_table, total_attr=len(schemas), 
-    #                 attrs=schemas, usage="match")
-    schemas = ["title"]
+    schemas = [rep_attr]
     
     # get the negative results
     default_fea_vec_dir = "output/exp"
@@ -373,11 +397,11 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, filep, imp
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
         
     # apply
-    pred2 = apply_model(tableA, tableB, model, H2, filep, True, pred1)
+    _, _, pres_df2, _ = apply_model(tableA, tableB, model, H2, filep, True, pred1)
     
-    # # apply again on blocking results
-    # _, test2 = split_and_dump_data(tableA, tableB, gold_graph, external_extract=True, T_index=train.index, 
-    #                                E_index=test.index, impute_strategy=impute_strategy)
+    # additional filter
+    slim_pred2 = filter_match_res_memory(match_tab=pres_df2, attr="title", group_tau=0.8, K=1, search_strategy="exact", 
+                                         default_match_res_dir="output/exp")
     
-    # # apply on the second-round test data
-    # pred3 = apply_model(tableA, tableB, model, test2)    
+    # Evaluate the predictions
+    _eval_results(slim_pred2, tableA, tableB, filep)
