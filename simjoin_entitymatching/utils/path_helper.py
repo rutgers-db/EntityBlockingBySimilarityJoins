@@ -57,6 +57,17 @@ def get_chunked_match_res_path(table_id, default_match_res_dir=""):
     return match_res_path, neg_match_res_path
 
 
+def get_match_res_path(default_match_res_dir=""):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_match_res_dir == "":
+        match_res_path = '/'.join([cur_parent_dir, "..", "..", "output", "match_res", "match_res.csv"])
+    else:
+        default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
+                                                             else default_match_res_dir 
+        match_res_path = '/'.join([default_match_res_dir, "match_res.csv"])
+    return match_res_path
+
+
 def get_blk_res_stat_path(default_blk_res_dir=""):
     cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     if default_blk_res_dir == "":

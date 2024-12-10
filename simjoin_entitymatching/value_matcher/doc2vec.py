@@ -643,6 +643,8 @@ class Doc2Vec:
             for pair in vec_pair:
                 pairfile.writelines([pair[0] + "\n"])
                 pairfile.writelines([pair[1] + "\n"])
+                
+        return vec_dict
     
     
     # io

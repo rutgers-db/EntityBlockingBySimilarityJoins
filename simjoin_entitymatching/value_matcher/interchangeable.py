@@ -159,7 +159,7 @@ def cluster_pairs(ori_clt, representative_attr, gold_graph, default_match_res_di
 
 def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc", "mix"], num_data=Literal[1, 2], external_group=False,
 						  external_group_strategy=Literal["graph", "cluster"], is_transitive_closure=False, 
-        				  default_match_res_dir="", default_vmatcher_dir="", default_icv_dir="", default_buffer_dir=""):
+        				  default_match_res_dir="", default_vmatcher_dir="", default_icv_dir=""):
 	'''
 	apply value matcher, group interchangeable values on matching result
 		1. use doc2vec for all attrs, since for str_eq_1w there may exist values that are longer than 1 word in raw data
@@ -184,7 +184,6 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 	numeric_attr = ["price", "year", ""]
 	attrs = list(tableA)[1:]
 	attrs = [attr for attr in attrs if attr not in numeric_attr]
-	# attrs = ["title"]
 
 	group, cluster = {}, {}
 
@@ -196,12 +195,12 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 		for attr_ in attrs:
 			doc2vec.load_model(usage=1, attr=attr_, default_model_dir=default_vmatcher_dir)
 			if external_group == True:
-				doc2vec._group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
-                                            			default_match_res_dir)
+				vec_dict = doc2vec._group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
+																   default_match_res_dir)
 				run_group_lib(attr_, external_group_strategy, group_tau, is_transitive_closure, default_icv_dir)
 			else:
 				grp, clt = doc2vec.group_interchangeable_parallel(attr_, group_tau, total_table, default_icv_dir, 
-																  default_match_res_dir)
+																default_match_res_dir)
 				group[attr_], cluster[attr_] = grp, clt
 
 	elif group_strategy == 'mix':
@@ -232,53 +231,3 @@ def _sample_neg_match_res(sample_size, default_match_res_dir=""):
 		 
 	path_tot = path_match_stat.split('/')[ : -1] + "neg_match_res_sample.csv"
 	tot_sample_neg_match_res.to_csv(path_tot, index=False)
-	
-	
-# def estimate_best_group_threshold(tableA, tableB, gold_graph, model_path, at_ltable, at_rtable, numeric_attr, group_strategy, num_data, step_size=0.25, sample_size=1000, default_match_res_dir=""):
-# 	'''
-# 	use a subset of negative match results to estimate the best group threshold
-# 	'''
-# 	# sample
-# 	_sample_neg_match_res(sample_size, default_match_res_dir)
-	
-# 	# lower bound
-# 	tau_lower_bound = 0.8
-# 	tau_upper_bound = 0.96
-	
-# 	path_match_stat = ph.get_match_res_stat_path(default_match_res_dir)
-# 	with open(path_match_stat, "r") as stat_file:
-# 		stat_line = stat_file.readlines()
-# 		total_table, _ = (int(val) for val in stat_line[0].split())
-		
-# 	rf = randf.RandomForest()
-# 	rf.graph = gold_graph
-# 	rf.load_model(model_path)
- 
-# 	# Features selection
-# 	rf.generate_features(tableA, tableB, at_ltable=at_ltable, at_rtable=at_rtable, default_output_dir=default_fea_names_dir, 
-# 						wrtie_fea_names=True)
-# 	default_fea_vec_dir = path_match_stat.rsplit('/', 1)[0]
-	
-# 	schemas = list(tableA)[1:]
-# 	schemas = [attr for attr in schemas if attr not in numeric_attr]
-
-# 	max_f1 = 0.0
-# 	max_tau = 0.0
- 
-# 	for group_tau in range(tau_lower_bound, tau_upper_bound, step_size):
-# 		group, cluster = group_interchangeable(tableA, tableB, group_tau, group_strategy, num_data, default_match_res_dir, default_vmatcher_dir, default_icv_dir, default_buffer_dir)
-		
-# 		run_feature_lib(is_interchangeable=is_interchangeable, flag_consistent=flag_consistent, total_table=total_table, total_attr=len(schemas), 
-# 						attrs=schemas, usage="match", default_fea_vec_dir=default_fea_vec_dir, default_res_tab_name="neg_match_res", 
-# 						default_icv_dir=default_icv_dir, default_fea_names_dir=default_fea_names_dir)
-
-# 		rfpres = rf.apply_model(total_table, tableA, tableB, external_fea_extract=True, is_match_on_neg=True,
-# 								default_blk_res_dir=default_fea_vec_dir, 
-# 								default_match_res_dir=default_match_res_dir)
-  
-# 		_, _, f1 = rf.get_recall(rfpres, gold_len, external_report=True)
-# 		if f1 > max_f1:
-# 			max_tau = group_tau
-   
-# 	print(f"estimated best threshold : {max_tau}")
-# 	return max_tau

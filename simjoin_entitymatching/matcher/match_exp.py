@@ -25,28 +25,6 @@ from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
 
 
-def _get_recall(gold_graph, candidates, num_golds):
-    cur_golds = 0
-    row_index = list(candidates.index)
-
-    for index in row_index:
-        id1 = str(candidates.loc[index, 'ltable_id']) + 'A'
-        id2 = str(candidates.loc[index, 'rtable_id']) + 'B'
-        if gold_graph.has_edge(id1, id2) == True:
-            cur_golds += 1
-
-    recall = cur_golds / num_golds * 1.0
-    density = cur_golds / len(candidates) * 1.0 if len(candidates) > 0 else 0.0
-    f1 = 2 * ((recall * density) / (recall + density)) if recall + density > 0.0 else 0.0
-    
-    print("recall     : %.4f" % recall)
-    print("precision  : %.4f" % density)
-    print("F1 Score   : %.4f" % f1)
-    print(cur_golds, num_golds, len(candidates))
-
-    return recall, density, f1
-
-
 def _label_cand(gold_graph, C):
     C.insert(C.shape[1], 'label', 0)
     row_index = list(C.index)
@@ -150,32 +128,34 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
         lid = row["ltable_id"]
         rid = row["rtable_id"]
         prev_ridx = idx_map[(lid, rid)]
+        
+        if prev_predictions.loc[prev_ridx, "predicted"] == 1:
+            raise ValueError(f"error in previous prediction")
 
         # change prediction
-        if prev_predictions.loc[prev_ridx, "predicted"] == 0:
-            row_id = row["id"]
-            lidx = mapA[lid]
-            ridx = mapB[rid]
-            new_line = [row_id, lid, rid]
-            new_line.extend([tableA.loc[lidx, sch] for sch in schemas])
-            new_line.extend([tableB.loc[ridx, sch] for sch in schemas])
-            new_line.extend([prev_predictions.loc[prev_ridx, "proba"], row["proba"]])
-            
-            l_title = tableA.loc[lidx, "title"]
-            r_title = tableB.loc[ridx, "title"]
-            l_docs = gensim.utils.simple_preprocess(l_title)
-            r_docs = gensim.utils.simple_preprocess(r_title)
-            l_vec = value_matcher.infer_vector(l_docs)
-            r_vec = value_matcher.infer_vector(r_docs)
-            cos_sim = dot(l_vec, r_vec) / (norm(l_vec) * norm(r_vec))
-            new_line.append(cos_sim)
-            
-            # true positive
-            if row["label"] == 1:
-                true_positive.loc[len(true_positive)] = new_line
-            # false positive
-            elif row["label"] == 0:
-                false_positive.loc[len(false_positive)] = new_line
+        row_id = row["id"]
+        lidx = mapA[lid]
+        ridx = mapB[rid]
+        new_line = [row_id, lid, rid]
+        new_line.extend([tableA.loc[lidx, sch] for sch in schemas])
+        new_line.extend([tableB.loc[ridx, sch] for sch in schemas])
+        new_line.extend([prev_predictions.loc[prev_ridx, "proba"], row["proba"]])
+        
+        l_title = tableA.loc[lidx, "title"]
+        r_title = tableB.loc[ridx, "title"]
+        l_docs = gensim.utils.simple_preprocess(l_title)
+        r_docs = gensim.utils.simple_preprocess(r_title)
+        l_vec = value_matcher.infer_vector(l_docs)
+        r_vec = value_matcher.infer_vector(r_docs)
+        cos_sim = dot(l_vec, r_vec) / (norm(l_vec) * norm(r_vec))
+        new_line.append(cos_sim)
+        
+        # true positive
+        if row["label"] == 1:
+            true_positive.loc[len(true_positive)] = new_line
+        # false positive
+        elif row["label"] == 0:
+            false_positive.loc[len(false_positive)] = new_line
     
     # save
     true_positive.to_csv("output/debug/true_positive_second.csv", index=False)
@@ -300,20 +280,13 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
     print(predictions.head())
     eval_pred = predictions
     
-
-    if is_concat:
-        trans_graph = nx.Graph()
-        
+    if is_concat:        
         idx_map = defaultdict()
         row_index = prev_pred.index
         for ridx in row_index:
             lid = prev_pred.loc[ridx, "ltable_id"]
             rid = prev_pred.loc[ridx, "rtable_id"]
             idx_map[(lid, rid)] = ridx
-            if prev_pred.loc[ridx, "predicted"] == 1:
-                l_node = str(lid) + "A"
-                r_node = str(rid) + "B"
-                trans_graph.add_edge(l_node, r_node)
             
         predictions = predictions[predictions["predicted"] == 1]
         
@@ -324,14 +297,9 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
             lid = row["ltable_id"]
             rid = row["rtable_id"]
             prev_ridx = idx_map[(lid, rid)]
-            l_node = str(lid) + "A"
-            r_node = str(rid) + "B"
-            # if trans_graph.has_node(l_node) and trans_graph.has_node(r_node):
-            #     if len(nx.common_neighbors(trans_graph, l_node, r_node)) >= 1:
             if prev_pred.loc[prev_ridx, "proba"] >= 0.05:
-                    prev_pred.loc[prev_ridx, "predicted"] = 1
+                prev_pred.loc[prev_ridx, "predicted"] = 1
         
-        # print(prev_pred.columns)
         _set_metadata(prev_pred, "id", "ltable_id", "rtable_id", tableA, tableB)
         
         eval_pred = prev_pred
@@ -342,7 +310,7 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
     _print_eval_summary(eval_result, filep=filep)
     print("------ end ------")
     
-    _save_neg_match_res(predictions, tableA, tableB)
+    _save_neg_match_res(eval_pred, tableA, tableB)
     
     return predictions
     
@@ -369,7 +337,6 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, filep, imp
     
     # apply on test result
     pred1 = apply_model(tableA, tableB, model, test, filep)
-    # _get_recall(gold_graph, pred1, gold_len)
     
     # group
     group, cluster = group_interchangeable(tableA, tableB, group_tau=0.95, group_strategy="doc", num_data=2, external_group=True, 
@@ -411,7 +378,4 @@ def run_experiments(tableA, tableB, at_ltable, at_rtable, gold_graph, filep, imp
     #                                E_index=test.index, impute_strategy=impute_strategy)
     
     # # apply on the second-round test data
-    # pred3 = apply_model(tableA, tableB, model, test2)
-    # # _get_recall(gold_graph, pred3, gold_len)
-    
-    # # vis.show_semantic_distribution()
+    # pred3 = apply_model(tableA, tableB, model, test2)    
