@@ -647,6 +647,31 @@ class Doc2Vec:
         return vec_dict
     
     
+    def infer_vectors_for_df(self, attr, tab):
+        l_attr = "ltable_" + attr
+        r_attr = "rtable_" + attr
+        
+        vec_dict = defaultdict()
+        
+        # infer
+        for _, row in tab.iterrows():
+            ori_lstr = row[l_attr]
+            ori_rstr = row[r_attr]
+            if pd.isnull(ori_lstr) == True or pd.isnull(ori_rstr) == True:
+                continue
+            # process to model
+            lstr = utils.simple_preprocess(ori_lstr)
+            rstr = utils.simple_preprocess(ori_rstr)
+            # infer vecs
+            lvec = self.model.infer_vector(lstr)
+            rvec = self.model.infer_vector(rstr)
+            # add
+            vec_dict[ori_lstr] = lvec
+            vec_dict[ori_rstr] = rvec
+            
+        return vec_dict
+    
+    
     # io
     def load_sample_res(self, tableA, tableB, default_sample_res_dir=""):
         if default_sample_res_dir == "":

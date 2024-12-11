@@ -68,40 +68,68 @@ def _eval_results(pred_df, tableA, tableB, filep):
     _print_eval_summary(eval_result, filep=filep)
     print("------ end ------")
     
-
-def _save_neg_match_res(predictions, tableA, tableB):
-    # need to rename since "itertuples()" can not parse the attrs with space or underline at the front
-    predictions.rename(columns={'_id':'id'}, inplace=True)
     
-    # Save predictions
+def _get_tab_schemas(table):
     columns_ = ["_id", "ltable_id", "rtable_id"]
-    schemas = list(tableA)[1:]
+    schemas = list(table)[1:]
     lsch = ["ltable_" + sch for sch in schemas]
     rsch = ["rtable_" + sch for sch in schemas]
     columns_.extend(lsch)
     columns_.extend(rsch)
     columns_.extend(["label", "predicted"])
+    return columns_
+
+
+def _get_tab_row_inv_map(table):
+    rows = list(table.index)
+    inv_map = {table.loc[rowidx, "id"] : rowidx for rowidx in rows}
+    return inv_map
+
+
+def _save_one_line(row, tableA, tableB, mapA, mapB):
+    rowidx = row["_id"]
+    lid, rid = row["ltable_id"], row["rtable_id"]
+    lidx, ridx = mapA[lid], mapB[rid]
+    new_line = [rowidx, lid, rid]
     
-    rowsA = list(tableA.index)
-    rowsB = list(tableB.index)
-    mapA = {tableA.loc[rowidx, 'id'] : rowidx for rowidx in rowsA}
-    mapB = {tableB.loc[rowidx, 'id'] : rowidx for rowidx in rowsB}
+    lval = [tableA.loc[lidx, sch] for sch in list(tableA.columns)[1:]]
+    rval = [tableB.loc[ridx, sch] for sch in list(tableB.columns)[1:]]
+    new_line.extend(lval)
+    new_line.extend(rval)
+    
+    new_line.extend([row["label"], row["predicted"]])
+    
+    return new_line, row["predicted"]
+
+
+def _save_pred_to_df(predictions, tableA, tableB):
+    columns_ = _get_tab_schemas(tableA)
+
+    mapA = _get_tab_row_inv_map(tableA)
+    mapB = _get_tab_row_inv_map(tableB)
+    
+    tab = pd.DataFrame(columns=columns_)
+    
+    for _, row in predictions.iterrows():
+        new_line, _ = _save_one_line(row, tableA, tableB, mapA, mapB)
+        tab.loc[len(tab)] = new_line
+        
+    return tab
+    
+
+def _save_neg_match_res(predictions, tableA, tableB):
+    # Save predictions
+    columns_ = _get_tab_schemas(tableA)
+
+    mapA = _get_tab_row_inv_map(tableA)
+    mapB = _get_tab_row_inv_map(tableB)
     
     pres_df = pd.DataFrame(columns=columns_)
     neg_pres_df = pd.DataFrame(columns=columns_)
     tot_df = pd.DataFrame(columns=columns_)
 
-    for row in predictions.itertuples():
-        pres = getattr(row, 'predicted')
-        rowidx = getattr(row, 'id')
-        lid, rid = getattr(row, 'ltable_id'), getattr(row, 'rtable_id')
-        lidx, ridx = mapA[lid], mapB[rid]
-        new_line = [rowidx, lid, rid]
-        lval = [tableA.loc[lidx, sch] for sch in schemas]
-        rval = [tableB.loc[ridx, sch] for sch in schemas]
-        new_line.extend(lval)
-        new_line.extend(rval)
-        new_line.extend([getattr(row, "label"), getattr(row, "predicted")])
+    for _, row in predictions.iterrows():
+        new_line, pres = _save_one_line(row, tableA, tableB, mapA, mapB)
         
         if int(pres) == 1:
             pres_df.loc[len(pres_df)] = new_line
@@ -119,22 +147,12 @@ def _save_neg_match_res(predictions, tableA, tableB):
     
     
 def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, tableB):
-    # need to rename since "itertuples()" can not parse the attrs with space or underline at the front
-    predictions.rename(columns={'_id':'id'}, inplace=True)
-    
     # Save predictions
-    columns_ = ["_id", "ltable_id", "rtable_id"]
-    schemas = list(tableA)[1:]
-    lsch = ["ltable_" + sch for sch in schemas]
-    rsch = ["rtable_" + sch for sch in schemas]
-    columns_.extend(lsch)
-    columns_.extend(rsch)
+    columns_ = _get_tab_schemas(tableA)
     columns_.extend(["first proba", "second proba", "cosine"])
     
-    rowsA = list(tableA.index)
-    rowsB = list(tableB.index)
-    mapA = {tableA.loc[rowidx, 'id'] : rowidx for rowidx in rowsA}
-    mapB = {tableB.loc[rowidx, 'id'] : rowidx for rowidx in rowsB}
+    mapA = _get_tab_row_inv_map(tableA)
+    mapB = _get_tab_row_inv_map(tableB)
     
     true_positive = pd.DataFrame(columns=columns_)
     false_positive = pd.DataFrame(columns=columns_)
@@ -150,16 +168,12 @@ def _save_second_match_res(predictions, prev_predictions, idx_map, tableA, table
             raise ValueError(f"error in previous prediction")
 
         # change prediction
-        row_id = row["id"]
-        lidx = mapA[lid]
-        ridx = mapB[rid]
-        new_line = [row_id, lid, rid]
-        new_line.extend([tableA.loc[lidx, sch] for sch in schemas])
-        new_line.extend([tableB.loc[ridx, sch] for sch in schemas])
+        new_line, _ = _save_one_line(row, tableA, tableB, mapA, mapB)
         new_line.extend([prev_predictions.loc[prev_ridx, "proba"], row["proba"]])
         
-        l_title = tableA.loc[lidx, "title"]
-        r_title = tableB.loc[ridx, "title"]
+        # get cosine similarity
+        l_title = tableA.loc[mapA[lid], "title"]
+        r_title = tableB.loc[mapB[rid], "title"]
         l_docs = gensim.utils.simple_preprocess(l_title)
         r_docs = gensim.utils.simple_preprocess(r_title)
         l_vec = value_matcher.infer_vector(l_docs)
@@ -313,17 +327,36 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
             
         predictions = predictions[predictions["predicted"] == 1]
         
-        # save results for debug
-        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
-            
+        prev_pred_copy = prev_pred.copy()
         for _, row in predictions.iterrows():
             lid = row["ltable_id"]
             rid = row["rtable_id"]
             prev_ridx = idx_map[(lid, rid)]
-            if prev_pred.loc[prev_ridx, "proba"] >= 0.05:
-                prev_pred.loc[prev_ridx, "predicted"] = 1
+            prev_pred_copy.loc[prev_ridx, "predicted"] = 1
+            
+        _set_metadata(prev_pred_copy, "_id", "ltable_id", "rtable_id", tableA, tableB)
+        copy_eval_result = em.eval_matches(prev_pred_copy, 'label', 'predicted')
+        print("------ report exp model results ------")
+        _print_eval_summary(copy_eval_result, filep=filep)
+        print("------ end ------")
         
-        _set_metadata(prev_pred, "id", "ltable_id", "rtable_id", tableA, tableB)
+        # save and slim
+        pred_df = _save_pred_to_df(predictions, tableA, tableB)
+        slim_pred = filter_match_res_memory(match_tab=pred_df, attr="title", K=1, 
+                                            search_strategy="exact")
+        
+        # save results for debug
+        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
+            
+        predictions = slim_pred[slim_pred["predicted"] == 1]
+        print(f"after slimmed : {len(pred_df)}, {len(predictions)}")
+        for _, row in predictions.iterrows():
+            lid = row["ltable_id"]
+            rid = row["rtable_id"]
+            prev_ridx = idx_map[(lid, rid)]
+            prev_pred.loc[prev_ridx, "predicted"] = 1
+        
+        _set_metadata(prev_pred, "_id", "ltable_id", "rtable_id", tableA, tableB)
         
         eval_pred = prev_pred
     
@@ -362,15 +395,15 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     pred1, _, pres_df1, _ = apply_model(tableA, tableB, model, test, filep)
     
     # additional filter
-    slim_pred1 = filter_match_res_memory(match_tab=pres_df1, attr="title", group_tau=0.8, K=1, search_strategy="exact", 
-                                         default_match_res_dir="output/exp")
+    # slim_pred1 = filter_match_res_memory(match_tab=pres_df1, attr="title", K=1, search_strategy="exact")
+    # slim_pred1 = pred1
     
     # Evaluate the predictions
-    _eval_results(slim_pred1, tableA, tableB, filep)
+    # _eval_results(slim_pred1, tableA, tableB, filep)
     
     # group
-    _, _ = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
-                                 external_group_strategy="graph", is_transitive_closure=False,
+    _, _ = group_interchangeable(tableA, tableB, group_tau=0.8, group_strategy="doc", num_data=2, external_group=True, 
+                                 external_group_strategy="graph", is_transitive_closure=True,
                                  default_match_res_dir="output/exp")
     print("group done", flush=True)
     
@@ -397,11 +430,11 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
         
     # apply
-    _, _, pres_df2, _ = apply_model(tableA, tableB, model, H2, filep, True, pred1)
+    pred2, _, pres_df2, _ = apply_model(tableA, tableB, model, H2, filep, True, pred1)
     
     # additional filter
-    slim_pred2 = filter_match_res_memory(match_tab=pres_df2, attr="title", group_tau=0.8, K=1, search_strategy="exact", 
-                                         default_match_res_dir="output/exp")
+    # slim_pred2 = filter_match_res_memory(match_tab=pres_df2, attr="title", K=1, search_strategy="exact")
+    # slim_pred2 = pred2
     
     # Evaluate the predictions
-    _eval_results(slim_pred2, tableA, tableB, filep)
+    # _eval_results(slim_pred2, tableA, tableB, filep)

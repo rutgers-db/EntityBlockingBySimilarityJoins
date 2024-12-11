@@ -24,11 +24,10 @@ Index set I: rtable_id
 '''
 
 
-def _get_word_embeddings(match_tab, attr, group_tau, default_vmatcher_dir="", default_icv_dir="", default_match_res_dir=""):
+def _get_word_embeddings(match_tab, attr, default_vmatcher_dir=""):
     doc2vec = Doc2Vec(inmemory_=0)
     doc2vec.load_model(usage=1, attr=attr, default_model_dir=default_vmatcher_dir)
-    vec_dict = doc2vec._group_interchangeable_parallel(attr, group_tau, 1, default_icv_dir, 
-                                                       default_match_res_dir)
+    vec_dict = doc2vec.infer_vectors_for_df(attr, match_tab)
     
     l_schema = "ltable_" + attr
     r_schema = "rtable_" + attr
@@ -125,13 +124,12 @@ def _check_similarity(nn_dis, default_icv_dir=""):
             print(f"ltable id : {k}, nearest neighbors : {v}", file=nn_dis_file)
 
 
-def filter_match_res_memory(match_tab, attr, group_tau, K, search_strategy=Literal["exact", "approximate"], 
-                            default_vmatcher_dir="", default_icv_dir="", default_match_res_dir=""):
+def filter_match_res_memory(match_tab, attr, K, search_strategy=Literal["exact", "approximate"], 
+                            default_vmatcher_dir="", default_icv_dir=""):
     time_st1 = time.time()
     
     # get word embeddings
-    buck, query_vec, dim = _get_word_embeddings(match_tab, attr, group_tau, default_vmatcher_dir, 
-                                                default_icv_dir, default_match_res_dir)
+    buck, query_vec, dim = _get_word_embeddings(match_tab, attr, default_vmatcher_dir)
     
     # similarity search
     time_st2 = time.time()
@@ -150,8 +148,9 @@ def filter_match_res_memory(match_tab, attr, group_tau, K, search_strategy=Liter
     return match_tab
 
 
-def filter_match_res_disk(attr, group_tau, K, search_strategy=Literal["exact", "approximate"], 
-                          default_vmatcher_dir="", default_icv_dir="", default_match_res_dir=""):
+def filter_match_res_disk(attr, K, search_strategy=Literal["exact", "approximate"], 
+                          default_vmatcher_dir="", default_icv_dir="", 
+                          default_match_res_dir=""):
     time_st1 = time.time()
     
     # get the matching result
@@ -159,8 +158,7 @@ def filter_match_res_disk(attr, group_tau, K, search_strategy=Literal["exact", "
     match_tab = pd.read_csv(path_match_res)
     
     # get word embeddings
-    buck, query_vec, dim = _get_word_embeddings(match_tab, attr, group_tau, default_vmatcher_dir, 
-                                                default_icv_dir, default_match_res_dir)
+    buck, query_vec, dim = _get_word_embeddings(match_tab, attr, default_vmatcher_dir)
     
     # similarity search
     time_st2 = time.time()
