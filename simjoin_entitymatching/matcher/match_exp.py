@@ -343,13 +343,17 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
         # save and slim
         pred_df = _save_pred_to_df(predictions, tableA, tableB)
         slim_pred = filter_match_res_memory(match_tab=pred_df, attr="title", K=1, 
-                                            search_strategy="exact")
+                                            threshold=0.8, search_strategy="exact")
         
         # save results for debug
-        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
+        # _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
             
         predictions = slim_pred[slim_pred["predicted"] == 1]
         print(f"after slimmed : {len(pred_df)}, {len(predictions)}")
+        # save results for debug
+        predictions.insert(predictions.shape[1], "proba", 0)
+        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
+        
         for _, row in predictions.iterrows():
             lid = row["ltable_id"]
             rid = row["rtable_id"]

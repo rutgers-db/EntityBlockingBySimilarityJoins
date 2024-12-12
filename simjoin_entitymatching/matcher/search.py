@@ -10,6 +10,7 @@ from collections import defaultdict
 from typing import Literal
 import faiss
 import time
+import gensim.utils
 
 from simjoin_entitymatching.value_matcher.doc2vec import Doc2Vec
 import simjoin_entitymatching.utils.path_helper as ph
@@ -34,7 +35,9 @@ def _get_word_embeddings(match_tab, attr, default_vmatcher_dir=""):
     
     # bucket
     buck = defaultdict(list)
+    rev_buck = defaultdict(list)
     query_vec = defaultdict()
+    rev_query_vec = defaultdict()
     
     prev_dim = 0
     
@@ -58,10 +61,15 @@ def _get_word_embeddings(match_tab, attr, default_vmatcher_dir=""):
             raise ValueError(f"error in vector's dimension : {l_dim}, {r_dim}, {prev_dim}")
         prev_dim = l_dim
         
+        # table a -> table b
         buck[lid].append((rid, r_vec))
         query_vec[lid] = l_vec
         
-    return buck, query_vec, prev_dim
+        # table b -> table a
+        rev_buck[rid].append((lid, l_vec))
+        rev_query_vec[rid] = r_vec
+        
+    return buck, query_vec, rev_buck, rev_query_vec, prev_dim, doc2vec.model
 
 
 def _search_KNN(dimension, K, buck, query_vec, search_strategy=Literal["exact", "approximate"]):
@@ -103,17 +111,48 @@ def _search_KNN(dimension, K, buck, query_vec, search_strategy=Literal["exact", 
     return nn_res, nn_dis
 
 
-def _slim_match_tab(match_tab, nn_res):
+def _slim_match_tab(match_tab, nn_res, model, rep_attr, threshold, is_rev=False):
     row_index = match_tab.index
-    for ridx in row_index:
-        lid = match_tab.loc[ridx, "ltable_id"]
-        rid = match_tab.loc[ridx, "rtable_id"]
-        if rid not in nn_res[lid]:
-            match_tab.loc[ridx, "predicted"] = 0
+    l_schema = "ltable_" + rep_attr
+    r_schema = "rtable_" + rep_attr
+    
+    if not is_rev:
+        for ridx in row_index:
+            lid = match_tab.loc[ridx, "ltable_id"]
+            rid = match_tab.loc[ridx, "rtable_id"]
             
-    neg_match_tab = pd.read_csv("output/exp/neg_match_res0.csv")
-    match_tab = pd.concat([match_tab, neg_match_tab], ignore_index=True)
+            # check original similarity score
+            l_title = match_tab.loc[ridx, l_schema]
+            r_title = match_tab.loc[ridx, r_schema]
+            l_docs = gensim.utils.simple_preprocess(l_title)
+            r_docs = gensim.utils.simple_preprocess(r_title)
+            l_vec = model.infer_vector(l_docs)
+            r_vec = model.infer_vector(r_docs)
+            cos_sim = np.dot(l_vec, r_vec) / (np.linalg.norm(l_vec) * np.linalg.norm(r_vec))
             
+            if rid not in nn_res[lid]:
+                match_tab.loc[ridx, "predicted"] = 0
+    else:
+        for ridx in row_index:
+            lid = match_tab.loc[ridx, "ltable_id"]
+            rid = match_tab.loc[ridx, "rtable_id"]
+            
+            # check original similarity score
+            l_title = match_tab.loc[ridx, l_schema]
+            r_title = match_tab.loc[ridx, r_schema]
+            l_docs = gensim.utils.simple_preprocess(l_title)
+            r_docs = gensim.utils.simple_preprocess(r_title)
+            l_vec = model.infer_vector(l_docs)
+            r_vec = model.infer_vector(r_docs)
+            cos_sim = np.dot(l_vec, r_vec) / (np.linalg.norm(l_vec) * np.linalg.norm(r_vec))
+            
+            if lid not in nn_res[rid]:
+                match_tab.loc[ridx, "predicted"] = 0
+        
+        # concat with negative predictions after the reverse slim     
+        neg_match_tab = pd.read_csv("output/exp/neg_match_res0.csv")
+        match_tab = pd.concat([match_tab, neg_match_tab], ignore_index=True)
+
     return match_tab
 
 
@@ -124,20 +163,22 @@ def _check_similarity(nn_dis, default_icv_dir=""):
             print(f"ltable id : {k}, nearest neighbors : {v}", file=nn_dis_file)
 
 
-def filter_match_res_memory(match_tab, attr, K, search_strategy=Literal["exact", "approximate"], 
+def filter_match_res_memory(match_tab, attr, K, threshold, search_strategy=Literal["exact", "approximate"], 
                             default_vmatcher_dir="", default_icv_dir=""):
     time_st1 = time.time()
     
     # get word embeddings
-    buck, query_vec, dim = _get_word_embeddings(match_tab, attr, default_vmatcher_dir)
+    buck, query_vec, rev_buck, rev_query_vec, dim, value_matcher = _get_word_embeddings(match_tab, attr, default_vmatcher_dir)
     
     # similarity search
     time_st2 = time.time()
     nn_res, nn_dis = _search_KNN(dim, K, buck, query_vec, search_strategy)
+    rev_nn_res, rev_nn_dis = _search_KNN(dim, K, rev_buck, rev_query_vec, search_strategy)
     time_end2 = time.time()
     
     # filter
-    match_tab = _slim_match_tab(match_tab, nn_res)
+    match_tab = _slim_match_tab(match_tab, nn_res, value_matcher, attr, threshold)
+    match_tab = _slim_match_tab(match_tab, rev_nn_res, value_matcher, attr, threshold, True)
     
     _check_similarity(nn_dis, default_icv_dir)
     
@@ -148,7 +189,7 @@ def filter_match_res_memory(match_tab, attr, K, search_strategy=Literal["exact",
     return match_tab
 
 
-def filter_match_res_disk(attr, K, search_strategy=Literal["exact", "approximate"], 
+def filter_match_res_disk(attr, K, threshold, search_strategy=Literal["exact", "approximate"], 
                           default_vmatcher_dir="", default_icv_dir="", 
                           default_match_res_dir=""):
     time_st1 = time.time()
@@ -158,15 +199,17 @@ def filter_match_res_disk(attr, K, search_strategy=Literal["exact", "approximate
     match_tab = pd.read_csv(path_match_res)
     
     # get word embeddings
-    buck, query_vec, dim = _get_word_embeddings(match_tab, attr, default_vmatcher_dir)
+    buck, query_vec, rev_buck, rev_query_vec, dim, value_matcher = _get_word_embeddings(match_tab, attr, default_vmatcher_dir)
     
     # similarity search
     time_st2 = time.time()
     nn_res, nn_dis = _search_KNN(dim, K, buck, query_vec, search_strategy)
+    rev_nn_res, rev_nn_dis = _search_KNN(dim, K, rev_buck, rev_query_vec, search_strategy)
     time_end2 = time.time()
     
     # filter
-    match_tab = _slim_match_tab(match_tab, nn_res)
+    match_tab = _slim_match_tab(match_tab, nn_res, value_matcher, attr, threshold)
+    match_tab = _slim_match_tab(match_tab, rev_nn_res, value_matcher, attr, threshold, True)
     
     _check_similarity(nn_dis, default_icv_dir)
     
