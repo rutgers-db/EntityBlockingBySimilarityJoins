@@ -346,13 +346,13 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
                                             threshold=0.8, search_strategy="exact")
         
         # save results for debug
-        # _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
+        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
             
         predictions = slim_pred[slim_pred["predicted"] == 1]
         print(f"after slimmed : {len(pred_df)}, {len(predictions)}")
         # save results for debug
         predictions.insert(predictions.shape[1], "proba", 0)
-        _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
+        # _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
         
         for _, row in predictions.iterrows():
             lid = row["ltable_id"]
@@ -406,8 +406,8 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     # _eval_results(slim_pred1, tableA, tableB, filep)
     
     # group
-    _, _ = group_interchangeable(tableA, tableB, group_tau=0.8, group_strategy="doc", num_data=2, external_group=True, 
-                                 external_group_strategy="graph", is_transitive_closure=True,
+    _, _ = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
+                                 external_group_strategy="graph", is_transitive_closure=False,
                                  default_match_res_dir="output/exp")
     print("group done", flush=True)
     

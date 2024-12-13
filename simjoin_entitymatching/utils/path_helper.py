@@ -3,6 +3,18 @@
 import pathlib
 
 
+def get_raw_tables_path(default_buffer_dir=""):
+    cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
+    if default_buffer_dir == "":
+        buffer_dir = '/'.join([cur_parent_dir, "..", "..", "output", "buffer"])
+    else:
+        buffer_dir = default_buffer_dir[ : -1] if default_buffer_dir[-1] == '/' \
+                                               else default_buffer_dir
+    path_tab_A = '/'.join([buffer_dir, "clean_A.csv"])
+    path_tab_B = '/'.join([buffer_dir, "clean_B.csv"])
+    return path_tab_A, path_tab_B
+
+
 def get_chunked_blk_res_path(table_id, default_blk_res_dir=""):
     cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
     if default_blk_res_dir == "":
@@ -125,3 +137,13 @@ def get_nearest_neighbors_vec_path(default_icv_dir):
                                                     else default_icv_dir
         vec_path = "/".join([default_icv_dir, "nn_dis.txt"])
     return vec_path
+
+
+def get_value_matcher_path(cur_parent_dir, attr, default_output_dir):
+    if default_output_dir == "":
+        path_model= "/".join([cur_parent_dir, "model", "doc2vec_" + attr + ".joblib"])
+    else:
+        default_output_dir = default_output_dir[ : -1] if default_output_dir[-1] == '/' \
+                                                        else default_output_dir
+        path_model = "/".join([default_output_dir, "doc2vec_" + attr + ".joblib"])
+    return path_model

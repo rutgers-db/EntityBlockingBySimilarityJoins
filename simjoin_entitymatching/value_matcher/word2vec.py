@@ -2,6 +2,7 @@ from numpy import dot
 from numpy.linalg import norm
 import gensim.models
 from gensim import utils
+import pathlib
 import joblib
 import pandas as pd
 from gensim.test.utils import get_tmpfile
@@ -13,194 +14,113 @@ import subprocess
 import multiprocessing
 import re
 from utils import DSU
+from typing import Literal
+
+import simjoin_entitymatching.utils.path_helper as ph
 
 # debug
 from py_entitymatching.catalog.catalog import Catalog
 import py_entitymatching.catalog.catalog_manager as cm
 
 """ 
-The word2vec is under development
-Do not include it in current project
-This is the very old version, not guarenteed to work
+word2vec model for word embedding;
+the semantic similarity of a tuple pairs will be calculated by "coherent group";
+"Seeping Semantics: Linking Datasets using Word Embeddings for Data Discovery", ICDE'23
 """
 
+_cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
 
-class Word2Vec:
+
+def _train_on_raw_table(attrs, num_data=Literal[1, 2], default_buffer_dir="", 
+                        default_output_dir=""):
     '''
-    Word2Vec for attribute: str_eq_1w or numeric
-    But do numeric really needs normalization?
+    train the word2vec multiple attributes
+    concat two raw tables to form training corpus
     '''
-
-    def __init__(self, inmemory_):
-        self.model = ""
-        self.blk_res = ""
-        self.match_res = ""
-        self.setences = []
-        # if the table could fit in memory & small
-        # then train on whole table
-        self.inmemory = inmemory_
-
-
-    def _preprocess(self, blk_attr, rawtable, rawtable2=None):
-        rawdata = []
-
-        # if the table is small enough in memory
-        # we train on whole table
-        if self.inmemory == 0:
-            lattr = 'ltable_' + blk_attr
-            rattr = 'rtable_' + blk_attr
-
-            for _, row in self.blk_res.iterrows():
-                lstr = row[lattr]
-                rstr = row[rattr]
-                if pd.isnull(lstr) == False:
-                    rawdata.append(lstr)
-                if pd.isnull(rstr) == False:
-                    rawdata.append(rstr)
-
-        elif self.inmemory == 1:
-            for _, row in rawtable.iterrows():
-                if pd.isnull(row[blk_attr]) == False:
-                    rawdata.append(row[blk_attr])
-
-            if rawtable2 is not None:
-                for _, row in rawtable2.iterrows():
-                    if pd.isnull(row[blk_attr]) == False:
-                        rawdata.append(row[blk_attr])
-
-        # build corup
-        for _, line in enumerate(rawdata):
-            sentence = utils.simple_preprocess(line)
-            self.setences.append(sentence)
-
     
-    # apis: 1. train & save 2. apply 3. group
-    def train_and_save(self, blk_attr, rawtable, rawtable2=None):
-        self._preprocess(blk_attr, rawtable, rawtable2)
-
-        # train
-        self.model = gensim.models.word2vec.Word2Vec(vector_size=50, min_count=2, epochs=40)
-        self.model.build_vocab(self.setences)
-        self.model.train(self.setences, total_examples=self.model.corpus_count, 
-                         epochs=self.model.epochs)
-
-        # save
-        joblib.dump(self.model, 'training/model/word2vec.joblib')
-
-
-    def train_all_and_save(self, attrs, rawtable, rawtable2=None):
-        '''
-        Train model for all attributes except id
-        attrs: attributes that could use word2vec
-        '''
-
-        for attr in attrs:
-            print(f"trainging word2vec on {attr} ...")
-            self._preprocess(attr, rawtable, rawtable2)
-            self.model = gensim.models.word2vec.Word2Vec(vector_size=50, min_count=2, epochs=40)
-            self.model.build_vocab(self.setences)
-            self.model.train(self.setences, total_examples=self.model.corpus_count, 
-                            epochs=self.model.epochs)
-            model_name = 'training/model/word2vec_' + attr + '.joblib'
-            joblib.dump(self.model, model_name)
-
+    # read
+    path_tab_A, path_tab_B = ph.get_raw_tables_path(default_buffer_dir)
+    tab_A = pd.read_csv(path_tab_A)
+    tab_B = None if num_data == 1 else pd.read_csv(path_tab_B)
     
-    def apply_sample(self, blk_attr, tau):
-        '''
-        Apply Word2Vec for sampling and labeling cand
-        '''
-
-        # apply
-        poscnt = 0
-        row_index = list(self.blk_res.index)
-        lattr = 'ltable_' + blk_attr
-        rattr = 'rtable_' + blk_attr
-
-        for row in row_index:
-            if pd.isnull(self.blk_res.loc[row, lattr]) == True or \
-               pd.isnull(self.blk_res.loc[row, rattr]) == True:
-                continue
-            lstr = utils.simple_preprocess(self.blk_res.loc[row, lattr])
-            rstr = utils.simple_preprocess(self.blk_res.loc[row, rattr])
-            lvec = self.model.infer_vector(lstr)
-            rvec = self.model.infer_vector(rstr)
-            cos_sim = dot(lvec, rvec) / (norm(lvec) * norm(rvec))
-            
-            if cos_sim >= tau:
-                poscnt += 1
-                self.blk_res.loc[row, 'label'] = 1
-
-        # flush
-        print(poscnt, len(row_index) - poscnt)
-        # self.blk_res.to_parquet('buffer/cpp_blk_res.parquet', engine='fastparquet', index=False)
-        self.blk_res.to_csv('buffer/cpp_blk_res.csv', index=False)
-
-
-    def group_interchangeable(self, blk_attr, tau):
-        '''
-        Apply Word2Vec for grouping interchangeable value in blocking result
-        '''
-
-        # apply
-        lattr = 'ltable_' + blk_attr
-        rattr = 'rtable_' + blk_attr
-
-        # dsu
-        words_list, pair_list = [], []
-
-        for _, row in self.blk_res.iterrows():
-            if pd.isnull(row[lattr]) == True or pd.isnull(row[rattr]) == True:
-                continue
-            lstr = utils.simple_preprocess(row[lattr])
-            rstr = utils.simple_preprocess(row[rattr])
-            words_list.append(tuple(lstr))
-            words_list.append(tuple(rstr))
-            pair_list.append((lstr, rstr))
-
-        bag_of_words = set(words_list)
-        totins = len(bag_of_words)
-        cluster = DSU(totins)
-        id2word = {}
-        for idx, word in enumerate(bag_of_words):
-            id2word[word] = idx
+    for attr in attrs:
+        print(f"training word2vec on : {attr} ...")
         
-        # clustering
-        for (lstr, rstr) in pair_list:
-            lvec = self.model.infer_vector(lstr)
-            rvec = self.model.infer_vector(rstr)
-            cos_sim = dot(lvec, rvec) / (norm(lvec) * norm(rvec))
+        # process
+        raw_text_A = tab_A[attr].tolist()
+        raw_text_B = [] if num_data == 1 else tab_B[attr].tolist()
+        raw_text = raw_text_A + raw_text_B 
+        raw_text = [doc for doc in raw_text if not pd.isnull(doc)]
+        
+        corpus = []
+        for i, line in enumerate(raw_text):
+            toks = utils.simple_preprocess(line)
+            corpu = gensim.models.doc2vec.TaggedDocument(toks, [i])
+            corpus.append(corpu)
+            
+        # train
+        st = time.time()
+        word2vec = gensim.models.word2vec.Word2Vec(vector_size=50, min_count=1, epochs=40)
+        word2vec.build_vocab(corpus)
+        word2vec.train(corpus, total_examples=word2vec.corpus_count, epochs=word2vec.epochs)
+        print(f"corpus size : {len(corpus)}, training time : {time.time() - st}")
+        
+        # dump
+        model_path = ph.get_value_matcher_path(_cur_parent_dir, attr, default_output_dir)    
+        joblib.dump(word2vec, model_path)
+        
+        
+def group_interchangeable_external(target_attr, word2vec, default_match_res_dir="", 
+                                   default_icv_dir=""):
+    # apply
+    lattr = "ltable_" + target_attr
+    rattr = "rtable_" + target_attr
+    vec_dict = defaultdict()
+    vec_pair = []
 
-            if cos_sim >= tau:
-                lid = id2word[tuple(lstr)]
-                rid = id2word[tuple(rstr)]
-                cluster.union(lid, rid)
-
-        # group
-        group = defaultdict(list)
-        for doc in words_list:
-            fa = cluster.find(id2word[doc])
-            group[words_list[fa]].append(doc)
-
-        # report
-        with open('buffer/interchangeable.txt', 'w') as interfile:
-            for val in group.itervalues():
-                if(len(val)) <= 1:
-                    continue
-                interfile.writelines(val)
-        interfile.close()
-
-
-    # io
-    def load_blk_res(self, usage):
-        '''
-        Avoid multi-io
-        usage: 0 for labeler & training and 1 for value matcher
-        only use this method when training using a sample
-        '''
-        self.blk_res = pd.read_csv('buffer/cpp_blk_res.csv') if usage == 0 else pd.read_csv('output/blk_res.csv')
-
-    def load_match_res(self):
-        self.match_res = pd.read_csv('output/match_res.csv')
+    # read
+    partial_name, _ = ph.get_chunked_match_res_path(0, default_match_res_dir)   
+    partial_match_res = pd.read_csv(partial_name)
     
-    def load_model(self):
-        self.model = joblib.load('training/model/word2vec.joblib')
+    # infer
+    for _, row in partial_match_res.iterrows():
+        ori_lstr = row[lattr]
+        ori_rstr = row[rattr]
+        if pd.isnull(ori_lstr) == True or pd.isnull(ori_rstr) == True:
+            continue
+        # process to model
+        lstr = utils.simple_preprocess(ori_lstr)
+        rstr = utils.simple_preprocess(ori_rstr)
+        # infer vecs
+        lvec = word2vec.infer_vector(lstr)
+        rvec = word2vec.infer_vector(rstr)
+        # add
+        vec_dict[ori_lstr] = lvec
+        vec_dict[ori_rstr] = rvec
+        vec_pair.append((ori_lstr, ori_rstr))
+
+    # report
+    vec_path, pair_path = ph.get_icval_vec_input_path(_cur_parent_dir, default_icv_dir)
+    
+    # vec
+    with open(vec_path, "w") as vecfile:
+        stat = [str(len(vec_dict)), '\n']
+        vecfile.writelines(stat)
+        for k, v in vec_dict.items():
+            # str
+            vecfile.writelines([k + "\n"])
+            # vectors
+            v = [str(e) + ' ' for e in v]
+            v.insert(0, str(len(v)) + ' ')
+            v.append('\n')
+            vecfile.writelines(v)
+            
+    # candidare pair
+    with open(pair_path, "w") as pairfile:
+        stat = [str(len(vec_pair)), "\n"]
+        pairfile.writelines(stat)
+        for pair in vec_pair:
+            pairfile.writelines([pair[0] + "\n"])
+            pairfile.writelines([pair[1] + "\n"])
+            
+    return vec_dict

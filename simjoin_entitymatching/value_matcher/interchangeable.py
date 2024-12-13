@@ -159,7 +159,8 @@ def cluster_pairs(ori_clt, representative_attr, gold_graph, default_match_res_di
 
 def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc", "mix"], num_data=Literal[1, 2], external_group=False,
 						  external_group_strategy=Literal["graph", "cluster"], is_transitive_closure=False, 
-        				  default_match_res_dir="", default_vmatcher_dir="", default_icv_dir=""):
+        				  default_match_res_dir="", default_vmatcher_dir="", default_icv_dir="", 
+              			  default_buffer_dir=""):
 	'''
 	apply value matcher, group interchangeable values on matching result
 		1. use doc2vec for all attrs, since for str_eq_1w there may exist values that are longer than 1 word in raw data
@@ -190,7 +191,8 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 	if group_strategy == 'doc':
 		doc2vec = Doc2Vec(inmemory_=0)
 		doc2vec.load_match_res(tableA=tableA, tableB=tableB, default_match_res_dir=default_match_res_dir)
-		doc2vec.train_all_and_save(attrs, tableA, train_tableB, default_vmatcher_dir)
+		# doc2vec.train_all_and_save(attrs, tableA, train_tableB, default_vmatcher_dir)
+		doc2vec.train_on_raw_table(attrs, num_data, default_buffer_dir, default_vmatcher_dir)
 		print('training done', flush=True)
 		for attr_ in attrs:
 			doc2vec.load_model(usage=1, attr=attr_, default_model_dir=default_vmatcher_dir)

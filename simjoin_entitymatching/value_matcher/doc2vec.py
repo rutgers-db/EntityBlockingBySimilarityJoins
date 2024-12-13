@@ -13,6 +13,7 @@ import subprocess
 import multiprocessing
 import re
 import networkx as nx
+from typing import Literal
 
 from simjoin_entitymatching.value_matcher.utils import DSU, run_cosine_exe
 import simjoin_entitymatching.utils.path_helper as ph
@@ -128,6 +129,45 @@ class Doc2Vec:
         # save
         joblib.dump(self.model, model_path)
         print("training for labeling value matcher done")
+        
+        
+    def train_on_raw_table(self, attrs, num_data=Literal[1, 2], default_buffer_dir="", 
+                           default_output_dir=""):
+        '''
+        train the doc2vec multiple attributes
+        concat two raw tables to form training corpus
+        '''
+        
+        # read
+        path_tab_A, path_tab_B = ph.get_raw_tables_path(default_buffer_dir)
+        tab_A = pd.read_csv(path_tab_A)
+        tab_B = None if num_data == 1 else pd.read_csv(path_tab_B)
+        
+        for attr in attrs:
+            print(f"training doc2vec on : {attr} ...")
+            
+            # process
+            raw_text_A = tab_A[attr].tolist()
+            raw_text_B = [] if num_data == 1 else tab_B[attr].tolist()
+            raw_text = raw_text_A + raw_text_B 
+            raw_text = [doc for doc in raw_text if not pd.isnull(doc)]
+            
+            corpus = []
+            for i, line in enumerate(raw_text):
+                toks = utils.simple_preprocess(line)
+                corpu = gensim.models.doc2vec.TaggedDocument(toks, [i])
+                corpus.append(corpu)
+                
+            # train
+            st = time.time()
+            self.model = gensim.models.doc2vec.Doc2Vec(vector_size=50, min_count=2, epochs=40)
+            self.model.build_vocab(corpus)
+            self.model.train(corpus, total_examples=self.model.corpus_count, epochs=self.model.epochs)
+            print(f"corpus size : {len(corpus)}, training time : {time.time() - st}")
+            
+            # dump
+            model_path = ph.get_value_matcher_path(self.cur_parent_dir, attr, default_output_dir)    
+            joblib.dump(self.model, model_path)
 
 
     def train_all_and_save(self, attrs, rawtable, rawtable2=None, 
@@ -148,13 +188,8 @@ class Doc2Vec:
             self.model.train(self.setences, total_examples=self.model.corpus_count, 
                             epochs=self.model.epochs)
             
-            if default_output_dir == "":
-                model_path = "/".join([self.cur_parent_dir, "model", "doc2vec_" + attr + ".joblib"])
-            else:
-                default_output_dir = default_output_dir[ : -1] if default_output_dir[-1] == '/' \
-                                                               else default_output_dir
-                model_path = "/".join([default_output_dir, "doc2vec_" + attr + ".joblib"])
-            
+            # dump
+            model_path = ph.get_value_matcher_path(self.cur_parent_dir, attr, default_output_dir)    
             joblib.dump(self.model, model_path)
 
 
