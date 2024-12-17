@@ -43,9 +43,15 @@ public:
                                       const std::string &defaultICVDir = "");
 
     // apis
+    // default: doc embedding graph
     static void groupInterchangeableValuesByGraph(const std::string &groupAttribute, const std::string &groupStrategy, 
                                                   double groupTau, bool isTransitiveClosure, 
                                                   const std::string &defaultICVDir = "");
+
+    // word embedding graph
+    static void groupInterchangeableValuesByWordGraph(const std::string &groupAttribute, const std::string &groupStrategy, 
+                                                      double groupTau, bool isTransitiveClosure, 
+                                                      const std::string &defaultICVDir = "");
 
     static void groupInterchangeableValuesByCluster();
 };

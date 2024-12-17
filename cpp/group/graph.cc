@@ -33,6 +33,26 @@ double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vect
 }
 
 
+double Graph::calculateCoherentFactor(const std::vector<std::vector<double>> &lhs, 
+                                      const std::vector<std::vector<double>> &rhs)
+{
+    std::vector<std::vector<double>> unionVecs;
+    __gnu_parallel::set_union(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
+                              std::back_inserter(unionVecs));
+
+    size_t X = unionVecs.size();
+    double FX = 0.0;
+
+    for(size_t i = 0; i < X; i++)
+        for(size_t j = i + 1; j < X; j++)
+            FX += calculateCosineSim(unionVecs[i], unionVecs[j]);
+
+    FX /= (X * 1.0);
+
+    return FX;
+}
+
+
 void Graph::readVertex(std::string info, int &id, std::string &doc)
 {
     std::istringstream iss(info);
@@ -175,15 +195,15 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const Word
             continue;
 
         // coherent group
-        
+        const auto &lEmbedding = wordVecs[lId];
+        const auto &rEmbedding = wordVecs[rId];
+        double FX = calculateCoherentFactor(lEmbedding, rEmbedding);
 
-        // double cos = calculateCosineSim(vecs[lId], vecs[rId]);
-        // std::cout << cos << std::endl;
-        // if(cos >= tau) {
-        //     graLists[lId].emplace_back(rId);
-        //     graLists[rId].emplace_back(lId);
-        //     ++ numEdge;
-        // }
+        if(FX >= tau) {
+            graLists[lId].emplace_back(rId);
+            graLists[rId].emplace_back(lId);
+            ++ numEdge;
+        }
     }
 
     // transitive closure
@@ -196,16 +216,16 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const Word
             // check two-hop neighbors of i in order
             // a ~ b, b ~ c, thus a ~ c if sim(a, c) > tau
             for(const auto &v : graLists[i]) {
-                // if(v < i)
-                //     continue;
                 for(const auto &u : graLists[v]) {
                     if(u <= i || checkEdgeExistence(i, u))
                         continue;
-                    double cos = calculateCosineSim(vecs[i], vecs[u]);
-                    if(cos >= tau) {
+
+                    const auto &lEmbedding = wordVecs[i];
+                    const auto &rEmbedding = wordVecs[u];
+                    double FX = calculateCoherentFactor(lEmbedding, rEmbedding);
+                    
+                    if(FX >= tau)
                         lazyNeighb.emplace_back(u);
-                        // ++ numEdge;
-                    }
                 }
             }
 

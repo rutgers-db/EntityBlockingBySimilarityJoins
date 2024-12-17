@@ -168,10 +168,40 @@ void Group::groupInterchangeableValuesByGraph(const std::string &groupAttribute,
 
     // io
     std::vector<std::string> docs;
-    std::vector<std::vector<double>> vecs;
+    DocEmbeddings vecs;
     std::vector<std::pair<std::string, std::string>> candidates;
 
     Group::readDocsAndVecs(docs, vecs, defaultICVDir);
+    Group::readDocCandidatePairs(candidates, defaultICVDir);
+
+    // build
+    Graph senmaticGraph(isTransitiveClosure, groupTau);
+    senmaticGraph.buildSemanticGraph(docs, vecs, candidates);
+
+    // write
+    std::string directory = getICVDir(defaultICVDir);
+    std::string pathGraph = directory + "interchangeable_graph_" 
+                            + groupAttribute + ".txt";
+    senmaticGraph.writeSemanticGraph(pathGraph);
+}
+
+
+void Group::groupInterchangeableValuesByWordGraph(const std::string &groupAttribute, const std::string &groupStrategy, 
+                                                  double groupTau, bool isTransitiveClosure, 
+                                                  const std::string &defaultICVDir)
+{
+    std::cout << "group interchangeable values on attribute : " << groupAttribute 
+        << "\tstrategy : " << groupStrategy 
+        << "\tdefault directory for output : " << defaultICVDir
+        << "\tthreshold : " << groupTau
+        << "\tis transitive closure enabled : " << isTransitiveClosure << std::endl;
+
+    // io
+    std::vector<std::string> docs;
+    WordEmbeddings vecs;
+    std::vector<std::pair<std::string, std::string>> candidates;
+
+    Group::readWordEmbeddingDocsAndVecs(docs, vecs, defaultICVDir);
     Group::readDocCandidatePairs(candidates, defaultICVDir);
 
     // build
@@ -191,8 +221,10 @@ extern "C"
     void group_interchangeable_values_by_graph(const char *group_attribute, const char *group_strategy, 
                                                double group_tau, bool is_transitive_closure, 
                                                const char *default_icv_dir) {
-        Group::groupInterchangeableValuesByGraph(group_attribute, group_strategy, group_tau, is_transitive_closure, 
-                                                 default_icv_dir);
+        // Group::groupInterchangeableValuesByGraph(group_attribute, group_strategy, group_tau, is_transitive_closure, 
+        //                                          default_icv_dir);
+        Group::groupInterchangeableValuesByWordGraph(group_attribute, group_strategy, group_tau, is_transitive_closure, 
+                                                     default_icv_dir);
     }
 
     void group_interchangeable_values_by_cluster() {

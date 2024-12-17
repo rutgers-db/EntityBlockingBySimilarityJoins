@@ -14,6 +14,7 @@
 #include <fstream>
 #include <sstream>
 #include <assert.h>
+#include <parallel/algorithm>
 
 
 /*
@@ -57,6 +58,9 @@ private:
     bool isDocContained(const std::string &doc) const;
 
     double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs);
+
+    double calculateCoherentFactor(const std::vector<std::vector<double>> &lhs, 
+                                   const std::vector<std::vector<double>> &rhs);
 
     void readVertex(std::string info, int &id, std::string &doc);
     void readEdge(std::string info, int &from, int &to);
