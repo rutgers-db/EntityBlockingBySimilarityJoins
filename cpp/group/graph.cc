@@ -67,7 +67,7 @@ void Graph::readEdge(std::string info, int &from, int &to)
 }
 
 
-void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std::vector<std::vector<double>> &_vecs, 
+void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const DocEmbedding &_vecs, 
                                const std::vector<std::pair<std::string, std::string>> &candidates)
 {
     // nodes
@@ -97,6 +97,93 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const std:
             graLists[rId].emplace_back(lId);
             ++ numEdge;
         }
+    }
+
+    // transitive closure
+    if(isTransitiveClosure) {
+        std::cout << "adding edges" << std::endl;
+        for(int i = 0; i < numVertex; i++) {
+            // lazy modify
+            std::vector<int> lazyNeighb;
+
+            // check two-hop neighbors of i in order
+            // a ~ b, b ~ c, thus a ~ c if sim(a, c) > tau
+            for(const auto &v : graLists[i]) {
+                // if(v < i)
+                //     continue;
+                for(const auto &u : graLists[v]) {
+                    if(u <= i || checkEdgeExistence(i, u))
+                        continue;
+                    double cos = calculateCosineSim(vecs[i], vecs[u]);
+                    if(cos >= tau) {
+                        lazyNeighb.emplace_back(u);
+                        // ++ numEdge;
+                    }
+                }
+            }
+
+            // add
+            std::sort(lazyNeighb.begin(), lazyNeighb.end());
+            auto iter = std::unique(lazyNeighb.begin(), lazyNeighb.end());
+            lazyNeighb.resize(std::distance(lazyNeighb.begin(), iter));
+            for(const auto &u : lazyNeighb) {
+                graLists[i].emplace_back(u);
+                graLists[u].emplace_back(i);
+                ++ numEdge;
+            }
+        }
+    }
+
+    int tmpc = 0;
+    for(auto &edges : graLists) {
+        std::sort(edges.begin(), edges.end());
+        auto iter = std::unique(edges.begin(), edges.end());
+        if(iter != edges.end()) {
+            std::cerr << "duplicate edge in semantic graph : " << tmpc << " " << docs[tmpc] << std::endl;
+            exit(1);
+        }
+        if(std::count(edges.begin(), edges.end(), tmpc) > 0) {
+            std::cerr << "self circle in semantic graph : " << tmpc << " " << docs[tmpc] << std::endl;
+            exit(1);
+        }
+        ++ tmpc;
+    }
+}
+
+
+void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const WordEmbedding &_vecs, 
+                               const std::vector<std::pair<std::string, std::string>> &candidates)
+{
+    // nodes
+    docs = _docs;
+    wordVecs = _vecs;
+
+    int count = 0;
+    for(const auto &doc : docs)
+        doc2Id[doc] = count ++;
+
+    // stat
+    numVertex = count;
+
+    // edges
+    graLists.resize(count, std::vector<int> ());
+    for(const auto &p : candidates) {
+        int lId = doc2Id.at(p.first);
+        int rId = doc2Id.at(p.second); 
+
+        if(lId == rId || checkEdgeExistence(lId, rId))
+            continue;
+
+        // coherent group
+        
+
+        // double cos = calculateCosineSim(vecs[lId], vecs[rId]);
+        // std::cout << cos << std::endl;
+        // if(cos >= tau) {
+        //     graLists[lId].emplace_back(rId);
+        //     graLists[rId].emplace_back(lId);
+        //     ++ numEdge;
+        // }
     }
 
     // transitive closure

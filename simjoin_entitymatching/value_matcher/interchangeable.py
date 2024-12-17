@@ -8,6 +8,7 @@ from collections import defaultdict
 
 from simjoin_entitymatching.value_matcher.group import run_group_lib
 from simjoin_entitymatching.value_matcher.doc2vec import Doc2Vec
+import simjoin_entitymatching.value_matcher.fasttext as ft
 from simjoin_entitymatching.feature.feature import run_feature_lib
 import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.matcher.random_forest as randf
@@ -167,14 +168,7 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 		2. use doc2vec & word2vec(for str_eq_1w), we omit the impact of such abnormal(longer) words in 1
 	'''
 	
-	cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
-	if default_match_res_dir == "":
-		path_match_stat = "/".join([cur_parent_dir, "..", "..", "output", "match_res", "stat.txt"])
-	else:
-		default_match_res_dir = default_match_res_dir[ : -1] if default_match_res_dir[-1] == '/' \
-															 else default_match_res_dir
-		path_match_stat = "/".join([default_match_res_dir, "stat.txt"])
-
+	path_match_stat = ph.get_match_res_stat_path(default_match_res_dir)
 	with open(path_match_stat, "r") as stat_file:
 		stat_line = stat_file.readlines()
 		total_table, _ = (int(val) for val in stat_line[0].split())
@@ -208,8 +202,31 @@ def group_interchangeable(tableA, tableB, group_tau, group_strategy=Literal["doc
 	elif group_strategy == 'mix':
 		raise NotImplementedError("mix group not established")
 
-	# normalize_values(group, cluster, normalized_attrs=attrs, default_buffer_dir=default_buffer_dir)
 	return group, cluster
+
+
+def group_interchangeable_fasttext(target_attr, group_tau, external_group_strategy=Literal["graph", "cluster"], 
+                                   is_transitive_closure=False, default_match_res_dir="", default_vmatcher_dir="", 
+                                   default_icv_dir=""):
+	'''
+	we currently only apply fasttext on representative attribute and use external group strategy "coherent group"
+	please only use it in experiments at this stage
+	'''
+
+	path_match_stat = ph.get_match_res_stat_path(default_match_res_dir)
+	with open(path_match_stat, "r") as stat_file:
+		stat_line = stat_file.readlines()
+		total_table, _ = (int(val) for val in stat_line[0].split())
+	
+	# load pre-trained model
+	model = ft._load_wiki_pre_trained_model(default_vmatcher_dir)
+	ft._dump_model(model, default_vmatcher_dir)
+ 
+	# group in experiments mode
+	vec_dict = ft.group_interchangeable_external_exp(target_attr, model, default_match_res_dir, default_icv_dir)
+	
+	# coherent group
+	run_group_lib(target_attr, external_group_strategy, group_tau, is_transitive_closure, default_icv_dir)
 
 
 def _sample_neg_match_res(sample_size, default_match_res_dir=""):

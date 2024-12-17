@@ -1,31 +1,20 @@
-from numpy import dot
-from numpy.linalg import norm
 import gensim.models
 from gensim import utils
 import pathlib
 import joblib
 import pandas as pd
-from gensim.test.utils import get_tmpfile
 from collections import defaultdict
-import numpy as np
-import py_entitymatching as em
 import time
-import subprocess
-import multiprocessing
-import re
-from utils import DSU
 from typing import Literal
 
 import simjoin_entitymatching.utils.path_helper as ph
-
-# debug
-from py_entitymatching.catalog.catalog import Catalog
-import py_entitymatching.catalog.catalog_manager as cm
 
 """ 
 word2vec model for word embedding;
 the semantic similarity of a tuple pairs will be calculated by "coherent group";
 "Seeping Semantics: Linking Datasets using Word Embeddings for Data Discovery", ICDE'23
+
+WARNING: remain tested
 """
 
 _cur_parent_dir = str(pathlib.Path(__file__).parent.resolve())
@@ -91,13 +80,13 @@ def group_interchangeable_external(target_attr, word2vec, default_match_res_dir=
         # process to model
         lstr = utils.simple_preprocess(ori_lstr)
         rstr = utils.simple_preprocess(ori_rstr)
-        # infer vecs
-        lvec = word2vec.infer_vector(lstr)
-        rvec = word2vec.infer_vector(rstr)
-        # add
-        vec_dict[ori_lstr] = lvec
-        vec_dict[ori_rstr] = rvec
-        vec_pair.append((ori_lstr, ori_rstr))
+        # # infer vecs
+        # lvec = word2vec.infer_vector(lstr)
+        # rvec = word2vec.infer_vector(rstr)
+        # # add
+        # vec_dict[ori_lstr] = lvec
+        # vec_dict[ori_rstr] = rvec
+        # vec_pair.append((ori_lstr, ori_rstr))
 
     # report
     vec_path, pair_path = ph.get_icval_vec_input_path(_cur_parent_dir, default_icv_dir)

@@ -17,7 +17,7 @@ std::string Group::getICVDir(const std::string &defaultICVDir)
 }
 
 
-void Group::readDocsAndVecs(std::vector<std::string> &docs, std::vector<std::vector<double>> &vecs, 
+void Group::readDocsAndVecs(std::vector<std::string> &docs, DocEmbeddings &vecs, 
                             const std::string &defaultICVDir)
 {
     // prefix
@@ -61,6 +61,65 @@ void Group::readDocsAndVecs(std::vector<std::string> &docs, std::vector<std::vec
 
         // append
         // std::sort(vec.begin(), vec.end());
+        docs.emplace_back(doc);
+        vecs.emplace_back(std::move(vec));
+    }
+}
+
+
+void Group::readWordEmbeddingDocsAndVecs(std::vector<std::string> &docs, WordEmbeddings &vecs, 
+                                         const std::string &defaultICVDir)
+{
+    // prefix
+    std::string directory = getICVDir(defaultICVDir);
+
+    // path
+    std::string pathDocs = directory + "vec_interchangeable.txt";
+    std::ifstream streamDocs(pathDocs.c_str(), std::ios::in);
+
+    int totalDocs = 0;
+    std::string header;
+    getline(streamDocs, header);
+    totalDocs = std::stoi(header);
+    // allocate
+    docs.reserve(totalDocs);
+    vecs.reserve(totalDocs);
+
+    for(int i = 0; i < totalDocs; i++) {
+        // read doc
+        std::string doc = "";
+        getline(streamDocs, doc);
+
+        // read # of vecs
+        std::string vecInfo;
+        getline(streamDocs, vecInfo);
+        int totalVecs = std::stoi(vecInfo);
+
+        std::vector<std::vector<double>> vec;
+        vec.reserve(totalVecs);
+
+        for(int l = 0; l < totalVecs; l++) {
+            getline(streamDocs, vecInfo);
+            std::istringstream iss(vecInfo);
+            std::string token;
+
+            // size
+            getline(iss, token, ' ');
+            int vecSize = std::stoi(token);
+            std::vector<double> wordVec;
+            wordVec.reserve(vecSize);
+
+            // values
+            for(int j = 0; j < vecSize; j++) {
+                getline(iss, token, ' ');
+                double val = std::stod(token);
+                wordVec.emplace_back(val);
+            }
+
+            vec.emplace_back(std::move(wordVec));
+        }
+
+        // append
         docs.emplace_back(doc);
         vecs.emplace_back(std::move(vec));
     }

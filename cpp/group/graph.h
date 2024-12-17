@@ -22,6 +22,10 @@
 class Graph
 {
 public:
+    using DocEmbedding = std::vector<std::vector<double>>;
+    using WordEmbedding = std::vector<std::vector<std::vector<double>>>;
+
+public:
     bool isTransitiveClosure{false};
     double tau{0.0};
 
@@ -33,7 +37,9 @@ public:
     std::vector<std::vector<std::string>> docsDlm; // dlm_dc0
     std::vector<std::vector<std::string>> docsQgm; // qgm_3
 
-    std::vector<std::vector<double>> vecs; // semantic similarity
+    std::vector<std::vector<double>> vecs;                   // semantic similarity by doc embedding, default
+    std::vector<std::vector<std::vector<double>>> wordVecs;  // semantic similarity by word embedding
+
     std::unordered_map<std::string, int> doc2Id;
     std::vector<std::vector<int>> graLists;          
 
@@ -59,10 +65,15 @@ public:
     // currently we only check the two-hop neighbors
     // that is if we deduce x ~ z according to the transitive closure
     // we do not perform further check for z's neighbors for x
-    void buildSemanticGraph(const std::vector<std::string> &_docs, const std::vector<std::vector<double>> &_vecs, 
+    void buildSemanticGraph(const std::vector<std::string> &_docs, const DocEmbedding &_vecs, 
+                            const std::vector<std::pair<std::string, std::string>> &candidates);
+    // the coherent group algorithm
+    void buildSemanticGraph(const std::vector<std::string> &_docs, const WordEmbedding &_vecs, 
                             const std::vector<std::pair<std::string, std::string>> &candidates);
 
+
     void buildSemanticGraph(const std::string &pathGraph);
+
     void updateTokenizedDocs(const std::vector<std::vector<std::string>> &dlm, 
                              const std::vector<std::vector<std::string>> &qgm);
 

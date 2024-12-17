@@ -141,9 +141,19 @@ def get_nearest_neighbors_vec_path(default_icv_dir):
 
 def get_value_matcher_path(cur_parent_dir, attr, default_output_dir):
     if default_output_dir == "":
-        path_model= "/".join([cur_parent_dir, "model", "doc2vec_" + attr + ".joblib"])
+        path_model = "/".join([cur_parent_dir, "model", "doc2vec_" + attr + ".joblib"])
     else:
         default_output_dir = default_output_dir[ : -1] if default_output_dir[-1] == '/' \
                                                         else default_output_dir
         path_model = "/".join([default_output_dir, "doc2vec_" + attr + ".joblib"])
     return path_model
+
+
+def get_fasttext_pre_trained_dir(cur_parent_dir, default_model_dir):
+    if default_model_dir == "":
+        path_dir = "/".join([cur_parent_dir, "model"])
+    else:
+        default_model_dir = default_model_dir[ : -1] if default_model_dir[-1] == '/' \
+                                                     else default_model_dir
+        path_dir = "/".join([default_model_dir])
+    return path_dir
