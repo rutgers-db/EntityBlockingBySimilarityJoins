@@ -60,7 +60,6 @@ void Group::readDocsAndVecs(std::vector<std::string> &docs, DocEmbeddings &vecs,
         }
 
         // append
-        // std::sort(vec.begin(), vec.end());
         docs.emplace_back(doc);
         vecs.emplace_back(std::move(vec));
     }
@@ -120,6 +119,15 @@ void Group::readWordEmbeddingDocsAndVecs(std::vector<std::string> &docs, WordEmb
         }
 
         // append
+        std::sort(vec.begin(), vec.end(), [](const std::vector<double> &lhs, const std::vector<double> &rhs) {
+            size_t vecSize = lhs.size();
+            for(size_t k = 0; k < vecSize; k++) {
+                if(lhs[k] < rhs[k])
+                    return true;
+                else if(lhs[k] > rhs[k])
+                    return false;
+            }
+        });
         docs.emplace_back(doc);
         vecs.emplace_back(std::move(vec));
     }

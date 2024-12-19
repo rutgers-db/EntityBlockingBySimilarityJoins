@@ -23,7 +23,7 @@ import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.utils.visualize_helper as vis
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
-from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable
+from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable, group_interchangeable_fasttext
 from simjoin_entitymatching.matcher.search import filter_match_res_memory, filter_match_res_disk
 
 
@@ -406,9 +406,8 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     # _eval_results(slim_pred1, tableA, tableB, filep)
     
     # group
-    _, _ = group_interchangeable(tableA, tableB, group_tau=0.9, group_strategy="doc", num_data=2, external_group=True, 
-                                 external_group_strategy="graph", is_transitive_closure=False,
-                                 default_match_res_dir="output/exp")
+    group_interchangeable_fasttext(rep_attr, group_tau=0.8, external_group_strategy="graph", is_transitive_closure=False, 
+                                   default_match_res_dir="output/exp")
     print("group done", flush=True)
     
     schemas = [rep_attr]

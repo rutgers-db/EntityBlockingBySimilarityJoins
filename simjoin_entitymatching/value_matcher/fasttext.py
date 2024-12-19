@@ -28,7 +28,7 @@ def _load_wiki_pre_trained_model(default_model_dir=""):
 def _dump_model(model, default_model_dir=""):
     model_dir = ph.get_fasttext_pre_trained_dir(_cur_parent_dir, default_model_dir)
     path_model = "/".join([model_dir, "fasttexts_wiki.joblib"])
-    joblib.dump(model)
+    joblib.dump(model, path_model)
     
     
 def _if_some_alphanumeric(s):
@@ -68,8 +68,8 @@ def group_interchangeable_external_exp(target_attr, fasttext, default_match_res_
         r_toks = [tok for tok in r_toks if _if_some_alphanumeric(tok)]
         
         # vectors
-        l_vecs = [fasttext.mv[tok] for tok in l_toks]
-        r_vecs = [fasttext.mv[tok] for tok in r_toks]
+        l_vecs = [fasttext[tok] for tok in l_toks]
+        r_vecs = [fasttext[tok] for tok in r_toks]
         
         vec_dict[ori_lstr] = l_vecs
         vec_dict[ori_rstr] = r_vecs
@@ -89,7 +89,7 @@ def group_interchangeable_external_exp(target_attr, fasttext, default_match_res_
             vecfile.writelines([str(len(v)) + "\n"])
             for sub_v in v:
                 sub_v2 = [str(e) + ' ' for e in sub_v]
-                sub_v2.insert(0, str(len(v)) + ' ')
+                sub_v2.insert(0, str(len(sub_v2)) + ' ')
                 sub_v2.append('\n')
                 vecfile.writelines(sub_v2)
             

@@ -221,6 +221,7 @@ def group_interchangeable_fasttext(target_attr, group_tau, external_group_strate
 	# load pre-trained model
 	model = ft._load_wiki_pre_trained_model(default_vmatcher_dir)
 	ft._dump_model(model, default_vmatcher_dir)
+	print(f"done loading pre-trained fasttext model")
  
 	# group in experiments mode
 	vec_dict = ft.group_interchangeable_external_exp(target_attr, model, default_match_res_dir, default_icv_dir)
