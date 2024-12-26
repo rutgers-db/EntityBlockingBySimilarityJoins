@@ -1,5 +1,7 @@
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../../../shared_lib)
-add_library(group SHARED group.cc
+add_library(group SHARED ../common/io.cc
+                         ../common/dataframe.cc
+                         group.cc
                          graph.cc
                          cluster.cc)
 target_include_directories(group PRIVATE ..)

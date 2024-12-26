@@ -11,7 +11,7 @@ bool Graph::isDocContained(const std::string &doc) const
 }
 
 
-double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs)
+double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs) const
 {
     assert(lhs.size() == rhs.size());
     size_t size = lhs.size();
@@ -34,7 +34,7 @@ double Graph::calculateCosineSim(const std::vector<double> &lhs, const std::vect
 
 
 double Graph::calculateCoherentFactor(const std::vector<std::vector<double>> &lhs, 
-                                      const std::vector<std::vector<double>> &rhs)
+                                      const std::vector<std::vector<double>> &rhs) const
 {
     std::vector<std::vector<double>> unionVecs;
     __gnu_parallel::set_union(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
@@ -103,6 +103,7 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const DocE
 
     // edges
     graLists.resize(count, std::vector<int> ());
+
     for(const auto &p : candidates) {
         int lId = doc2Id.at(p.first);
         int rId = doc2Id.at(p.second); 
@@ -187,6 +188,7 @@ void Graph::buildSemanticGraph(const std::vector<std::string> &_docs, const Word
 
     // edges
     graLists.resize(count, std::vector<int> ());
+
     for(const auto &p : candidates) {
         int lId = doc2Id.at(p.first);
         int rId = doc2Id.at(p.second); 
@@ -409,4 +411,128 @@ void Graph::retrieveTokenizedNeighbors(const std::string &doc, const std::string
         else
             neighbors.emplace_back(docsQgm[to]);
     }
+}
+
+
+std::string Graph::retrieveMostSimilarNeighborsDoc(const std::string &workDoc, const std::vector<double> &queryVec) const 
+{
+    if(!isDocContained(workDoc)) {
+        std::cerr << "no such key : " << workDoc << std::endl;
+        exit(1);
+    }
+
+    DocEmbedding neighbors_;
+    int id = doc2Id.at(workDoc);
+    for(const auto &to : graLists[id])
+        neighbors_.emplace_back(vecs[to]);
+
+    double maxSim = 0.0;
+    std::string maxDoc = "";
+    for(size_t i = 0; i < neighbors_.size(); i++) {
+        double sim = calculateCosineSim(neighbors_[i], queryVec);
+        if(sim > maxSim) {
+            maxSim = sim;
+            maxDoc = docs[graLists[id][i]];
+        }
+    }
+
+    return maxDoc;
+}
+
+
+std::pair<std::string, std::string> Graph::retrieveMostSimilarNeighborsDoc(const std::string &lhsDoc, const std::string &rhsDoc) const
+{
+    if(!isDocContained(lhsDoc) || !isDocContained(rhsDoc)) {
+        std::cerr << "no such key : " << lhsDoc << " " << rhsDoc << std::endl;
+        exit(1);
+    }
+
+    int lId = doc2Id.at(lhsDoc);
+    int rId = doc2Id.at(rhsDoc);
+
+    DocEmbedding lNeighbors_;
+    for(const auto &to : graLists[lId])
+        lNeighbors_.emplace_back(vecs[to]);
+
+    DocEmbedding rNeighbors_;
+    for(const auto &to : graLists[rId])
+        rNeighbors_.emplace_back(vecs[to]);
+
+    double maxSim = 0.0;
+    std::string maxLDoc = "";
+    std::string maxRDoc = "";
+    for(size_t i = 0; i < lNeighbors_.size(); i++) {
+        for(size_t j = 0; j < rNeighbors_.size(); j++) {
+            double sim = calculateCosineSim(lNeighbors_[i], rNeighbors_[j]);
+            if(sim > maxSim) {
+                maxSim = sim;
+                maxLDoc = docs[graLists[lId][i]];
+                maxRDoc = docs[graLists[rId][j]];
+            }
+        }
+    }
+
+    return std::make_pair(maxLDoc, maxRDoc);
+}
+
+
+std::string Graph::retrieveMostSimilarNeighborsWord(const std::string &workDoc, const std::vector<std::vector<double>> &queryVec) const
+{
+    if(!isDocContained(workDoc)) {
+        std::cerr << "no such key : " << workDoc << std::endl;
+        exit(1);
+    }
+
+    WordEmbedding neighbors_;
+    int id = doc2Id.at(workDoc);
+    for(const auto &to : graLists[id])
+        neighbors_.emplace_back(wordVecs[to]);
+
+    double maxSim = 0.0;
+    std::string maxDoc = "";
+    for(size_t i = 0; i < neighbors_.size(); i++) {
+        double sim = calculateCoherentFactor(neighbors_[i], queryVec);
+        if(sim > maxSim) {
+            maxSim = sim;
+            maxDoc = docs[graLists[id][i]];
+        }
+    }
+
+    return maxDoc;
+}
+
+
+std::pair<std::string, std::string> Graph::retrieveMostSimilarNeighborsWord(const std::string &lhsDoc, const std::string &rhsDoc) const
+{
+    if(!isDocContained(lhsDoc) || !isDocContained(rhsDoc)) {
+        std::cerr << "no such key : " << lhsDoc << " " << rhsDoc << std::endl;
+        exit(1);
+    }
+
+    int lId = doc2Id.at(lhsDoc);
+    int rId = doc2Id.at(rhsDoc);
+
+    WordEmbedding lNeighbors_;
+    for(const auto &to : graLists[lId])
+        lNeighbors_.emplace_back(wordVecs[to]);
+
+    WordEmbedding rNeighbors_;
+    for(const auto &to : graLists[rId])
+        rNeighbors_.emplace_back(wordVecs[to]);
+
+    double maxSim = 0.0;
+    std::string maxLDoc = "";
+    std::string maxRDoc = "";
+    for(size_t i = 0; i < lNeighbors_.size(); i++) {
+        for(size_t j = 0; j < rNeighbors_.size(); j++) {
+            double sim = calculateCoherentFactor(lNeighbors_[i], rNeighbors_[j]);
+            if(sim > maxSim) {
+                maxSim = sim;
+                maxLDoc = docs[graLists[lId][i]];
+                maxRDoc = docs[graLists[rId][j]];
+            }
+        }
+    }
+
+    return std::make_pair(maxLDoc, maxRDoc);
 }

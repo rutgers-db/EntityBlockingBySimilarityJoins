@@ -38,8 +38,8 @@ public:
     std::vector<std::vector<std::string>> docsDlm; // dlm_dc0
     std::vector<std::vector<std::string>> docsQgm; // qgm_3
 
-    std::vector<std::vector<double>> vecs;                   // semantic similarity by doc embedding, default
-    std::vector<std::vector<std::vector<double>>> wordVecs;  // semantic similarity by word embedding
+    DocEmbedding vecs;       // semantic similarity by doc embedding, default
+    WordEmbedding wordVecs;  // semantic similarity by word embedding
 
     std::unordered_map<std::string, int> doc2Id;
     std::vector<std::vector<int>> graLists;          
@@ -57,10 +57,10 @@ public:
 private:
     bool isDocContained(const std::string &doc) const;
 
-    double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs);
+    double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs) const;
 
     double calculateCoherentFactor(const std::vector<std::vector<double>> &lhs, 
-                                   const std::vector<std::vector<double>> &rhs);
+                                   const std::vector<std::vector<double>> &rhs) const;
 
     void readVertex(std::string info, int &id, std::string &doc);
     void readEdge(std::string info, int &from, int &to);
@@ -95,6 +95,13 @@ public:
     void retrieveNeighbors(const std::string &doc, std::vector<std::string> &neighbors) const;
     void retrieveTokenizedNeighbors(const std::string &doc, const std::string &type,
                                     std::vector<std::vector<std::string>> &neighbors) const;
+
+    // retrieve the most similar neighbors
+    std::string retrieveMostSimilarNeighborsDoc(const std::string &workDoc, const std::vector<double> &queryVec) const;
+    std::pair<std::string, std::string> retrieveMostSimilarNeighborsDoc(const std::string &lhsDoc, const std::string &rhsDoc) const;
+
+    std::string retrieveMostSimilarNeighborsWord(const std::string &workDoc, const std::vector<std::vector<double>> &queryVec) const;
+    std::pair<std::string, std::string> retrieveMostSimilarNeighborsWord(const std::string &lhsDoc, const std::string &rhsDoc) const;
 };
 
 #endif // _GRAPH_H_
