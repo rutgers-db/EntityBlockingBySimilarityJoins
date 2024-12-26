@@ -335,8 +335,7 @@ void Group::reformatMatchResTableWord(const std::string &pathMatchTab, const std
 
 
 void Group::reformatTableByInterchangeableValuesByGraph(const std::string &groupAttribute, double groupTau, bool isTransitiveClosure, 
-                                                        const std::string &defaultICVDir, const std::string &defaultTabName, 
-                                                        const std::string &defaultMatchResDir)
+                                                        const std::string &defaultICVDir, const std::string &defaultMatchResDir)
 {
     std::cout << "group interchangeable values on attribute : " << groupAttribute 
         << "\tdefault directory for output : " << defaultICVDir
@@ -370,8 +369,7 @@ void Group::reformatTableByInterchangeableValuesByGraph(const std::string &group
 
 
 void Group::reformatTableByInterchangeableValuesByWordGraph(const std::string &groupAttribute, double groupTau, bool isTransitiveClosure, 
-                                                            const std::string &defaultICVDir, const std::string &defaultTabName, 
-                                                            const std::string &defaultMatchResDir)
+                                                            const std::string &defaultICVDir, const std::string &defaultMatchResDir)
 {
     std::cout << "group interchangeable values on attribute : " << groupAttribute 
         << "\tdefault directory for output : " << defaultICVDir
@@ -416,10 +414,9 @@ extern "C"
     }
 
     void refactor_neg_match_res_by_graph(const char *group_attribute, double group_tau, bool is_transitive_closure, 
-                                         const char *default_icv_dir, const char *default_tab_name, 
-                                         const char *default_match_res_dir) {
+                                         const char *default_icv_dir, const char *default_match_res_dir) {
         Group::reformatTableByInterchangeableValuesByWordGraph(group_attribute, group_tau, is_transitive_closure, 
-                                                               default_icv_dir, default_tab_name, default_match_res_dir);
+                                                               default_icv_dir, default_match_res_dir);
     }
 
     void group_interchangeable_values_by_cluster() {

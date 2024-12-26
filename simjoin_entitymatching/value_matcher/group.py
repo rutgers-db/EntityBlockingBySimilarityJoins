@@ -89,3 +89,21 @@ def run_group_lib(group_attribute, group_strategy, group_tau, is_transitive_clos
         pass
     else:
         print(f"no such group strategy : {group_strategy}")
+        
+        
+@group_library_decorator
+def run_group_lib_refactor(group_attribute, group_tau, is_transitive_closure=Literal[0, 1], default_icv_dir="", 
+                           default_match_res_dir=""):
+    # load
+    cur_file_dir = str(pathlib.Path(__file__).parent.resolve())
+    group_lib_path = "/".join([cur_file_dir, "..", "..", "shared_lib", "libgroup.so"])
+    group_lib = cdll.LoadLibrary(group_lib_path)
+    
+    group_attribute = group_attribute.encode('utf-8')
+    default_icv_dir = default_icv_dir.encode('utf-8')
+    default_match_res_dir = default_match_res_dir.encode('utf-8')  
+    
+    group_lib.refactor_neg_match_res_by_graph.argtypes = [c_char_p, c_double, c_bool, c_char_p, c_char_p]
+    group_lib.refactor_neg_match_res_by_graph.restype = None
+    group_lib.refactor_neg_match_res_by_graph(group_attribute, group_tau, is_transitive_closure, default_icv_dir,
+                                              default_match_res_dir)

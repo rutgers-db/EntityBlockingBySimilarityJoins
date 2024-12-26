@@ -6,7 +6,7 @@ import pathlib
 import pandas as pd
 from collections import defaultdict
 
-from simjoin_entitymatching.value_matcher.group import run_group_lib
+from simjoin_entitymatching.value_matcher.group import run_group_lib, run_group_lib_refactor
 from simjoin_entitymatching.value_matcher.doc2vec import Doc2Vec
 import simjoin_entitymatching.value_matcher.fasttext as ft
 from simjoin_entitymatching.feature.feature import run_feature_lib
@@ -227,7 +227,8 @@ def group_interchangeable_fasttext(target_attr, group_tau, external_group_strate
 	vec_dict = ft.group_interchangeable_external_exp(target_attr, model, default_match_res_dir, default_icv_dir)
 	
 	# coherent group
-	run_group_lib(target_attr, external_group_strategy, group_tau, is_transitive_closure, default_icv_dir)
+	# run_group_lib(target_attr, external_group_strategy, group_tau, is_transitive_closure, default_icv_dir)
+	run_group_lib_refactor(target_attr, group_tau, is_transitive_closure, default_icv_dir, default_match_res_dir)
 
 
 def _sample_neg_match_res(sample_size, default_match_res_dir=""):

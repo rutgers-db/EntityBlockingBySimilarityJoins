@@ -73,12 +73,10 @@ public:
                                           const std::unordered_map<std::string, std::vector<std::vector<double>>> &doc2Vec);
 
     static void reformatTableByInterchangeableValuesByGraph(const std::string &groupAttribute, double groupTau, bool isTransitiveClosure, 
-                                                            const std::string &defaultICVDir = "", const std::string &defaultTabName = "", 
-                                                            const std::string &defaultMatchResDir = "");
+                                                            const std::string &defaultICVDir = "", const std::string &defaultMatchResDir = "");
 
     static void reformatTableByInterchangeableValuesByWordGraph(const std::string &groupAttribute, double groupTau, bool isTransitiveClosure, 
-                                                                const std::string &defaultICVDir = "", const std::string &defaultTabName = "", 
-                                                                const std::string &defaultMatchResDir = "");
+                                                                const std::string &defaultICVDir = "", const std::string &defaultMatchResDir = "");
 };
 
 #endif // _GROUP_H_
