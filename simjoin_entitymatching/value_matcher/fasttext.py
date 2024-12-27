@@ -113,7 +113,7 @@ def group_interchangeable_external_exp(target_attr, fasttext, default_match_res_
     vec_path, pair_path = ph.get_icval_vec_input_path(_cur_parent_dir, default_icv_dir)
     neg_vec_path, _ = ph.get_neg_icval_vec_input_path(_cur_parent_dir, default_icv_dir)
     
-    _flush_vec(pos_vec_dict, pos_vec_pair, vec_path, pair_path)
+    _flush_vec(pos_vec_dict, vec_path, pos_vec_pair,  pair_path)
     _flush_vec(neg_vec_dict, neg_vec_path)
             
     return pos_vec_dict
