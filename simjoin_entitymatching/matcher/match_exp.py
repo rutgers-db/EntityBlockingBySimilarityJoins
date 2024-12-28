@@ -410,7 +410,7 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     # _eval_results(slim_pred1, tableA, tableB, filep)
     
     # group
-    group_interchangeable_fasttext(rep_attr, group_tau=0.4, external_group_strategy="graph", is_transitive_closure=False, 
+    group_interchangeable_fasttext(rep_attr, group_tau=0.6, external_group_strategy="graph", is_transitive_closure=False, 
                                    default_match_res_dir="output/exp")
     print("group done", flush=True)
     
