@@ -107,3 +107,20 @@ def run_group_lib_refactor(group_attribute, group_tau, is_transitive_closure=Lit
     group_lib.refactor_neg_match_res_by_graph.restype = None
     group_lib.refactor_neg_match_res_by_graph(group_attribute, group_tau, is_transitive_closure, default_icv_dir,
                                               default_match_res_dir)
+    
+    
+@group_library_decorator
+def run_group_lib_slim_refactored(path_match_res, group_attribute, default_icv_dir="", default_buffer_dir=""):
+    # load
+    cur_file_dir = str(pathlib.Path(__file__).parent.resolve())
+    group_lib_path = "/".join([cur_file_dir, "..", "..", "shared_lib", "libgroup.so"])
+    group_lib = cdll.LoadLibrary(group_lib_path)
+    
+    path_match_res = path_match_res.encode('utf-8')
+    group_attribute = group_attribute.encode('utf-8')
+    default_icv_dir = default_icv_dir.encode('utf-8')
+    default_buffer_dir = default_buffer_dir.encode('utf-8')
+    
+    group_lib.slim_refactored_match_res_by_graph.argtypes = [c_char_p, c_char_p, c_char_p, c_char_p]
+    group_lib.slim_refactored_match_res_by_graph.restype = None
+    group_lib.slim_refactored_match_res_by_graph(path_match_res, group_attribute, default_icv_dir, default_buffer_dir)

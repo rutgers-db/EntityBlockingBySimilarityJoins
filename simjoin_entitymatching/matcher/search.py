@@ -128,7 +128,7 @@ def _slim_match_tab(match_tab, nn_res, model, rep_attr, threshold, is_rev=False)
             r_docs = gensim.utils.simple_preprocess(r_title)
             l_vec = model.infer_vector(l_docs)
             r_vec = model.infer_vector(r_docs)
-            cos_sim = np.dot(l_vec, r_vec) / (np.linalg.norm(l_vec) * np.linalg.norm(r_vec))
+            # cos_sim = np.dot(l_vec, r_vec) / (np.linalg.norm(l_vec) * np.linalg.norm(r_vec))
             
             if rid not in nn_res[lid]:
                 match_tab.loc[ridx, "predicted"] = 0
@@ -144,7 +144,7 @@ def _slim_match_tab(match_tab, nn_res, model, rep_attr, threshold, is_rev=False)
             r_docs = gensim.utils.simple_preprocess(r_title)
             l_vec = model.infer_vector(l_docs)
             r_vec = model.infer_vector(r_docs)
-            cos_sim = np.dot(l_vec, r_vec) / (np.linalg.norm(l_vec) * np.linalg.norm(r_vec))
+            # cos_sim = np.dot(l_vec, r_vec) / (np.linalg.norm(l_vec) * np.linalg.norm(r_vec))
             
             if lid not in nn_res[rid]:
                 match_tab.loc[ridx, "predicted"] = 0

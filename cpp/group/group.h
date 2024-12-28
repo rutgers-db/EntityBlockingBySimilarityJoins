@@ -33,10 +33,25 @@ private:
     static std::unordered_map<std::string, std::vector<std::vector<double>>>
     saveNegWordEmbeddings(const std::vector<std::string> &docs, const WordEmbeddings &vecs);
 
+    static double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs);
+
+    static double calculateCoherentFactor(const std::vector<std::vector<double>> &lhs, 
+                                          const std::vector<std::vector<double>> &rhs);
+
+    static Table slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, ui queryCol, 
+                         const std::unordered_map<std::string, std::vector<double>> &doc2Vec);
+    static Table slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, ui queryCol, 
+                         const std::unordered_map<std::string, std::vector<std::vector<double>>> &doc2Vec);
+
+    static std::unordered_map<int, std::string> getOriginalValue(const std::string &pathTab, const std::string &attr);
+    static Table restoreTab(const std::string &pathMatchTab, const std::unordered_map<int, std::string> &id2ValueA, 
+                            const std::unordered_map<int, std::string> &id2ValueB, const std::string &attr);
+
 public:
     // interchangeable values directory
     static std::string getICVDir(const std::string &defaultICVDir);
     static std::string getNegMatchDir(const std::string &defaultMatchResDir);
+    static std::string getBufferDir(const std::string &defaultBufferDir);
 
 public:
     // io
@@ -77,6 +92,13 @@ public:
 
     static void reformatTableByInterchangeableValuesByWordGraph(const std::string &groupAttribute, double groupTau, bool isTransitiveClosure, 
                                                                 const std::string &defaultICVDir = "", const std::string &defaultMatchResDir = "");
+
+    // slim the matching results after the second matching on refactored tables
+    static void slimMatchResDoc(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir = "", 
+                                const std::string &defaultBufferDir = "");
+
+    static void slimMatchResWord(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir = "", 
+                                 const std::string &defaultBufferDir = "");
 };
 
 #endif // _GROUP_H_

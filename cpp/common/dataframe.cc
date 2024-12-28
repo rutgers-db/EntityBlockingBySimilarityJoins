@@ -152,6 +152,13 @@ void Table::insertOneRow(const std::vector<std::string> &tmpRow)
 }
 
 
+void Table::copySchema(const Table &table) 
+{
+	schema = table.schema;
+	cols.resize(schema.size(), std::vector<std::string>());
+}
+
+
 std::string ChineseTable::convertWide2Normal(const std::wstring &wstr) const 
 {
 	//setup converter

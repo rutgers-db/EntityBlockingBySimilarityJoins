@@ -49,6 +49,7 @@ public:
 	void printGoldData(const std::string& filename, ui tableAsize) const;
 	void findPerfectEntity(); // find entities without nan in any attributes
 	void insertOneRow(const std::vector<std::string> &tmpRow);
+	void copySchema(const Table &table);
 };
 
 

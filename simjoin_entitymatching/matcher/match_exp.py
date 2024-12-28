@@ -23,6 +23,7 @@ import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.utils.visualize_helper as vis
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
+from simjoin_entitymatching.value_matcher.group import run_group_lib_slim_refactored
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable, group_interchangeable_fasttext
 from simjoin_entitymatching.matcher.search import filter_match_res_memory, filter_match_res_disk
 
@@ -308,7 +309,7 @@ def train_model(T, num_tree=10):
     return exp_rf
     
     
-def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=None):
+def apply_model(tableA, tableB, exp_rf, E, filep, rep_attr, is_concat=False, prev_pred=None):
     _set_metadata(E, "_id", "ltable_id", "rtable_id", tableA, tableB)
     # Predict on E
     predictions = exp_rf.predict(table=E, exclude_attrs=['_id', 'ltable_id', 'rtable_id', 'label'], 
@@ -342,8 +343,11 @@ def apply_model(tableA, tableB, exp_rf, E, filep, is_concat=False, prev_pred=Non
         
         # save and slim
         pred_df = _save_pred_to_df(predictions, tableA, tableB)
-        slim_pred = filter_match_res_memory(match_tab=pred_df, attr="title", K=1, 
-                                            threshold=0.8, search_strategy="exact")
+        # slim_pred = filter_match_res_memory(match_tab=pred_df, attr="title", K=1, 
+        #                                     threshold=0.8, search_strategy="exact")
+        pred_df.to_csv("output/exp/match_res_slim.csv", index=False)
+        run_group_lib_slim_refactored("output/exp/match_res_slim.csv", rep_attr)
+        slim_pred = pd.read_csv("output/exp/match_res_slim.csv")
         
         # save results for debug
         _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
@@ -396,7 +400,7 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     model = train_model(train)
     
     # apply on test result
-    pred1, _, pres_df1, _ = apply_model(tableA, tableB, model, test, filep)
+    pred1, _, pres_df1, _ = apply_model(tableA, tableB, model, test, filep, rep_attr)
     
     # additional filter
     # slim_pred1 = filter_match_res_memory(match_tab=pres_df1, attr="title", K=1, search_strategy="exact")
@@ -433,7 +437,7 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
         
     # apply
-    pred2, _, pres_df2, _ = apply_model(tableA, tableB, model, H2, filep, True, pred1)
+    pred2, _, pres_df2, _ = apply_model(tableA, tableB, model, H2, filep, rep_attr, True, pred1)
     
     # additional filter
     # slim_pred2 = filter_match_res_memory(match_tab=pres_df2, attr="title", K=1, search_strategy="exact")
