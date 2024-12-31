@@ -25,6 +25,28 @@ std::unordered_map<std::string, std::vector<std::vector<double>>> Group::saveNeg
 }
 
 
+void Group::updateNegEmbeddings(const std::vector<std::string> &docs, const DocEmbeddings &vecs, 
+                                std::unordered_map<std::string, std::vector<double>> &doc2Vec)
+{
+    for(size_t i = 0; i < docs.size(); i++) {
+        if(doc2Vec.find(docs[i]) != doc2Vec.end())
+            continue;
+        doc2Vec[docs[i]] = vecs[i];
+    }
+}
+
+
+void Group::updateNegWordEmbeddings(const std::vector<std::string> &docs, const WordEmbeddings &vecs, 
+                                    std::unordered_map<std::string, std::vector<std::vector<double>>> &doc2Vec)
+{
+    for(size_t i = 0; i < docs.size(); i++) {
+        if(doc2Vec.find(docs[i]) != doc2Vec.end())
+            continue;
+        doc2Vec[docs[i]] = vecs[i];
+    }
+}
+
+
 double Group::calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs)
 {
     assert(lhs.size() == rhs.size());
@@ -134,6 +156,10 @@ Table Group::slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, 
 
     for(const auto &p : buck) {
         const auto &workId = p.first;
+        if(doc2Vec.find(workId2Value.at(workId)) == doc2Vec.end()) {
+            std::cerr << "error: " << workId2Value.at(workId) << std::endl;
+            exit(1);
+        }
         const auto &workVec = doc2Vec.at(workId2Value.at(workId));
         const auto &queryList = p.second;
 
@@ -147,6 +173,10 @@ Table Group::slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, 
 
         for(const auto &q : queryList) {
             const auto &queryId = q.first;
+            if(doc2Vec.find(queryId2Value.at(queryId)) == doc2Vec.end()) {
+                std::cerr << "error: " << queryId2Value.at(queryId) << std::endl;
+                exit(1);
+            }
             const auto &queryVec = doc2Vec.at(queryId2Value.at(queryId));
             double sim = calculateCoherentFactor(workVec, queryVec);
             if(sim > maxSim) {
@@ -606,11 +636,12 @@ void Group::reformatTableByInterchangeableValuesByWordGraph(const std::string &g
 
 
 void Group::slimMatchResDoc(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir, 
-                            const std::string &defaultBufferDir)
+                            const std::string &defaultBufferDir, int isNeg)
 {
     std::vector<std::string> docs;
     DocEmbeddings vecs;
-    Group::readDocsAndVecs(docs, vecs, defaultICVDir, "vec_interchangeable_neg.txt");
+    std::string vecFile = isNeg > 0 ? "vec_interchangeable_neg.txt" : "vec_interchangeable.txt";
+    Group::readDocsAndVecs(docs, vecs, defaultICVDir, vecFile);
 
     const std::string bufferDir = getBufferDir(defaultBufferDir);
     auto id2ValueA = getOriginalValue(bufferDir + "clean_A.csv", groupAttribute);
@@ -623,33 +654,54 @@ void Group::slimMatchResDoc(const std::string &pathMatchTab, const std::string &
     ui lIdPos = matchRes.inverted_schema.at("ltable_id");
     ui rIdPos = matchRes.inverted_schema.at("rtable_id");
 
-    matchRes = slimTab(matchRes, lIdPos, rIdPos, lPos, rPos, Group::saveNegEmbeddings(docs, vecs));
-    matchRes = slimTab(matchRes, rIdPos, lIdPos, rPos, lPos, Group::saveNegEmbeddings(docs, vecs));
+    auto embeddings = Group::saveNegEmbeddings(docs, vecs);
+    if(isNeg > 1) {
+        std::vector<std::string> docs2;
+        DocEmbeddings vecs2;
+        Group::readDocsAndVecs(docs2, vecs2, defaultICVDir, "vec_interchangeable.txt");
+        updateNegEmbeddings(docs2, vecs2, embeddings);
+    }
+
+    matchRes = slimTab(matchRes, lIdPos, rIdPos, lPos, rPos, embeddings);
+    matchRes = slimTab(matchRes, rIdPos, lIdPos, rPos, lPos, embeddings);
 
     MultiWriter::writeOneTable(matchRes, pathMatchTab);
 }
 
 
 void Group::slimMatchResWord(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir, 
-                             const std::string &defaultBufferDir)
+                             const std::string &defaultBufferDir, int isNeg)
 {
     std::vector<std::string> docs;
     WordEmbeddings vecs;
-    Group::readWordEmbeddingDocsAndVecs(docs, vecs, defaultICVDir, "vec_interchangeable_neg.txt");
+    std::string vecFile = isNeg > 0 ? "vec_interchangeable_neg.txt" : "vec_interchangeable.txt";
+    Group::readWordEmbeddingDocsAndVecs(docs, vecs, defaultICVDir, vecFile);
 
-    const std::string bufferDir = getBufferDir(defaultBufferDir);
-    auto id2ValueA = getOriginalValue(bufferDir + "clean_A.csv", groupAttribute);
-    auto id2ValueB = getOriginalValue(bufferDir + "clean_B.csv", groupAttribute);
+    // const std::string bufferDir = getBufferDir(defaultBufferDir);
+    // auto id2ValueA = getOriginalValue(bufferDir + "clean_A.csv", groupAttribute);
+    // auto id2ValueB = getOriginalValue(bufferDir + "clean_B.csv", groupAttribute);
 
-    auto matchRes = restoreTab(pathMatchTab, id2ValueA, id2ValueB, groupAttribute);
+    // auto matchRes = restoreTab(pathMatchTab, id2ValueA, id2ValueB, groupAttribute);
+
+    CSVReader reader;
+    reader.reading_one_table(pathMatchTab, false);
+    auto matchRes = reader.tables[0];
 
     ui lPos = matchRes.inverted_schema.at("ltable_" + groupAttribute);
     ui rPos = matchRes.inverted_schema.at("rtable_" + groupAttribute);
     ui lIdPos = matchRes.inverted_schema.at("ltable_id");
     ui rIdPos = matchRes.inverted_schema.at("rtable_id");
 
-    matchRes = slimTab(matchRes, lIdPos, rIdPos, lPos, rPos, Group::saveNegWordEmbeddings(docs, vecs));
-    matchRes = slimTab(matchRes, rIdPos, lIdPos, rPos, lPos, Group::saveNegWordEmbeddings(docs, vecs));
+    auto embeddings = Group::saveNegWordEmbeddings(docs, vecs);
+    if(isNeg > 1) {
+        std::vector<std::string> docs2;
+        WordEmbeddings vecs2;
+        Group::readWordEmbeddingDocsAndVecs(docs2, vecs2, defaultICVDir, "vec_interchangeable.txt");
+        updateNegWordEmbeddings(docs2, vecs2, embeddings);
+    }
+
+    matchRes = slimTab(matchRes, lIdPos, rIdPos, lPos, rPos, embeddings);
+    matchRes = slimTab(matchRes, rIdPos, lIdPos, rPos, lPos, embeddings);
 
     MultiWriter::writeOneTable(matchRes, pathMatchTab);
 }
@@ -673,8 +725,9 @@ extern "C"
     }
 
     void slim_refactored_match_res_by_graph(const char *path_match_tab, const char *group_attribute, 
-                                            const char *default_icv_dir, const char *default_buffer_dir) {
-        Group::slimMatchResWord(path_match_tab, group_attribute, default_icv_dir, default_buffer_dir);
+                                            const char *default_icv_dir, const char *default_buffer_dir, 
+                                            int if_neg) {
+        Group::slimMatchResWord(path_match_tab, group_attribute, default_icv_dir, default_buffer_dir, if_neg);
     }
 
     void group_interchangeable_values_by_cluster() {

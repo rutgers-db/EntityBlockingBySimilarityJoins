@@ -2,7 +2,7 @@
 # contact: liyunqixa@gmail.com
 import pathlib
 import subprocess
-from ctypes import c_char_p, c_double, c_bool
+from ctypes import c_char_p, c_double, c_bool, c_int
 from ctypes import cdll
 from typing import Literal
 
@@ -110,7 +110,7 @@ def run_group_lib_refactor(group_attribute, group_tau, is_transitive_closure=Lit
     
     
 @group_library_decorator
-def run_group_lib_slim_refactored(path_match_res, group_attribute, default_icv_dir="", default_buffer_dir=""):
+def run_group_lib_slim_refactored(path_match_res, group_attribute, default_icv_dir="", default_buffer_dir="", is_neg=0):
     # load
     cur_file_dir = str(pathlib.Path(__file__).parent.resolve())
     group_lib_path = "/".join([cur_file_dir, "..", "..", "shared_lib", "libgroup.so"])
@@ -121,6 +121,6 @@ def run_group_lib_slim_refactored(path_match_res, group_attribute, default_icv_d
     default_icv_dir = default_icv_dir.encode('utf-8')
     default_buffer_dir = default_buffer_dir.encode('utf-8')
     
-    group_lib.slim_refactored_match_res_by_graph.argtypes = [c_char_p, c_char_p, c_char_p, c_char_p]
+    group_lib.slim_refactored_match_res_by_graph.argtypes = [c_char_p, c_char_p, c_char_p, c_char_p, c_int]
     group_lib.slim_refactored_match_res_by_graph.restype = None
-    group_lib.slim_refactored_match_res_by_graph(path_match_res, group_attribute, default_icv_dir, default_buffer_dir)
+    group_lib.slim_refactored_match_res_by_graph(path_match_res, group_attribute, default_icv_dir, default_buffer_dir, is_neg)

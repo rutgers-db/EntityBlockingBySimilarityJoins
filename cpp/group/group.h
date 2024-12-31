@@ -29,9 +29,15 @@ public:
     Group(Group &&other) = delete;
 
 private:
-    static std::unordered_map<std::string, std::vector<double>> saveNegEmbeddings(const std::vector<std::string> &docs, const DocEmbeddings &vecs);
+    static std::unordered_map<std::string, std::vector<double>> 
+    saveNegEmbeddings(const std::vector<std::string> &docs, const DocEmbeddings &vecs);
     static std::unordered_map<std::string, std::vector<std::vector<double>>>
     saveNegWordEmbeddings(const std::vector<std::string> &docs, const WordEmbeddings &vecs);
+
+    static void updateNegEmbeddings(const std::vector<std::string> &docs, const DocEmbeddings &vecs, 
+                                    std::unordered_map<std::string, std::vector<double>> &doc2Vec);
+    static void updateNegWordEmbeddings(const std::vector<std::string> &docs, const WordEmbeddings &vecs, 
+                                        std::unordered_map<std::string, std::vector<std::vector<double>>> &doc2Vec);
 
     static double calculateCosineSim(const std::vector<double> &lhs, const std::vector<double> &rhs);
 
@@ -95,10 +101,10 @@ public:
 
     // slim the matching results after the second matching on refactored tables
     static void slimMatchResDoc(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir = "", 
-                                const std::string &defaultBufferDir = "");
+                                const std::string &defaultBufferDir = "", int ifNeg = 0);
 
     static void slimMatchResWord(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir = "", 
-                                 const std::string &defaultBufferDir = "");
+                                 const std::string &defaultBufferDir = "", int isNeg = 0);
 };
 
 #endif // _GROUP_H_

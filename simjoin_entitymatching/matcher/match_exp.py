@@ -346,8 +346,9 @@ def apply_model(tableA, tableB, exp_rf, E, filep, rep_attr, is_concat=False, pre
         # slim_pred = filter_match_res_memory(match_tab=pred_df, attr="title", K=1, 
         #                                     threshold=0.8, search_strategy="exact")
         pred_df.to_csv("output/exp/match_res_slim.csv", index=False)
-        run_group_lib_slim_refactored("output/exp/match_res_slim.csv", rep_attr)
+        run_group_lib_slim_refactored("output/exp/match_res_slim.csv", rep_attr, is_neg=2)
         slim_pred = pd.read_csv("output/exp/match_res_slim.csv")
+        print("finish the slim", flush=True)
         
         # save results for debug
         _save_second_match_res(predictions, prev_pred, idx_map, tableA, tableB)
@@ -402,17 +403,20 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     # apply on test result
     pred1, _, pres_df1, _ = apply_model(tableA, tableB, model, test, filep, rep_attr)
     
-    # additional filter
-    # slim_pred1 = filter_match_res_memory(match_tab=pres_df1, attr="title", K=1, search_strategy="exact")
-    # slim_pred1 = pred1
-    
-    # Evaluate the predictions
-    # _eval_results(slim_pred1, tableA, tableB, filep)
-    
     # group
     group_interchangeable_fasttext(rep_attr, group_tau=0.6, external_group_strategy="graph", is_transitive_closure=False, 
                                    default_match_res_dir="output/exp")
     print("group done", flush=True)
+    
+    # additional filter
+    # slim_pred1 = filter_match_res_memory(match_tab=pres_df1, attr="title", K=1, search_strategy="exact")
+    # slim_pred1 = pred1
+    pres_df1.to_csv("output/exp/tmp.csv", index=False)
+    run_group_lib_slim_refactored("output/exp/tmp.csv", rep_attr, is_neg=0)
+    slim_pred1 = pd.read_csv("output/exp/tmp.csv")
+    
+    # Evaluate the predictions
+    _eval_results(slim_pred1, tableA, tableB, filep)
     
     schemas = [rep_attr]
     
@@ -442,6 +446,13 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     # additional filter
     # slim_pred2 = filter_match_res_memory(match_tab=pres_df2, attr="title", K=1, search_strategy="exact")
     # slim_pred2 = pred2
+    pres_df2.to_csv("output/exp/tmp.csv", index=False)
+    run_group_lib_slim_refactored("output/exp/tmp.csv", rep_attr, is_neg=2)
+    slim_pred2 = pd.read_csv("output/exp/tmp.csv")
     
     # Evaluate the predictions
-    # _eval_results(slim_pred2, tableA, tableB, filep)
+    _eval_results(slim_pred2, tableA, tableB, filep)
+    
+    '''
+    slim the refactored tab
+    '''

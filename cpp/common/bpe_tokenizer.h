@@ -9,6 +9,7 @@
 #include "common/dataframe.h"
 #include <vector>
 #include <string>
+#include <regex>
 #include <unordered_map>
 
 
