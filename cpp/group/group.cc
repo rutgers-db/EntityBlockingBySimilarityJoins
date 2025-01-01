@@ -156,10 +156,10 @@ Table Group::slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, 
 
     for(const auto &p : buck) {
         const auto &workId = p.first;
-        if(doc2Vec.find(workId2Value.at(workId)) == doc2Vec.end()) {
-            std::cerr << "error: " << workId2Value.at(workId) << std::endl;
-            exit(1);
-        }
+        // if(doc2Vec.find(workId2Value.at(workId)) == doc2Vec.end()) {
+        //     std::cerr << "error: " << workId2Value.at(workId) << std::endl;
+        //     exit(1);
+        // }
         const auto &workVec = doc2Vec.at(workId2Value.at(workId));
         const auto &queryList = p.second;
 
@@ -173,10 +173,10 @@ Table Group::slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, 
 
         for(const auto &q : queryList) {
             const auto &queryId = q.first;
-            if(doc2Vec.find(queryId2Value.at(queryId)) == doc2Vec.end()) {
-                std::cerr << "error: " << queryId2Value.at(queryId) << std::endl;
-                exit(1);
-            }
+            // if(doc2Vec.find(queryId2Value.at(queryId)) == doc2Vec.end()) {
+            //     std::cerr << "error: " << queryId2Value.at(queryId) << std::endl;
+            //     exit(1);
+            // }
             const auto &queryVec = doc2Vec.at(queryId2Value.at(queryId));
             double sim = calculateCoherentFactor(workVec, queryVec);
             if(sim > maxSim) {
@@ -187,6 +187,42 @@ Table Group::slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, 
 
         slimTab.insertOneRow(tab.rows[maxIdx]);
     }
+
+    slimTab.Profile();
+
+    return slimTab;
+}
+
+
+Table Group::slimTab(const Table &tab, ui workCol, ui queryCol, ui K)
+{
+    Table slimTab;
+    std::vector<std::pair<int, double>> buck;
+
+    for(int i = 0; i < tab.row_no; i++) {
+        auto workAttr = tab.rows[i][workCol];   
+        auto queryAttr = tab.rows[i][queryCol];
+        std::vector<std::string> workTokens, queryTokens, tmp;
+        Tokenizer::string2TokensDlm(workAttr, workTokens, " \"\',\\\t\r\n");
+        Tokenizer::string2TokensDlm(queryAttr, queryTokens, " \"\',\\\t\r\n");
+        std::sort(workTokens.begin(), workTokens.end());    
+        std::sort(queryTokens.begin(), queryTokens.end());
+        std::set_intersection(workTokens.begin(), workTokens.end(), queryTokens.begin(), queryTokens.end(), 
+                              std::back_inserter(tmp));
+        double sim = tmp.size() * 1.0 / (workTokens.size() + queryTokens.size() - tmp.size());
+        buck.emplace_back(i, sim);
+    }
+
+    slimTab.copySchema(tab);
+
+    std::sort(buck.begin(), buck.end(), [](const std::pair<int, double> &lhs, const std::pair<int, double> &rhs) {
+        return lhs.second > rhs.second;
+    });
+
+    ui selectedSize = std::min(K, (ui)buck.size());
+
+    for(ui i = 0; i < selectedSize; i++)
+        slimTab.insertOneRow(tab.rows[buck[i].first]);
 
     slimTab.Profile();
 
@@ -707,6 +743,21 @@ void Group::slimMatchResWord(const std::string &pathMatchTab, const std::string 
 }
 
 
+void Group::slimMatchResSynatic(const std::string &pathMatchTab, const std::string &groupAttribute, ui K)
+{
+    CSVReader reader;
+    reader.reading_one_table(pathMatchTab, false);
+    auto matchRes = reader.tables[0];
+
+    ui lPos = matchRes.inverted_schema.at("ltable_" + groupAttribute);
+    ui rPos = matchRes.inverted_schema.at("rtable_" + groupAttribute);
+
+    matchRes = slimTab(matchRes, lPos, rPos, K);
+
+    MultiWriter::writeOneTable(matchRes, pathMatchTab);
+}
+
+
 extern "C"
 {
     void group_interchangeable_values_by_graph(const char *group_attribute, const char *group_strategy, 
@@ -728,6 +779,10 @@ extern "C"
                                             const char *default_icv_dir, const char *default_buffer_dir, 
                                             int if_neg) {
         Group::slimMatchResWord(path_match_tab, group_attribute, default_icv_dir, default_buffer_dir, if_neg);
+    }
+
+    void slim_refactored_match_res_by_synatic(const char *path_match_tab, const char *group_attribute, unsigned int K) {
+        Group::slimMatchResSynatic(path_match_tab, group_attribute, K);
     }
 
     void group_interchangeable_values_by_cluster() {

@@ -23,20 +23,14 @@ import simjoin_entitymatching.utils.path_helper as ph
 import simjoin_entitymatching.utils.visualize_helper as vis
 import simjoin_entitymatching.matcher.random_forest as randf
 from simjoin_entitymatching.feature.feature import run_feature_lib, run_feature_megallen
-from simjoin_entitymatching.value_matcher.group import run_group_lib_slim_refactored
+from simjoin_entitymatching.value_matcher.group import run_group_lib_slim_refactored, run_group_lin_slim_refactored_synatic
 from simjoin_entitymatching.value_matcher.interchangeable import group_interchangeable, group_interchangeable_fasttext
 from simjoin_entitymatching.matcher.search import filter_match_res_memory, filter_match_res_disk
 
 
 def _label_cand(gold_graph, tab):
-    tab.insert(tab.shape[1], 'label', 0)
-    
-    for index in tab.index:
-        id1 = str(tab.loc[index, 'ltable_id']) + 'A'
-        id2 = str(tab.loc[index, 'rtable_id']) + 'B'
-        if gold_graph.has_edge(id1, id2) == True:
-            tab.loc[index, 'label'] = 1
-            
+    tab["label"] = tab.apply(lambda row: 1 if gold_graph.has_edge(str(row["ltable_id"]) + 'A', str(row["rtable_id"]) + 'B') \
+                                           else 0, axis=1)
     return tab
 
 
@@ -346,7 +340,8 @@ def apply_model(tableA, tableB, exp_rf, E, filep, rep_attr, is_concat=False, pre
         # slim_pred = filter_match_res_memory(match_tab=pred_df, attr="title", K=1, 
         #                                     threshold=0.8, search_strategy="exact")
         pred_df.to_csv("output/exp/match_res_slim.csv", index=False)
-        run_group_lib_slim_refactored("output/exp/match_res_slim.csv", rep_attr, is_neg=2)
+        # run_group_lib_slim_refactored("output/exp/match_res_slim.csv", rep_attr, is_neg=2)
+        run_group_lin_slim_refactored_synatic("output/exp/match_res_slim.csv", rep_attr, K=50)
         slim_pred = pd.read_csv("output/exp/match_res_slim.csv")
         print("finish the slim", flush=True)
         
@@ -401,7 +396,7 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     model = train_model(train)
     
     # apply on test result
-    pred1, _, pres_df1, _ = apply_model(tableA, tableB, model, test, filep, rep_attr)
+    pred1, _, pres_df1, neg_df_1 = apply_model(tableA, tableB, model, test, filep, rep_attr)
     
     # group
     group_interchangeable_fasttext(rep_attr, group_tau=0.6, external_group_strategy="graph", is_transitive_closure=False, 
@@ -413,10 +408,14 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
     # slim_pred1 = pred1
     pres_df1.to_csv("output/exp/tmp.csv", index=False)
     run_group_lib_slim_refactored("output/exp/tmp.csv", rep_attr, is_neg=0)
+    # run_group_lin_slim_refactored_synatic("output/exp/tmp.csv", rep_attr, K=50)
     slim_pred1 = pd.read_csv("output/exp/tmp.csv")
+    survived_pairs = set([(lir, rid) for lir, rid in zip(slim_pred1["ltable_id"].tolist(), slim_pred1["rtable_id"].tolist())])
+    pres_df1['predicted'] = pres_df1.apply(lambda row: row['predicted'] if (row['ltable_id'], row['rtable_id']) in survived_pairs else 0, axis=1)
+    pres_df1 = pd.concat([pres_df1, neg_df_1], ignore_index=True)
     
     # Evaluate the predictions
-    _eval_results(slim_pred1, tableA, tableB, filep)
+    _eval_results(pres_df1, tableA, tableB, filep)
     
     schemas = [rep_attr]
     
@@ -441,17 +440,21 @@ def run_experiments(tableA, tableB, rep_attr, at_ltable, at_rtable, gold_graph, 
         em.impute_table(H2, exclude_attrs=["_id", "ltable_id", "rtable_id", "label"], strategy="constant", fill_value=0.0)
         
     # apply
-    pred2, _, pres_df2, _ = apply_model(tableA, tableB, model, H2, filep, rep_attr, True, pred1)
+    pred2, _, pres_df2, neg_df_2 = apply_model(tableA, tableB, model, H2, filep, rep_attr, True, pred1)
     
     # additional filter
     # slim_pred2 = filter_match_res_memory(match_tab=pres_df2, attr="title", K=1, search_strategy="exact")
     # slim_pred2 = pred2
     pres_df2.to_csv("output/exp/tmp.csv", index=False)
     run_group_lib_slim_refactored("output/exp/tmp.csv", rep_attr, is_neg=2)
+    # run_group_lin_slim_refactored_synatic("output/exp/tmp.csv", rep_attr, K=50)
     slim_pred2 = pd.read_csv("output/exp/tmp.csv")
+    survived_pairs = set([(lir, rid) for lir, rid in zip(slim_pred2["ltable_id"].tolist(), slim_pred2["rtable_id"].tolist())])
+    pres_df2['predicted'] = pres_df2.apply(lambda row: row['predicted'] if (row['ltable_id'], row['rtable_id']) in survived_pairs else 0, axis=1)
+    pres_df2 = pd.concat([pres_df2, neg_df_2], ignore_index=True)
     
     # Evaluate the predictions
-    _eval_results(slim_pred2, tableA, tableB, filep)
+    _eval_results(pres_df2, tableA, tableB, filep)
     
     '''
     slim the refactored tab

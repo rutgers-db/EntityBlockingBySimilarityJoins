@@ -2,7 +2,7 @@
 # contact: liyunqixa@gmail.com
 import pathlib
 import subprocess
-from ctypes import c_char_p, c_double, c_bool, c_int
+from ctypes import c_char_p, c_double, c_bool, c_int, c_uint
 from ctypes import cdll
 from typing import Literal
 
@@ -124,3 +124,18 @@ def run_group_lib_slim_refactored(path_match_res, group_attribute, default_icv_d
     group_lib.slim_refactored_match_res_by_graph.argtypes = [c_char_p, c_char_p, c_char_p, c_char_p, c_int]
     group_lib.slim_refactored_match_res_by_graph.restype = None
     group_lib.slim_refactored_match_res_by_graph(path_match_res, group_attribute, default_icv_dir, default_buffer_dir, is_neg)
+    
+    
+@group_library_decorator
+def run_group_lin_slim_refactored_synatic(path_match_res, group_attribute, K=50):
+    # load
+    cur_file_dir = str(pathlib.Path(__file__).parent.resolve())
+    group_lib_path = "/".join([cur_file_dir, "..", "..", "shared_lib", "libgroup.so"])
+    group_lib = cdll.LoadLibrary(group_lib_path)
+    
+    path_match_res = path_match_res.encode('utf-8')
+    group_attribute = group_attribute.encode('utf-8')
+    
+    group_lib.slim_refactored_match_res_by_synatic.argtypes = [c_char_p, c_char_p, c_uint]
+    group_lib.slim_refactored_match_res_by_synatic.restype = None
+    group_lib.slim_refactored_match_res_by_synatic(path_match_res, group_attribute, K)

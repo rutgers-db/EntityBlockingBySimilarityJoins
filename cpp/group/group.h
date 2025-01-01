@@ -6,10 +6,12 @@
 #define _GROUP_H_
 
 #include "common/io.h"
+#include "common/tokenizer.h"
 #include "group/graph.h"
 #include <vector>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include <omp.h>
 
 
@@ -48,6 +50,8 @@ private:
                          const std::unordered_map<std::string, std::vector<double>> &doc2Vec);
     static Table slimTab(const Table &tab, ui workIdCol, ui queryIdCol, ui workCol, ui queryCol, 
                          const std::unordered_map<std::string, std::vector<std::vector<double>>> &doc2Vec);
+
+    static Table slimTab(const Table &tab, ui workCol, ui queryCol, ui K);
 
     static std::unordered_map<int, std::string> getOriginalValue(const std::string &pathTab, const std::string &attr);
     static Table restoreTab(const std::string &pathMatchTab, const std::unordered_map<int, std::string> &id2ValueA, 
@@ -105,6 +109,8 @@ public:
 
     static void slimMatchResWord(const std::string &pathMatchTab, const std::string &groupAttribute, const std::string &defaultICVDir = "", 
                                  const std::string &defaultBufferDir = "", int isNeg = 0);
+
+    static void slimMatchResSynatic(const std::string &pathMatchTab, const std::string &groupAttribute, ui K);
 };
 
 #endif // _GROUP_H_

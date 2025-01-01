@@ -3,6 +3,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from py_stringmatching.tokenizer.delimiter_tokenizer import DelimiterTokenizer
+import py_entitymatching as em
 
 
 def show_semantic_distribution(is_fp):
@@ -27,6 +29,46 @@ def show_semantic_distribution(is_fp):
         plt.savefig('../../output/debug/figs/fp_semantic.png', dpi=300, bbox_inches='tight')
     else:
         plt.savefig("../../output/debug/figs/tp_semantic.png", dpi=300, bbox_inches='tight')
+    plt.show()
+    
+    
+def show_synatic_distribution():
+    fp_tab = pd.read_csv("../../output/debug/false_positive_second.csv")
+    tp_tab = pd.read_csv("../../output/debug/true_positive_second.csv")
+    
+    tokenizer = DelimiterTokenizer([' ', '\'', '\"', ',', '\\', '\t', '\r', '\n'])
+    
+    fp_title = [(l_title, r_title) for l_title, r_title in zip(fp_tab['ltable_title'], fp_tab['rtable_title'])]
+    tp_title = [(l_title, r_title) for l_title, r_title in zip(tp_tab['ltable_title'], tp_tab['rtable_title'])]
+    
+    fp_title = [(tokenizer.tokenize(l_title), tokenizer.tokenize(r_title)) for l_title, r_title in fp_title]
+    tp_title = [(tokenizer.tokenize(l_title), tokenizer.tokenize(r_title)) for l_title, r_title in tp_title]
+    
+    fp_sim = [em.jaccard(l_title, r_title) for l_title, r_title in fp_title]
+    tp_sim = [em.jaccard(l_title, r_title) for l_title, r_title in tp_title]
+    
+    fp_tab['jaccard'] = fp_sim
+    tp_tab['jaccard'] = tp_sim
+    
+    # Set the style of seaborn
+    sns.set_theme(style="whitegrid")
+    
+    # Create a figure
+    plt.figure(figsize=(10, 6))
+    
+    # Create a histogram with a KDE overlay
+    sns.histplot(fp_tab['jaccard'], bins=20, kde=True, color='blue', stat='probability')
+    plt.title('Distribution of Jaccard Values', fontsize=16)
+    plt.xlabel('Jaccard', fontsize=14)
+    plt.ylabel('Proba', fontsize=14)
+    plt.savefig('../../output/debug/figs/fp_jaccard.png', dpi=300, bbox_inches='tight')
+    plt.show()
+    
+    sns.histplot(tp_tab['jaccard'], bins=20, kde=True, color='blue', stat='probability')
+    plt.title('Distribution of Jaccard Values', fontsize=16)
+    plt.xlabel('Jaccard', fontsize=14)
+    plt.ylabel('Proba', fontsize=14)
+    plt.savefig("../../output/debug/figs/tp_jaccard.png", dpi=300, bbox_inches='tight')
     plt.show()
     
     
