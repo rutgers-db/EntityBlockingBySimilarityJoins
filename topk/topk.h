@@ -1,9 +1,5 @@
-/*
- * author: Yunqi Li
- * contact: liyunqixa@gmail.com
- */
-#ifndef _TOP_K_H_
-#define _TOP_K_H_
+#ifndef TOP_K_H
+#define TOP_K_H
 
 #include "common/config.h"
 #include "common/dataframe.h"
@@ -196,4 +192,4 @@ public:
 };
 
 
-#endif // _TOP_K_H_
+#endif // TOP_K_H
