@@ -16,7 +16,6 @@
 #include "common/stringjoin_parallel.h"
 #include "blocker/blocker_util.h"
 #include "topk/topk.h"
-#include "group/group_old.h"
 #include "blocker/blocker_config.h"
 #include <bitset>
 #include <fstream>
@@ -51,9 +50,6 @@ public:
 	static void estimateDensity(bool isWeighted, std::vector<double> &densities, 
 								std::unordered_map<std::string, double> &attrAverage, 
 								const std::string &defaultSampleResDir = "");
-	// take account interchangeable values
-	static void selfInterchangeableJoin(uint64_t K, const std::string &topKattr, 
-										const std::string &attrType, bool ifWeighted);
 };
 
 

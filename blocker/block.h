@@ -10,7 +10,6 @@
 #define _BLOCK_H_
 
 #include "blocker/blocker_config.h"
-#include "blocker/knn_blocker.h"
 #include "blocker/simjoin_blocker.h"
 #include <iomanip>
 #include <omp.h>
