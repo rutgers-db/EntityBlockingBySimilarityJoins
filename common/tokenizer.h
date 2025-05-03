@@ -36,6 +36,8 @@ private:
 	// check a string if contains other chars
 	static bool isNotAlphaNumeric(char c);
 	static bool isAlphaNumeric(const std::string &s);
+public:
+	static bool isNoneAlphaNumeric(const std::string &s);
 
 public:
 	/*

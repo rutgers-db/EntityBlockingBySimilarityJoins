@@ -10,7 +10,4 @@ project(simjoin_entitymatching)
 # find_package(Arrow REQUIRED)
 # find_package(Parquet REQUIRED)
 
-add_subdirectory(cpp/blocker)
-add_subdirectory(cpp/sampler)
-add_subdirectory(cpp/feature)
-add_subdirectory(cpp/group)
+add_subdirectory(blocker)

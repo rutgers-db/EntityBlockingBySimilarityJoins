@@ -132,11 +132,4 @@ public:
 };
 
 
-// TODO:
-class TFIDF
-{
-
-};
-
-
 #endif // _SIM_FUNC_H_

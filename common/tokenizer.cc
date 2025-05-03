@@ -18,6 +18,11 @@ bool Tokenizer::isAlphaNumeric(const std::string &s)
 	return std::find_if(s.begin(), s.end(), isNotAlphaNumeric) == s.end();
 }
 
+bool Tokenizer::isNoneAlphaNumeric(const std::string &s) 
+{
+	return std::find_if(s.begin(), s.end(), [](char c){return isalnum(c) ? true : false;}) == s.end();
+}
+
 // dlm
 void Tokenizer::string2TokensDlm(const std::string &s, std::vector<std::string> &res,
 								 const std::string &delims)

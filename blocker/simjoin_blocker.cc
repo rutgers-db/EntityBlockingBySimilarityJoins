@@ -27,6 +27,8 @@ void SimJoinBlocker::selfSimilarityJoinParallel(uint64_t K, const std::string &t
 			std::string tokKey = rules[i].tok + "_" + rules[i].tok_settings + "_" + rules[i].attr;
 			ui pos = datasets_map[tokKey];
 
+			if (newT <= 0.29) newT = 0.3;
+
 			// join
             SetJoinParallel *joiner = new SetJoinParallel(recordsA[pos], weightsA[pos], wordwt[pos], newT, 0, ifWeighted);
             if(rules[i].sim == "jac") joiner->simFType = SimFuncType::JACCARD;

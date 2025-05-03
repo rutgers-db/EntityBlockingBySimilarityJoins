@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 	fflush(stdout);
 
 	// Flush
-    MultiWriter::writeBlockResMegallenCSV(table_A, table_B, tableSize, final_pairs);
+    // MultiWriter::writeBlockResMegallenCSV(table_A, table_B, tableSize, final_pairs);
 
 	// Release
 	printf("Releasing buffers..........\n");

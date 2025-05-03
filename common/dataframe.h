@@ -1,5 +1,10 @@
-#ifndef DATAFRAME_H
-#define DATAFRAME_H
+/*
+ * author: Chaoji Zuo and Zhizhi Wang in rutgers-db/SIGMOD2022-Programming-Contest-Public
+ * modified: Yunqi Li
+ * contact: liyunqixa@gmail.com
+ */
+#ifndef _DATAFRAME_H_
+#define _DATAFRAME_H_
 
 #include "common/type.h"
 #include <iostream>
@@ -47,6 +52,44 @@ public:
 	void copySchema(const Table &table);
 };
 
+
+class ChineseTable
+{
+public:
+	int tid;
+	int row_no, col_no;
+	std::string table_name;
+
+	std::vector<std::wstring> schema; // headers
+	std::unordered_map<std::wstring, unsigned int> inverted_schema;
+	std::vector<std::vector<std::wstring>> rows;
+	std::vector<std::vector<std::wstring>> cols;
+	std::vector<ui> perfectid; // row id whose all attrs are non-empty
+
+public:
+	ChineseTable() = default;
+	ChineseTable(int id, const std::string &name) : tid(id), table_name(name) { }
+	ChineseTable(int id, const std::string &name, const std::vector<std::wstring> &data_headers, 
+          		 const std::vector<std::vector<std::wstring>> &data_rows, 
+		  		 const std::vector<std::vector<std::wstring>> &data_columns)
+    : tid(id), table_name(name), schema(data_headers), rows(data_rows), cols(data_columns) {
+        row_no = rows.size();
+        col_no = cols.size();
+    }
+
+private:
+	std::string convertWide2Normal(const std::wstring &wstr) const;
+
+public:
+	void setLocale4Wcout(const std::string &mode) const;
+	void Profile();
+	void PrintInfo();
+	// for printing chinese characters, it is better to use stream io instead of "printf"
+	void printData() const;
+	void insertOneRow(const std::vector<std::wstring> &tmpRow);
+};
+
+
 struct Rule
 {
 	std::string attr;
@@ -63,4 +106,20 @@ struct Rule
 	Rule(Rule&& other) = delete;
 };
 
-#endif // DATAFRAME_H
+
+struct Feature
+{
+	std::string attr;
+	std::string sim;     
+	std::string sim_measure {"none"};      // distance or similarity
+	std::string tok {"none"};              // q-gram or dlm 
+	std::string tok_settings {"none"};     // # of q or type of dlm
+
+	Feature() = default;
+	~Feature() = default;
+	Feature(const Feature& other) = delete;
+	Feature(Feature&& other) = delete;
+};
+
+
+#endif // _DATAFRAME_H_

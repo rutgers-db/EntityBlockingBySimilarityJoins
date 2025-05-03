@@ -4,7 +4,7 @@
  */
 #include "topk/topk.h"
 
-// git test
+
 // implementation
 void TopK::allocateBuffers(uint64_t numEntity, ui numDimension, TableEntry **&valueTable, double **&backup)
 {
@@ -575,7 +575,8 @@ void TopK::topKviaTASelf(const Table &table_A, const std::string &topKattr, cons
 		prepareSelf(topKRecords, topKidMap, final_pairs, id2Pair, valueTable, backup, numRow, numEntity);
 	else 
 		prepareSelfWeighted(topKRecords, topKidMap, topKWeights, topKwordwt, final_pairs, id2Pair, valueTable, backup, numRow, numEntity);
-
+	
+	K = numEntity < K ? numEntity : K;
 	if(numEntity <= K) {
 		releaseBuffers(4, valueTable, backup);
 		return;

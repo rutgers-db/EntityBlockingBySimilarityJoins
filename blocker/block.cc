@@ -506,7 +506,7 @@ extern "C"
 		printf("~~~Finish calculating recall~~~\n");
 
 		// Flush
-		MultiWriter::writeBlockResMegallenCSV(table_A, table_B, table_size, final_pairs, default_output_dir);
+		// MultiWriter::writeBlockResMegallenCSV(table_A, table_B, table_size, final_pairs, default_output_dir);
 
 		// Release
 		printf("Releasing buffers..........\n");
